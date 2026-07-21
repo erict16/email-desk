@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 const isProd = process.env.NODE_ENV === "production";
+const base = isProd ? "/email-desk" : "";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -12,8 +13,8 @@ export const metadata: Metadata = {
   title: "邮件跟进清单 · Email Desk",
   description: "Eric's weekday email follow-up board",
   icons: {
-    icon: [{ url: "favicon.png", type: "image/png", sizes: "64x64" }],
-    apple: [{ url: "apple-touch-icon.png", sizes: "180x180" }],
+    icon: [{ url: `${base}/favicon.png?v=girl3`, type: "image/png", sizes: "64x64" }],
+    apple: [{ url: `${base}/apple-touch-icon.png?v=girl3`, sizes: "180x180" }],
   },
 };
 

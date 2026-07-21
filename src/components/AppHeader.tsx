@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { asset } from "@/lib/asset";
 
 type Props = { title: string };
 
@@ -42,8 +43,8 @@ export default function AppHeader({ title }: Props) {
           <div className="flex min-w-0 items-center gap-2.5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="logo.png"
-              alt=""
+              src={asset("logo.png")}
+              alt="Email Desk"
               width={32}
               height={32}
               className="h-8 w-8 rounded-xl bg-white object-cover object-top ring-1 ring-neutral-200"
