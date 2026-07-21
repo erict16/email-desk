@@ -13,66 +13,66 @@ priorities:
 ### Sanaky BSHV — 空运文件包
 - priority: P0
 - date: 7/20
-- meta: Trung · 已收 Air bill · Sent 无回
-- tags: 客户催促, 空运文件
+- meta: Trung 已收 Air bill，还在等你这边文件包。
+- tags: 客户等文件, 待发CQ/TR
 - people: Trung (Sanaky)
 - action: 发 Invoice、PL、CQ、Test Report、Form E 草稿供核对（CQ/TR 归你）
 
 ### EEMC PO26-025 — Kimmy 要资料
 - priority: P0
 - date: 7/17
-- meta: 投产已 Fwd，附件包未回
-- tags: 内部要资料, 排产
+- meta: 投产已转发，她还要完整附件和邮件记录。
+- tags: 内部催资料, 待打包发送
 - people: 李倩
 - action: 把所有附件 + 沟通邮件整理发给她
 
 ### EEMC 对账 / SOA（截至 2026-06-30）
 - priority: P0
 - date: 7/17
-- meta: Hà 正式要 SOA · 阿姐已回海外/SG 往来
-- tags: 对账, 客户催促
+- meta: Hà 正式要 SOA；阿姐已给海外/SG 往来明细。
+- tags: 对账待回, 客户正式要
 - people: Hà Lâm Phú / 阿姐
 - action: 对明细，确认后回 Statement of Account
 
 ### EVN UZF retrofit 交期
 - priority: P1
 - date: 7/17
-- meta: Hoa 嫌 9/5 晚 · 你已 Noted 会再争取
-- tags: 交期, 工厂
+- meta: Hoa 觉得 9/5 太晚；你已回 Noted，说会再争取。
+- tags: 交期嫌晚, 等工厂新日期
 - people: Hoa Nguyen
-- action: 跟工厂新提货日，有结果再回
+- action: 跟工厂问新提货日，有结果再回 Hoa
 
 ### Sanaky — 吸油管位置 1→2
 - priority: P1
 - date: 7/17
-- meta: DETC 管系改位
-- tags: 工程确认, 客户等回复
+- meta: DETC 管系要改位，客户在等能不能做。
+- tags: 工程待确认, 客户等回复
 - people: Anthony / Kimmy
-- action: 工程确认可否后回复客户
+- action: 问工程可否改位，确认后回复客户
 
 ### Bambang PX-360 图纸确认投产
 - priority: P2
 - date: 7/16
-- meta: Kimmy 催 Yoeli 确认外形图
-- tags: 图纸待确认, 投产
+- meta: Kimmy 在催 Yoeli 确认外形图，确认才能投产。
+- tags: 图纸待客户确认, 确认后可投产
 - people: Yoeli / Kimmy
-- action: 盯客户确认，确认后投产
+- action: 盯 Yoeli 确认外形图，确认后通知投产
 
 ### HMSG Trading Process
 - priority: P2
 - date: 7/16
-- meta: John → 全员
-- tags: 流程, 必读
+- meta: John 发全员，SG 属地流程要按新规。
+- tags: 必读流程, SG适用
 - people: John Zhou
-- action: 读附件流程，SG 属地按新规
+- action: 读完附件，SG 按新规执行
 
 ### PO25-535 继电器顶盖
 - priority: P2
 - date: 7/16
-- meta: 曾问补发
-- tags: 缺件, 物流
+- meta: 包装少顶盖，之前问过能否补发。
+- tags: 缺件待补, 等物流回复
 - people: Hoa / Grace Zhou
-- action: 跟有无补发 / 物流节点
+- action: 跟补发进度 / 物流节点
 
 ## done | 已推进
 
@@ -86,7 +86,7 @@ priorities:
 
 ### EVN 已回 Hoa（Noted / 争取提前）
 - priority: OK
-- tags: 已回复
+- tags: 已回复客户
 
 ### 新加坡合同 CPF · 已 Noted
 - priority: OK
@@ -94,28 +94,28 @@ priorities:
 
 ### HMP26-428 空运 · 到货数据已出（Unitex/玲玲）
 - priority: OK
-- tags: 物流
+- tags: 物流已出
 
 ## fyi | FYI
 
 ### HLG BTDA / HAVEC / MEE / DPTSC / Clough / SRG Audit
 - priority: FYI
-- tags: 旁听
+- tags: 非你主责, 知会即可
 - people: Anthony / Kimmy / Yolanda
-- action: 非你主责，知会即可
+- action: 旁听，不用你主导
 
 ### Gerrick：OLTC Product Approval 合规核对
 - priority: FYI
-- tags: 合规, 找Kimmy
-- action: 找 Kimmy 做 full compliance check
+- tags: 转Kimmy, 合规核对
+- action: 让 Kimmy 做 full compliance check
 
 ### Bambang PX-373 · 无法匹配合适 OLTC
 - priority: FYI
-- tags: 已拒供
-- action: Kimmy 已拒供说明
+- tags: 已拒供, 关闭
+- action: Kimmy 已说明无法供货
 
 ### HLG 协议 / Q2 佣金
 - priority: FYI
-- tags: 旁听
+- tags: 非你主责, 知会即可
 - people: Kimmy / Anthony / Gerrick
-- action: 知会即可
+- action: 旁听即可
