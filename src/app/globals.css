@@ -29,3 +29,14 @@ body {
     --foreground: #f5f5f5;
   }
 }
+
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  article {
+    break-inside: avoid;
+    box-shadow: none !important;
+  }
+}
