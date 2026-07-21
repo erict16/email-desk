@@ -1,7 +1,7 @@
 ---
 title: 邮件跟进清单
 subtitle: Eric Tan · Inbox + Sent
-updated: 2026-07-21
+updated: "2026-07-21"
 priorities:
   - Sanaky：空运到货文件 — Invoice / PL / CQ / Test Report / Form E 草稿
   - Kimmy：PO26-025 全套附件 + 沟通邮件打包
