@@ -1,16 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #eef2ff;
-  --foreground: #0f172a;
-  --card: rgba(255, 255, 255, 0.72);
-  --muted: #64748b;
-  --ring: #38bdf8;
+  --bg: #e8f5e9;
+  --fg: #1a1a1a;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #2e7d32;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", ui-sans-serif,
     system-ui, sans-serif;
 }
@@ -21,29 +20,19 @@ body {
 }
 
 body {
-  color: var(--foreground);
+  color: var(--fg);
   font-family: var(--font-sans);
-  background:
-    radial-gradient(1200px 600px at 8% -10%, rgba(56, 189, 248, 0.35), transparent 55%),
-    radial-gradient(900px 520px at 95% 0%, rgba(167, 139, 250, 0.3), transparent 50%),
-    radial-gradient(800px 480px at 50% 110%, rgba(45, 212, 191, 0.22), transparent 55%),
-    linear-gradient(165deg, #e0e7ff 0%, #f8fafc 42%, #ecfeff 100%);
-  background-attachment: fixed;
+  background: var(--bg);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #070b14;
-    --foreground: #e2e8f0;
-    --card: rgba(15, 23, 42, 0.72);
-    --muted: #94a3b8;
-  }
-  body {
-    background:
-      radial-gradient(1000px 520px at 10% -8%, rgba(56, 189, 248, 0.16), transparent 55%),
-      radial-gradient(800px 480px at 92% 0%, rgba(139, 92, 246, 0.14), transparent 50%),
-      radial-gradient(700px 420px at 50% 110%, rgba(20, 184, 166, 0.1), transparent 55%),
-      linear-gradient(165deg, #070b14 0%, #0c1222 50%, #0a1620 100%);
+    --bg: #0f1410;
+    --fg: #f3f4f6;
+    --card: #161b17;
+    --muted: #9ca3af;
+    --line: #2a332c;
+    --accent: #81c784;
   }
 }
 

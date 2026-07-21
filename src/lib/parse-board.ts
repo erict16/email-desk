@@ -85,34 +85,28 @@ function formatUpdated(raw: unknown): string {
   if (raw == null || raw === "") return "";
 
   // gray-matter may parse YAML dates into Date objects
-  let d: Date | null = null;
   if (raw instanceof Date && !Number.isNaN(raw.getTime())) {
-    d = raw;
-  } else {
-    const s = String(raw).trim();
-    // plain YYYY-MM-DD — treat as calendar date (no TZ shift)
-    const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if (m) {
-      return `${Number(m[2])}月${Number(m[3])}日 · 北京/新加坡`;
-    }
-    const t = Date.parse(s);
-    if (!Number.isNaN(t)) d = new Date(t);
-    else return s; // free-form string, keep as-is
+    return new Intl.DateTimeFormat("zh-CN", {
+      timeZone: "Asia/Shanghai",
+      month: "numeric",
+      day: "numeric",
+    }).format(raw);
   }
 
-  // Format in UTC+8 (China & Singapore share the same offset)
-  const fmt = new Intl.DateTimeFormat("zh-CN", {
-    timeZone: "Asia/Shanghai",
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-  // e.g. 2026/7/21 08:00
-  const parts = fmt.format(d);
-  return `${parts} · 北京/新加坡`;
+  const s = String(raw).trim();
+  // plain YYYY-MM-DD
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (m) return `${Number(m[2])}月${Number(m[3])}日`;
+
+  const t = Date.parse(s);
+  if (!Number.isNaN(t)) {
+    return new Intl.DateTimeFormat("zh-CN", {
+      timeZone: "Asia/Shanghai",
+      month: "numeric",
+      day: "numeric",
+    }).format(new Date(t));
+  }
+  return s;
 }
 
 export function loadBoard(): BoardData {

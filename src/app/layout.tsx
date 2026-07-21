@@ -12,9 +12,7 @@ export const metadata: Metadata = {
   title: "邮件跟进清单 · Email Desk",
   description: "Eric's weekday email follow-up board",
   icons: {
-    icon: [
-      { url: "favicon.png", type: "image/png", sizes: "64x64" },
-    ],
+    icon: [{ url: "favicon.png", type: "image/png", sizes: "64x64" }],
     apple: [{ url: "apple-touch-icon.png", sizes: "180x180" }],
   },
 };
@@ -24,9 +22,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN" className="h-full antialiased">
-      <body className="min-h-full text-slate-900 dark:text-slate-50">
-        {children}
-      </body>
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }
