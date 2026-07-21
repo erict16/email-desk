@@ -11,7 +11,7 @@ const STATS = [
   },
   {
     key: "pending" as const,
-    label: "待跟进 / P1",
+    label: "待跟进",
     num: "text-amber-500",
     glow: "from-amber-400/25 to-yellow-300/10",
   },
@@ -23,7 +23,7 @@ const STATS = [
   },
   {
     key: "other" as const,
-    label: "已推进 / FYI",
+    label: "已推进",
     num: "text-emerald-500",
     glow: "from-emerald-400/20 to-teal-300/10",
   },
