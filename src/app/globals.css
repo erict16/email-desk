@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
+/* Linear / Notion-like: white canvas, one red accent for urgency */
+
 :root {
-  --bg: #e8f5e9;
-  --fg: #1a1a1a;
+  --bg: #fafafa;
+  --fg: #111111;
+  --muted: #737373;
+  --line: #ebebeb;
   --card: #ffffff;
-  --muted: #6b7280;
-  --line: #e5e7eb;
-  --accent: #2e7d32;
+  --urgent: #e11d48;
 }
 
 @theme inline {
-  --font-sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", ui-sans-serif,
+  --font-sans: ui-sans-serif, "Segoe UI", "PingFang SC", "Microsoft YaHei",
     system-ui, sans-serif;
 }
 
@@ -23,16 +25,17 @@ body {
   color: var(--fg);
   font-family: var(--font-sans);
   background: var(--bg);
+  -webkit-font-smoothing: antialiased;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1410;
-    --fg: #f3f4f6;
-    --card: #161b17;
-    --muted: #9ca3af;
-    --line: #2a332c;
-    --accent: #81c784;
+    --bg: #0a0a0a;
+    --fg: #fafafa;
+    --muted: #a3a3a3;
+    --line: #262626;
+    --card: #141414;
+    --urgent: #fb7185;
   }
 }
 
@@ -43,6 +46,5 @@ body {
   }
   article {
     break-inside: avoid;
-    box-shadow: none !important;
   }
 }
