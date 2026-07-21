@@ -1,69 +1,141 @@
 import type { BoardData } from "@/lib/parse-board";
-import Column from "@/components/Column";
+import Card from "@/components/Card";
+
+const STATS = [
+  {
+    key: "urgent" as const,
+    label: "需立即处理",
+    color: "text-red-600 dark:text-red-400",
+  },
+  {
+    key: "pending" as const,
+    label: "待跟进 / P1",
+    color: "text-neutral-900 dark:text-white",
+  },
+  {
+    key: "follow" as const,
+    label: "报价 / 技术",
+    color: "text-neutral-600 dark:text-neutral-300",
+  },
+  {
+    key: "other" as const,
+    label: "已推进 / FYI",
+    color: "text-neutral-400",
+  },
+];
 
 export default function Board({ board }: { board: BoardData }) {
-  return (
-    <div className="mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-      {/* Hero */}
-      <header className="relative mb-5 overflow-hidden rounded-3xl border border-white/40 bg-white/30 p-5 shadow-[0_12px_40px_rgba(15,23,42,0.1)] backdrop-blur-2xl sm:p-7 dark:border-white/10 dark:bg-white/[0.07]">
-        <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-sky-400/25 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 left-10 h-48 w-48 rounded-full bg-violet-400/20 blur-3xl" />
-        <div className="relative">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-700/80 dark:text-sky-300/90">
-                Email Desk
-              </p>
-              <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-                {board.title}
-              </h1>
-              {board.subtitle && (
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  {board.subtitle}
-                </p>
-              )}
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              {board.updated && (
-                <span className="rounded-full border border-white/50 bg-white/50 px-3 py-1 text-xs font-medium text-slate-700 backdrop-blur dark:border-white/10 dark:bg-white/10 dark:text-slate-200">
-                  {board.updated}
-                </span>
-              )}
-              {board.badge && (
-                <span className="rounded-full border border-sky-400/30 bg-sky-500/15 px-3 py-1 text-xs font-semibold text-sky-800 dark:text-sky-200">
-                  {board.badge}
-                </span>
-              )}
-            </div>
-          </div>
+  let globalIndex = 0;
 
-          {board.priorities.length > 0 && (
-            <div className="mt-5 rounded-2xl border border-white/50 bg-white/45 p-4 backdrop-blur-md dark:border-white/10 dark:bg-white/[0.06]">
-              <div className="mb-2 text-xs font-bold uppercase tracking-wider text-teal-700 dark:text-teal-300">
-                本周优先 · 你先做这三件
-              </div>
-              <ol className="space-y-1.5 pl-4 text-sm text-slate-800 marker:font-semibold dark:text-slate-100">
-                {board.priorities.map((p, i) => (
-                  <li key={i} className="list-decimal leading-relaxed">
-                    {p}
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
+  return (
+    <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
+      {/* Header */}
+      <header className="mb-8">
+        <div className="mb-1 flex items-center gap-2">
+          <span className="text-2xl" aria-hidden>
+            📧
+          </span>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-400">
+            Email Desk
+          </p>
         </div>
+        <h1 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl dark:text-white">
+          {board.title}
+        </h1>
+        {board.subtitle && (
+          <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+            {board.subtitle}
+            {board.updated ? ` · ${board.updated}` : ""}
+          </p>
+        )}
       </header>
 
-      {/* Kanban columns — WorkBuddy-like */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-5">
-        {board.columns.map((col) => (
-          <Column key={col.id} column={col} />
+      {/* Overview stats — WorkBuddy style */}
+      <section
+        className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4"
+        aria-label="总览"
+      >
+        {STATS.map((s) => (
+          <div
+            key={s.key}
+            className="rounded-2xl border border-neutral-200 bg-white px-4 py-4 text-center shadow-sm dark:border-neutral-800 dark:bg-neutral-950"
+          >
+            <div
+              className={`text-3xl font-bold tabular-nums tracking-tight ${s.color}`}
+            >
+              {board.stats[s.key]}
+            </div>
+            <div className="mt-1 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+              {s.label}
+            </div>
+          </div>
         ))}
+      </section>
+
+      {/* This week priorities */}
+      {board.priorities.length > 0 && (
+        <section className="mb-8 rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-950">
+          <div className="mb-2 text-xs font-bold uppercase tracking-wider text-neutral-500">
+            本周优先 · 先做这三件
+          </div>
+          <ol className="list-decimal space-y-1.5 pl-5 text-sm text-neutral-800 dark:text-neutral-100">
+            {board.priorities.map((p, i) => (
+              <li key={i} className="leading-relaxed">
+                {p}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {/* Single vertical stack */}
+      <div className="space-y-8">
+        {board.sections.map((section) => {
+          if (section.items.length === 0) return null;
+          const isTodo = section.id === "todo";
+          return (
+            <section key={section.id}>
+              <div className="mb-3 flex items-center gap-2 border-b border-neutral-200 pb-2 dark:border-neutral-800">
+                <span
+                  className={`h-2.5 w-2.5 rounded-full ${
+                    isTodo
+                      ? "bg-neutral-900 dark:bg-white"
+                      : section.id === "done"
+                        ? "bg-neutral-400"
+                        : "bg-neutral-300 dark:bg-neutral-600"
+                  }`}
+                />
+                <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">
+                  {section.title}
+                </h2>
+                <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] font-semibold tabular-nums text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                  {section.items.length}
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {section.items.map((item) => {
+                  globalIndex += 1;
+                  return (
+                    <Card
+                      key={`${section.id}-${item.title}`}
+                      item={item}
+                      index={globalIndex}
+                    />
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
       </div>
 
-      <p className="mt-6 text-center text-[11px] text-slate-500 dark:text-slate-500">
-        内容来源 <code className="rounded bg-white/40 px-1 dark:bg-white/10">content/board.md</code>
-        · 日常只需改 Markdown
+      <p className="mt-10 text-center text-[11px] text-neutral-400">
+        改{" "}
+        <code className="rounded bg-neutral-100 px-1 dark:bg-neutral-800">
+          content/board.md
+        </code>{" "}
+        → push 即可更新
       </p>
     </div>
   );
