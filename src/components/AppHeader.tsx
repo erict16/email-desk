@@ -22,7 +22,6 @@ export default function AppHeader({ title }: Props) {
         return;
       }
     } catch {
-      /* user cancelled */
       return;
     }
     try {
@@ -34,7 +33,6 @@ export default function AppHeader({ title }: Props) {
   }, [title]);
 
   const onPdf = useCallback(() => {
-    // Native print → Save as PDF (no extra dependency)
     flash("请在打印对话框选择「另存为 PDF」");
     window.setTimeout(() => window.print(), 250);
   }, []);
@@ -42,20 +40,25 @@ export default function AppHeader({ title }: Props) {
   return (
     <>
       <header
-        className="print:hidden sticky top-0 z-40 border-b border-neutral-200/90 bg-white/90 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/90"
+        className="print:hidden sticky top-0 z-40 border-b border-white/40 bg-white/55 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/55"
         data-testid="app-header"
       >
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-3 px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-2.5">
-            <span className="text-xl leading-none" aria-hidden>
-              📧
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="logo.png"
+              alt="Hermes Girl"
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-full object-cover ring-2 ring-sky-300/60 shadow-md shadow-sky-500/20"
+            />
             <div className="min-w-0">
-              <div className="truncate text-sm font-semibold tracking-tight text-neutral-900 dark:text-white">
+              <div className="truncate text-sm font-semibold tracking-tight text-slate-900 dark:text-white">
                 Email Desk
               </div>
-              <div className="truncate text-[11px] text-neutral-400">
-                邮件跟进
+              <div className="truncate text-[11px] text-slate-500 dark:text-slate-400">
+                powered by Hermes
               </div>
             </div>
           </div>
@@ -64,7 +67,7 @@ export default function AppHeader({ title }: Props) {
             <button
               type="button"
               onClick={onShare}
-              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3 text-xs font-medium text-neutral-700 transition hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
+              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-white/60 bg-white/70 px-3 text-xs font-medium text-slate-700 shadow-sm backdrop-blur transition hover:bg-white hover:shadow-md dark:border-white/10 dark:bg-white/10 dark:text-slate-100"
               title="分享链接"
             >
               <ShareIcon />
@@ -73,7 +76,7 @@ export default function AppHeader({ title }: Props) {
             <button
               type="button"
               onClick={onPdf}
-              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-neutral-900 bg-neutral-900 px-3 text-xs font-medium text-white transition hover:bg-neutral-800 dark:border-white dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-100"
+              className="inline-flex h-9 items-center gap-1.5 rounded-full bg-gradient-to-r from-sky-500 to-violet-500 px-3 text-xs font-semibold text-white shadow-md shadow-sky-500/25 transition hover:brightness-110"
               title="下载 PDF"
             >
               <DownloadIcon />
@@ -84,7 +87,7 @@ export default function AppHeader({ title }: Props) {
       </header>
 
       {toast && (
-        <div className="print:hidden fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-neutral-200 bg-white px-4 py-2 text-xs font-medium text-neutral-800 shadow-lg dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100">
+        <div className="print:hidden fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-white/50 bg-white/90 px-4 py-2 text-xs font-medium text-slate-800 shadow-lg backdrop-blur dark:border-white/10 dark:bg-slate-900/90 dark:text-slate-100">
           {toast}
         </div>
       )}

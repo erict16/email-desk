@@ -9,11 +9,13 @@ export const metadata: Metadata = {
       ? "https://erict16.github.io/email-desk/"
       : "http://localhost:3000",
   ),
-  title: "📧 邮件跟进清单 · Email Desk",
+  title: "邮件跟进清单 · Email Desk",
   description: "Eric's weekday email follow-up board",
   icons: {
-    icon: [{ url: "favicon.svg", type: "image/svg+xml" }],
-    apple: "favicon.svg",
+    icon: [
+      { url: "favicon.png", type: "image/png", sizes: "64x64" },
+    ],
+    apple: [{ url: "apple-touch-icon.png", sizes: "180x180" }],
   },
 };
 
@@ -22,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN" className="h-full antialiased">
-      <body className="min-h-full bg-neutral-100 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
+      <body className="min-h-full text-slate-900 dark:text-slate-50">
         {children}
       </body>
     </html>
