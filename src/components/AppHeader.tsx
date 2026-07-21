@@ -37,9 +37,8 @@ export default function AppHeader({ title }: Props) {
 
   return (
     <>
-      <header className="print:hidden sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--card)]/95 backdrop-blur-md">
+      <header className="print:hidden sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/95">
         <div className="mx-auto flex h-14 max-w-2xl items-center justify-between gap-3 px-4 sm:px-5">
-          {/* Brand — WorkBuddy style left */}
           <div className="flex min-w-0 items-center gap-2.5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -47,19 +46,18 @@ export default function AppHeader({ title }: Props) {
               alt=""
               width={32}
               height={32}
-              className="h-8 w-8 rounded-xl object-cover ring-1 ring-black/5"
+              className="h-8 w-8 rounded-xl bg-white object-cover object-top ring-1 ring-neutral-200"
             />
-            <span className="truncate text-[15px] font-semibold tracking-tight text-[var(--fg)]">
+            <span className="truncate text-[15px] font-semibold tracking-tight text-neutral-900 dark:text-white">
               Email Desk
             </span>
           </div>
 
-          {/* Actions — icon + text, no primary CTA */}
           <div className="flex shrink-0 items-center gap-2">
             <button
               type="button"
               onClick={onShare}
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[var(--line)] bg-[var(--card)] px-3 text-xs font-medium text-[var(--fg)] transition hover:bg-neutral-50 dark:hover:bg-neutral-900"
+              className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 text-xs font-medium text-neutral-800 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
             >
               <ShareIcon />
               分享
@@ -67,7 +65,7 @@ export default function AppHeader({ title }: Props) {
             <button
               type="button"
               onClick={onPdf}
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[var(--line)] bg-[var(--card)] px-3 text-xs font-medium text-[var(--fg)] transition hover:bg-neutral-50 dark:hover:bg-neutral-900"
+              className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 text-xs font-medium text-neutral-800 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
             >
               <DownloadIcon />
               下载
@@ -77,7 +75,7 @@ export default function AppHeader({ title }: Props) {
       </header>
 
       {toast && (
-        <div className="print:hidden fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-full bg-[var(--fg)] px-3.5 py-1.5 text-xs text-[var(--card)] shadow-lg">
+        <div className="print:hidden fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-full bg-neutral-900 px-3.5 py-1.5 text-xs text-white shadow-lg">
           {toast}
         </div>
       )}

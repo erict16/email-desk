@@ -1,12 +1,10 @@
 @import "tailwindcss";
 
-/* Linear / Notion-like: white canvas, one red accent for urgency */
-
 :root {
-  --bg: #fafafa;
-  --fg: #111111;
+  --bg: #f4f4f5;
+  --fg: #171717;
   --muted: #737373;
-  --line: #ebebeb;
+  --line: #e5e5e5;
   --card: #ffffff;
   --urgent: #e11d48;
 }
