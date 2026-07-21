@@ -7,7 +7,14 @@ const geist = Geist({
   variable: "--font-geist-sans",
 });
 
+const isProd = process.env.NODE_ENV === "production";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    isProd
+      ? "https://erict16.github.io/email-desk/"
+      : "http://localhost:3000",
+  ),
   title: "邮件跟进清单 · Email Desk",
   description: "Eric's weekday email follow-up board — Markdown driven.",
   icons: {
