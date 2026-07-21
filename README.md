@@ -19,7 +19,7 @@ content/board.md
 title: 邮件跟进清单
 subtitle: Eric Tan · Inbox + Sent
 updated: 2026-07-21
-badge: incremental
+badge:
 priorities:
   - 本周第一优先
   - 第二
