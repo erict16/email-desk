@@ -1,3 +1,8 @@
+# Deploy Next.js static export to GitHub Pages
+# Site: https://erict16.github.io/email-desk/
+#
+# Repo Settings → Pages → Source: GitHub Actions (not "Deploy from a branch")
+
 name: Deploy GitHub Pages
 
 on:
@@ -18,15 +23,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: "22"
           cache: npm
-      - name: Install & build
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static export
+        # Next.js sets NODE_ENV=production during `next build` → basePath=/email-desk
+        run: npm run build
+
+      - name: Prepare Pages artifact
         run: |
-          npm ci
-          npm run build
+          # Disable Jekyll so _next/* assets are served
+          touch out/.nojekyll
+          # Sanity checks
+          test -f out/index.html
+          test -d out/_next
+          ls -la out/
+          ls -la out/public 2>/dev/null || true
+          ls -la out/favicon.svg out/icon.svg 2>/dev/null || ls -la out/ | head -40
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -39,5 +65,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
