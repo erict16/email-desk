@@ -24,7 +24,8 @@ export type BoardData = {
   title: string;
   subtitle: string;
   updated: string;
-  priorities: string[];
+  /** Meetings Eric needs to attend (replaces old 「本周优先」) */
+  meetings: string[];
   sections: BoardSection[];
   /** WorkBuddy four blocks: 紧急 / 需跟进 / 已完成 / 知会 */
   stats: {
@@ -143,16 +144,18 @@ export function loadBoard(): BoardData {
     info: all.filter((i) => i.priority === "FYI").length,
   };
 
-  const priorities = Array.isArray(data.priorities)
-    ? data.priorities.map(String)
-    : [];
+  // meetings preferred; fall back to legacy priorities key if present
+    const meetingsRaw = data.meetings ?? data.priorities;
+    const meetings = Array.isArray(meetingsRaw)
+      ? meetingsRaw.map(String)
+      : [];
 
-  return {
-    title: String(data.title || "邮件跟进清单"),
-    subtitle: String(data.subtitle || ""),
-    updated: formatUpdated(data.updated),
-    priorities,
-    sections,
-    stats,
-  };
-}
+    return {
+      title: String(data.title || "邮件跟进清单"),
+      subtitle: String(data.subtitle || ""),
+      updated: formatUpdated(data.updated),
+      meetings,
+      sections,
+      stats,
+    };
+  }

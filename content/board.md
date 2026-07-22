@@ -2,10 +2,8 @@
 title: 邮件跟进清单
 subtitle: Eric Tan · Inbox + Sent
 updated: "2026-07-22"
-priorities:
-  - Sanaky BSHV：空运文件包 — Invoice / PL / CQ / Test Report / Form E
-  - PO26-025：全套附件 + 沟通邮件打包给 Kimmy（投产已回，资料未发）
-  - HAVEC QS2607196R1：审批图放行（Anthony 点名，PO 将到）
+meetings:
+  - HMSG Trading Process 培训 — Rose 赵珺本周带你交接（时间待她/陆总约，邮件未写几点）
 ---
 
 ## todo | 你要处理
@@ -14,7 +12,7 @@ priorities:
 - priority: P0
 - date: 7/20
 - meta: Trung 已收 final Air bill，点名要全套单证；Sent 未见你回文件。
-- tags: 今日死线, 待发单证
+- tags: 需尽快, 待发单证
 - people: Trung (Sanaky)
 - action: 发 Invoice、PL、CQ、Test Report、Form E 草稿供核对（CQ/TR 归你）
 
@@ -22,7 +20,7 @@ priorities:
 - priority: P0
 - date: 7/20
 - meta: 她要「所有附件+沟通邮件」；你 7/21 只回了「已经下好了」，打包仍欠。
-- tags: 今日死线, 待打包
+- tags: 需尽快, 待打包
 - people: 李倩
 - action: 把全套附件 + 往来邮件整理发给她
 
@@ -30,7 +28,7 @@ priorities:
 - priority: P0
 - date: 7/21
 - meta: Hoa 要图；Anthony 改 QS2607196R1（ET-SZ6），点名 Eric/Kimmy 尽快放图，PO 将到。
-- tags: 今日死线, 待放图
+- tags: 需尽快, 待放图
 - people: Hoa / Anthony / Kimmy
 - action: 协调出图并放行给 Hoa（含备用 CMA7 轴+伞齿）
 
