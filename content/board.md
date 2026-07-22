@@ -1,7 +1,7 @@
 ---
 title: 邮件跟进清单
 subtitle: Eric Tan · Inbox + Sent
-updated: "2026-07-22 10:10"
+updated: "2026-07-22 10:15"
 tz: Asia/Shanghai
 meetings:
   - 周四 7/23 10:30 Teams — HMSG Trading Process（John 已确认；Rose / Kimmy / Eric / Shen 出席；等 Anthony 发链接）
