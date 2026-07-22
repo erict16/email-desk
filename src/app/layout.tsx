@@ -3,7 +3,7 @@ import "./globals.css";
 
 const isProd = process.env.NODE_ENV === "production";
 const base = isProd ? "/email-desk" : "";
-const v = "girl8";
+const v = "girl9";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
