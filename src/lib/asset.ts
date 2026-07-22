@@ -3,7 +3,7 @@ export function asset(path: string): string {
   const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
   const clean = path.startsWith("/") ? path.slice(1) : path;
   // cache-bust when logo updates
-  const v = "girl5";
+  const v = "girl6";
   const joiner = clean.includes("?") ? "&" : "?";
   return `${base}/${clean}${joiner}v=${v}`;
 }
