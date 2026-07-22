@@ -4,7 +4,7 @@ import "./globals.css";
 const isProd = process.env.NODE_ENV === "production";
 const base = isProd ? "/email-desk" : "";
 /** Bump when favicon / apple-touch assets change (cache bust). */
-const v = "girl10";
+const v = "girl11";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
