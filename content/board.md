@@ -85,22 +85,23 @@ meetings:
 - people: 赵玫（阿姐）
 - meta: 对账明细已回并用于 SOA
 
-### Urgent Purchase Order 155798 - OLTC (RP2614-01) · 3D 已收口
+### Urgent Purchase Order 155798 - OLTC (RP2614-01)
 - priority: OK
 - tags: 3D 客户已确认够用
 - people: Cameron (WTC) / 你已回
-- meta: Cameron 确认 3D 已够；交期/继电不改配置已说明。型号见上方 todo。
+- meta: 同线程；Cameron 确认 3D 已够。型号跟进见上方 todo。
 
-### United Energy HWV OLTC Enquiry · 已转沈工
+### United Energy HWV OLTC Enquiry
 - priority: OK
 - tags: 已转沈工评审
 - people: 沈旭（主评） / Colin / 周晓冬
 - meta: 7/21 16:09 Fw 沈工（同线程仍在跟评审）
 
-### EVN substation UZF retrofit job - QS2606173R2 · 已回 Noted
+### EVN substation UZF retrofit job - QS2606173R2
 - priority: OK
 - tags: 已回客户会争取提前
 - people: Hoa Nguyen / 你已回
+- meta: 已 Noted 会争取提前；新交期仍见上方 todo
 
 ### Employment Contract – CPF clarification
 - priority: OK
@@ -113,11 +114,11 @@ meetings:
 - people: Ada (Unitex) / 沈丽玲
 - meta: HMP26-428；7/22 Ada 发提单；到货数据 1/316/1.821。客户全套单证仍见上方 BSHV 卡
 
-### Branch of Song Hong Viet … QS2605154-R1 · 已回 S/Q 不可互换
+### Branch of Song Hong Viet Co., Ltd // Request for quote: DETC 11 pos 66kV - Huaming quotation QS2605154-R1
 - priority: OK
 - tags: 已回客户
 - people: Trung (Sanaky) / 你已回
-- meta: 7/22 09:43；CC quoctin 退信不影响主送。管位 1→2 仍见上方 todo。
+- meta: 7/22 09:43 已回 S/Q 不可互换；CC quoctin 退信不影响主送。管位 1→2 仍见上方 todo。
 
 ## fyi | 知会
 
