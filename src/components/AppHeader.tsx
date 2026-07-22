@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { asset } from "@/lib/asset";
+import { smoothScrollTo } from "@/lib/smooth-scroll";
 
 type Props = { title: string };
 
@@ -12,6 +13,15 @@ export default function AppHeader({ title }: Props) {
     setToast(msg);
     window.setTimeout(() => setToast(null), 1600);
   };
+
+  const onLogo = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    // Update hash without jump, then animate to top
+    if (window.location.hash) {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+    smoothScrollTo("top", 260);
+  }, []);
 
   const onShare = useCallback(async () => {
     const url = window.location.href;
@@ -40,11 +50,16 @@ export default function AppHeader({ title }: Props) {
     <>
       <header className="print:hidden sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/95">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-3 px-4 sm:px-6">
-          <div className="flex min-w-0 items-center gap-2.5">
+          <a
+            href="#top"
+            onClick={onLogo}
+            className="flex min-w-0 cursor-pointer items-center gap-2.5 rounded-lg outline-none transition-opacity duration-150 hover:opacity-80 focus-visible:ring-2 focus-visible:ring-neutral-300"
+            aria-label="回到顶部"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset("logo.png")}
-              alt="Email Desk"
+              alt=""
               width={32}
               height={32}
               className="h-8 w-8 rounded-xl bg-white object-cover object-top ring-1 ring-neutral-200"
@@ -52,7 +67,7 @@ export default function AppHeader({ title }: Props) {
             <span className="truncate text-[15px] font-semibold tracking-tight text-neutral-900 dark:text-white">
               Email Desk
             </span>
-          </div>
+          </a>
 
           <div className="flex shrink-0 items-center gap-2">
             <button
