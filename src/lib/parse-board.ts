@@ -24,19 +24,21 @@ export type BoardData = {
   title: string;
   subtitle: string;
   updated: string;
-  /** Meetings Eric needs to attend (replaces old 「本周优先」) */
+  /** Meetings Eric needs to attend */
   meetings: string[];
   sections: BoardSection[];
-  /** WorkBuddy four blocks: 紧急 / 需跟进 / 已完成 / 知会 */
   stats: {
-    urgent: number; // P0
-    follow: number; // P1 + P2
-    done: number; // OK
-    info: number; // FYI
+    urgent: number;
+    follow: number;
+    done: number;
+    info: number;
   };
 };
 
 const PRI = new Set(["P0", "P1", "P2", "OK", "FYI"]);
+
+/** Display tz: Beijing now; switch frontmatter tz → Asia/Singapore when abroad */
+const DEFAULT_TZ = "Asia/Shanghai";
 
 function stripBold(s: string): string {
   return s.replace(/\*\*(.+?)\*\*/g, "$1").trim();
@@ -85,38 +87,63 @@ function parseItems(block: string): BoardItem[] {
   return items;
 }
 
-function formatUpdated(raw: unknown): string {
+/**
+ * Short updated stamp, e.g. `7月22日 10:10` (no GMT dump).
+ * Accepts: Date | "YYYY-MM-DD" | "YYYY-MM-DD HH:mm" | ISO
+ */
+function formatUpdated(raw: unknown, tz: string): string {
   if (raw == null || raw === "") return "";
 
-  // gray-matter may parse YAML dates into Date objects
+  let d: Date | null = null;
+
   if (raw instanceof Date && !Number.isNaN(raw.getTime())) {
-    return new Intl.DateTimeFormat("zh-CN", {
-      timeZone: "Asia/Shanghai",
-      month: "numeric",
-      day: "numeric",
-    }).format(raw);
+    d = raw;
+  } else {
+    const s = String(raw).trim();
+    // YYYY-MM-DD HH:mm or YYYY-MM-DDTHH:mm
+    const m = s.match(
+      /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::\d{2})?)?$/,
+    );
+    if (m) {
+      const iso = `${m[1]}-${m[2]}-${m[3]}T${m[4] || "12"}:${m[5] || "00"}:00`;
+      // Interpret naive wall time as already-in-tz for display: format parts directly
+      if (m[4]) {
+        return `${Number(m[2])}月${Number(m[3])}日 ${m[4]}:${m[5]}`;
+      }
+      return `${Number(m[2])}月${Number(m[3])}日`;
+    }
+    const t = Date.parse(s);
+    if (!Number.isNaN(t)) d = new Date(t);
+    else return s;
   }
 
-  const s = String(raw).trim();
-  // plain YYYY-MM-DD
-  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (m) return `${Number(m[2])}月${Number(m[3])}日`;
+  if (!d) return "";
 
-  const t = Date.parse(s);
-  if (!Number.isNaN(t)) {
-    return new Intl.DateTimeFormat("zh-CN", {
-      timeZone: "Asia/Shanghai",
-      month: "numeric",
-      day: "numeric",
-    }).format(new Date(t));
-  }
-  return s;
+  const parts = new Intl.DateTimeFormat("zh-CN", {
+    timeZone: tz,
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(d);
+
+  const get = (type: string) =>
+    parts.find((p) => p.type === type)?.value || "";
+  const month = get("month");
+  const day = get("day");
+  const hour = get("hour");
+  const minute = get("minute");
+  if (hour && minute) return `${month}月${day}日 ${hour}:${minute}`;
+  return `${month}月${day}日`;
 }
 
 export function loadBoard(): BoardData {
   const file = path.join(process.cwd(), "content", "board.md");
   const raw = fs.readFileSync(file, "utf8");
   const { data, content } = matter(raw);
+
+  const tz = String(data.tz || DEFAULT_TZ).trim() || DEFAULT_TZ;
 
   const sectionParts = content
     .split(/^##\s+/m)
@@ -135,7 +162,6 @@ export function loadBoard(): BoardData {
   }
 
   const all = sections.flatMap((s) => s.items);
-  // Align with WorkBuddy overview: 紧急 / 需跟进(P1+P2) / 已完成 / 知会
   const stats = {
     urgent: all.filter((i) => i.priority === "P0").length,
     follow: all.filter((i) => i.priority === "P1" || i.priority === "P2")
@@ -144,18 +170,17 @@ export function loadBoard(): BoardData {
     info: all.filter((i) => i.priority === "FYI").length,
   };
 
-  // meetings preferred; fall back to legacy priorities key if present
-    const meetingsRaw = data.meetings ?? data.priorities;
-    const meetings = Array.isArray(meetingsRaw)
-      ? meetingsRaw.map(String)
-      : [];
+  const meetingsRaw = data.meetings ?? data.priorities;
+  const meetings = Array.isArray(meetingsRaw)
+    ? meetingsRaw.map(String)
+    : [];
 
-    return {
-      title: String(data.title || "邮件跟进清单"),
-      subtitle: String(data.subtitle || ""),
-      updated: formatUpdated(data.updated),
-      meetings,
-      sections,
-      stats,
-    };
-  }
+  return {
+    title: String(data.title || "邮件跟进清单"),
+    subtitle: String(data.subtitle || ""),
+    updated: formatUpdated(data.updated, tz),
+    meetings,
+    sections,
+    stats,
+  };
+}

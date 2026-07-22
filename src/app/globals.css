@@ -6,7 +6,13 @@
   --muted: #737373;
   --line: #e5e5e5;
   --card: #ffffff;
-  --urgent: #e11d48;
+  /* WorkBuddy-smooth red (#e53e3e) — not harsh rose/pink #e11d48 */
+  --urgent: #e53e3e;
+  --follow: #dd6b20;
+  --done: #38a169;
+  --info: #3182ce;
+  --urgent-soft: #fff5f5;
+  --urgent-border: #feb2b2;
 }
 
 @theme inline {
@@ -33,7 +39,12 @@ body {
     --muted: #a3a3a3;
     --line: #262626;
     --card: #141414;
-    --urgent: #fb7185;
+    --urgent: #fc8181;
+    --follow: #f6ad55;
+    --done: #68d391;
+    --info: #63b3ed;
+    --urgent-soft: rgba(229, 62, 62, 0.12);
+    --urgent-border: rgba(252, 129, 129, 0.45);
   }
 }
 

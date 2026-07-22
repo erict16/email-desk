@@ -1,9 +1,10 @@
 ---
 title: 邮件跟进清单
 subtitle: Eric Tan · Inbox + Sent
-updated: "2026-07-22"
+updated: "2026-07-22 10:10"
+tz: Asia/Shanghai
 meetings:
-  - HMSG Trading Process 培训 — Rose 赵珺本周带你交接（时间待她/陆总约，邮件未写几点）
+  - 周四 7/23 10:30 Teams — HMSG Trading Process（John 已确认；Rose / Kimmy / Eric / Shen 出席；等 Anthony 发链接）
 ---
 
 ## todo | 你要处理
@@ -11,7 +12,7 @@ meetings:
 ### Sanaky BSHV Air bill — 空运文件包 Invoice PL CQ TR Form E
 - priority: P0
 - date: 7/20
-- meta: Trung 已收 final Air bill，点名要全套单证；Sent 未见你回文件。
+- meta: Trung 已收 final Air bill，点名要全套单证；Sent 仍未见你回文件包。Unitex 提单/到货数据已出（见已推进）。
 - tags: 需尽快, 待你发 Invoice/PL/CQ/TR/Form E
 - people: Trung (Sanaky)
 - action: 发 Invoice、PL、CQ、Test Report、Form E 草稿供核对（CQ/TR 归你）
@@ -19,7 +20,7 @@ meetings:
 ### PO26-025 EEMC — Kimmy 要全套附件+沟通邮件
 - priority: P0
 - date: 7/20
-- meta: 她要「所有附件+沟通邮件」；你 7/21 只回了「已经下好了」，打包仍欠。
+- meta: 她要「所有附件+沟通邮件」；你 7/21 只回了「已经下好了」，打包仍欠。投产/ERP 已下。
 - tags: 需尽快, 待你打包附件+往来邮件
 - people: 李倩
 - action: 把全套附件 + 往来邮件整理发给她
@@ -27,18 +28,18 @@ meetings:
 ### HAVEC QS2607196R1 ET-SZ6 — 审批图放行
 - priority: P0
 - date: 7/21
-- meta: Hoa 要图；Anthony 改 QS2607196R1（ET-SZ6），点名 Eric/Kimmy 尽快放图，PO 将到。
+- meta: Hoa 要图；Anthony 改 QS2607196R1（ET-SZ6），点名 Eric/Kimmy 尽快放图，PO 将到。今日未见新放图发出。
 - tags: 需尽快, 待放行审批图给 Hoa
 - people: Hoa / Anthony / Kimmy
 - action: 协调出图并放行给 Hoa（含备用 CMA7 轴+伞齿）
 
-### Sanaky DETC 吸油管 — 位置 1→2
+### Sanaky DETC 吸油管 — 位置 1→2（QS2605154）
 - priority: P1
-- date: 7/20
-- meta: DETC 管系要改位，客户在等能不能做；未见工程结论/你方回复。
-- tags: 待工程确认管位可否改, 改完再回客户
-- people: Trung / Kimmy
-- action: 问工程可否改位，确认后回复客户
+- date: 7/22
+- meta: Trung 7/22 再催 feedback。你 09:31 已转工程、09:43 回「S/Q 管不可互换」；CC quoctin 地址不存在被退（主送应已达）。位置 1→2 是否可改，工程结论仍要钉死。
+- tags: 已回 S/Q 不可互换, 待工程确认管位 1→2
+- people: Trung (Sanaky)
+- action: 跟工程确认 location 1→2 结论，必要时再给 Trung 一句闭环
 
 ### EVN UZF retrofit QS2606173 — 交期 9/5
 - priority: P1
@@ -51,7 +52,7 @@ meetings:
 ### United Energy Transgrid HWV — 技术评审
 - priority: P1
 - date: 7/21
-- meta: Colin/周经理转来改造询价；你已 Fw 沈工做 HWV 评审，等结论。
+- meta: 你 7/21 已 Fw 沈工做 HWV 评审（改造询价），等结论。
 - tags: 待沈工出 HWV 评审结论
 - people: 沈旭 / Colin / 周晓冬
 - action: 盯沈工评审；缺资料再找周经理补
@@ -59,7 +60,7 @@ meetings:
 ### WTC PO155798 QJ6-25 — 型号确认
 - priority: P2
 - date: 7/21
-- meta: 客户 3D 已收口（Cameron: all we require）；型号你已问沈工，回了再补发即可。
+- meta: 客户 3D 已收口；你已请沈工确认 QJ6-25 型号，Cameron 只要型号。回了再补发即可。
 - tags: 待沈工回 QJ6-25 型号, 客户 3D 已收口
 - people: 沈旭 / Cameron / 周晓冬
 - action: 沈工回型号后补发客户（非紧急）
@@ -96,6 +97,7 @@ meetings:
 ### United Energy HWV — 已转沈工评审
 - priority: OK
 - tags: 已转沈工评审
+- meta: 7/21 16:09 Fw 沈工
 
 ### EVN UZF — 已回 Hoa（Noted / 争取提前）
 - priority: OK
@@ -105,19 +107,25 @@ meetings:
 - priority: OK
 - tags: 合同 CPF 已 Noted
 
-### HMP26-428 空运 · 到货数据已出（Unitex/玲玲）
+### HMP26-428 空运 — AWB 提单已出（Unitex Ada）
 - priority: OK
-- tags: 空运到货数据已出
+- tags: 提单/到货数据已出
+- meta: 7/22 Ada 发提单；到货数据 1/316/1.821。客户全套单证仍见上方 Sanaky 卡
+
+### Sanaky DETC — 已回 Trung（S/Q 不可互换）
+- priority: OK
+- tags: 已回客户
+- meta: 7/22 09:43；仅 CC quoctin@huaming 退信（地址不存在），主送正常
 
 ## fyi | 知会
 
-### HMSG Trading Process — John 全员流程
+### HMSG Trading Process — 周四会已约
 - priority: FYI
-- date: 7/20
-- meta: John 发全员 SG 属地流程；Anthony 已代表回复知悉，Rose 将培训。
-- tags: 必读 SG 交易流程, Rose 将培训
-- people: John Zhou / Anthony
-- action: 抽空读附件，SG 单按新规
+- date: 7/22
+- meta: John 同意 Anthony 提议的 7/23 10:30 Teams，点名 Rose/Kimmy/Eric/Shen 参加；等链接。
+- tags: 会议见上方, 必读 SG 流程附件
+- people: John / Anthony
+- action: 会前翻附件；准时参会
 
 ### PO25-535 继电器顶盖 — 缺件
 - priority: FYI
@@ -127,10 +135,11 @@ meetings:
 - people: Hoa / Grace Zhou
 - action: 有空跟一下补发节点
 
-### HLG / MEE / DPTSC / BTDA 等询价
+### HLG / MEE / DPTSC / BTDA / MBT 等询价
 - priority: FYI
 - tags: 询价非你主谈, 旁听即可
 - people: Anthony / Kimmy / Hoa
+- meta: 含 MBT 15MVA 标准图 Kimmy 已回；Bangladesh / DPTSC 等主谈他人
 - action: 旁听，不用你主导
 
 ### Gerrick OLTC Product Approval — 合规核对
@@ -138,10 +147,11 @@ meetings:
 - tags: 转 Kimmy 做合规核对
 - action: 让 Kimmy 做 full compliance check
 
-### Bambang PX-373 — 无法匹配 OLTC
+### Bambang PX-373 — 无法匹配 / 工程约束讨论
 - priority: FYI
-- tags: 无法供货已关闭
-- action: Kimmy 已说明无法供货
+- tags: 工程约束讨论中, 非你主谈
+- people: Yoeli / Kimmy
+- action: Kimmy/工程主跟
 
 ### Sanaky QS2606175 — 新 4 台议价
 - priority: FYI
@@ -150,3 +160,11 @@ meetings:
 - tags: 议价主谈 Anthony, 你旁听
 - people: Trung / Anthony
 - action: 旁听即可
+
+### PTE HMIET-I 蓝屏 E-HMIET250007
+- priority: FYI
+- date: 7/21
+- meta: Grace / PTE 继续技术跟进蓝屏；非你主责。
+- tags: 售后 Grace 主跟, 旁听即可
+- people: Grace Zhou / PTE
+- action: 旁听

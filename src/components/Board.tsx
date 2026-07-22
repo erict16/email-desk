@@ -40,20 +40,20 @@ const STATS = [
 
 const TONE_NUM: Record<(typeof STATS)[number]["tone"], string> = {
   urgent: "text-[var(--urgent)]",
-  follow: "text-orange-600 dark:text-orange-400",
-  done: "text-emerald-600 dark:text-emerald-400",
-  info: "text-sky-600 dark:text-sky-400",
+  follow: "text-[var(--follow)]",
+  done: "text-[var(--done)]",
+  info: "text-[var(--info)]",
 };
 
 const TONE_HOVER: Record<(typeof STATS)[number]["tone"], string> = {
   urgent:
-    "hover:border-rose-300 hover:bg-rose-50/70 hover:shadow-sm dark:hover:border-rose-800 dark:hover:bg-rose-950/40",
+    "hover:border-[var(--urgent-border)] hover:bg-[var(--urgent-soft)] hover:shadow-sm",
   follow:
-    "hover:border-orange-300 hover:bg-orange-50/70 hover:shadow-sm dark:hover:border-orange-800 dark:hover:bg-orange-950/30",
+    "hover:border-orange-200 hover:bg-orange-50/80 hover:shadow-sm dark:hover:border-orange-800/60 dark:hover:bg-orange-950/25",
   done:
-    "hover:border-emerald-300 hover:bg-emerald-50/70 hover:shadow-sm dark:hover:border-emerald-800 dark:hover:bg-emerald-950/30",
+    "hover:border-emerald-200 hover:bg-emerald-50/80 hover:shadow-sm dark:hover:border-emerald-800/60 dark:hover:bg-emerald-950/25",
   info:
-    "hover:border-sky-300 hover:bg-sky-50/70 hover:shadow-sm dark:hover:border-sky-800 dark:hover:bg-sky-950/30",
+    "hover:border-sky-200 hover:bg-sky-50/80 hover:shadow-sm dark:hover:border-sky-800/60 dark:hover:bg-sky-950/25",
 };
 
 export default function Board({ board }: { board: BoardData }) {
@@ -92,8 +92,8 @@ export default function Board({ board }: { board: BoardData }) {
               className={`rounded-xl border border-[var(--line)] bg-[var(--card)] px-2 py-3.5 text-center sm:px-3 transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/50 active:scale-[0.98] ${TONE_HOVER[s.tone]}`}
             >
               <div
-                className={`text-[1.85rem] font-semibold leading-none tracking-tight tabular-nums ${TONE_NUM[s.tone]}`}
-              >
+                              className={`text-[1.85rem] font-bold leading-none tracking-tight tabular-nums ${TONE_NUM[s.tone]}`}
+                            >
                 {board.stats[s.key]}
               </div>
               <div className="mt-1.5 text-[10px] font-medium leading-tight text-[var(--muted)] sm:text-[11px]">

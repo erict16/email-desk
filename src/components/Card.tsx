@@ -34,8 +34,8 @@ export default function Card({
   return (
     <article
       className={`rounded-xl border border-neutral-200/90 bg-white px-4 py-3.5 shadow-sm dark:border-neutral-800 dark:bg-neutral-950 ${
-        isP0 ? "border-l-[3px] border-l-rose-500" : ""
-      } ${isDone ? "opacity-70" : ""}`}
+              isP0 ? "border-l-[3px] border-l-[var(--urgent)]" : ""
+            } ${isDone ? "opacity-70" : ""}`}
     >
       <div className="flex items-start justify-between gap-3">
         <h3
