@@ -3,7 +3,7 @@ import Card from "@/components/Card";
 import AppHeader from "@/components/AppHeader";
 
 /**
- * Order: 紧急 → 需跟进 → 知会 → 已完成
+ * Order: 紧急 → 需跟进 → 已推进 → 知会
  * Section title: crisp SVG mark + text + thin bottom hairline (no vertical bar)
  * Only 紧急 cards get left accent stripe (flush to rounded edge)
  */
@@ -29,22 +29,22 @@ const STATS = [
     stripe: false,
   },
   {
+    key: "done" as const,
+    id: "block-done",
+    label: "已推进",
+    tone: "done" as const,
+    match: (p: Priority) => p === "OK",
+    sectionTitle: "已推进",
+    hideAction: true,
+    stripe: false,
+  },
+  {
     key: "info" as const,
     id: "block-info",
     label: "知会",
     tone: "info" as const,
     match: (p: Priority) => p === "FYI",
     sectionTitle: "知会",
-    hideAction: true,
-    stripe: false,
-  },
-  {
-    key: "done" as const,
-    id: "block-done",
-    label: "已完成",
-    tone: "done" as const,
-    match: (p: Priority) => p === "OK",
-    sectionTitle: "已完成",
     hideAction: true,
     stripe: false,
   },
