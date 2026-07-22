@@ -30,14 +30,18 @@ Actions 自动 `next build` → 部署 `out/`。
 
 ## Eric 的内容与文案规则（必读）
 
-### 1. 标题（方便邮箱搜索）
+### 1. 标题 = 邮箱原主题（必须能搜到）
 
-- 格式：`[PO/QS/客户+主题关键词] — 动作摘要`
-- 要能**整段复制 → 粘贴进企业邮搜索**命中原信
-- 例：
-  - `Sanaky BSHV Air bill — 空运文件包 Invoice PL CQ TR Form E`
-  - `PO26-025 EEMC — Kimmy 要全套附件+沟通邮件`
-  - `HAVEC QS2607196R1 ET-SZ6 — 审批图放行`
+- **用邮件软件里的真实 Subject**，不要自创「好懂标题」
+- 可去掉前缀连环 `Re:` / `Fw:` / `Trả lời:` / `回复:`，**保留主题核心原句**
+- 复制标题 → 粘贴进企业邮搜索，必须能命中线程
+- 背景说明写在 `meta:`，不要改写标题
+- 例（对）：
+  - `BSHV-HUAMING/2605/02 _ Delivery time & documents`
+  - `HAVEC_Inquiry OLTC CV for 15MVA-35kV transformer project in Cambodia - HM quotation QS2607196R1`
+  - `Urgent Purchase Order 155798 - OLTC (RP2614-01)`
+  - `EVN substation UZF retrofit job - QS2606173R2`
+- 例（错）：`Sanaky BSHV Air bill — 空运文件包…`（邮箱搜不到）
 
 ### 2. Tag（谁 + 干什么，禁止空标签）
 
