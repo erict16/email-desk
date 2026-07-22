@@ -78,43 +78,52 @@ meetings:
 ### EEMC SOA 截至6/30 — 已回 Hà
 - priority: OK
 - tags: 已发 SOA 对账表
+- people: Hà (EEMC) / 你已回
 - meta: 7/21 已发 HMSG + 海外清晰对账表（并重发排版）
 
 ### 对账明细 — 阿姐已回 · 已用于 SOA
 - priority: OK
 - tags: 阿姐明细已用上
+- people: 赵玫（阿姐）
 
 ### PO26-025 投产 — 已回 Hoa / Kimmy（ERP 已下）
 - priority: OK
 - tags: ERP 已下投产
+- people: Hoa / 李倩
 - meta: 预估提货 8/12；资料打包仍见上方 todo
 
 ### WTC PO155798 — 3D 已发 · 客户收口
 - priority: OK
 - tags: 3D 客户已确认够用
+- people: Cameron (WTC) / 你已回
 - meta: Cameron 确认 3D 已够；交期/继电不改配置已说明
 
 ### United Energy HWV — 已转沈工评审
 - priority: OK
 - tags: 已转沈工评审
+- people: 沈旭（主评） / Colin / 周晓冬
 - meta: 7/21 16:09 Fw 沈工
 
 ### EVN UZF — 已回 Hoa（Noted / 争取提前）
 - priority: OK
 - tags: 已回客户会争取提前
+- people: Hoa Nguyen / 你已回
 
 ### 新加坡合同 CPF · 已 Noted
 - priority: OK
 - tags: 合同 CPF 已 Noted
+- people: Grace Low / 你已 Noted
 
 ### HMP26-428 空运 — AWB 提单已出（Unitex Ada）
 - priority: OK
 - tags: 提单/到货数据已出
+- people: Ada (Unitex) / 沈丽玲
 - meta: 7/22 Ada 发提单；到货数据 1/316/1.821。客户全套单证仍见上方 Sanaky 卡
 
 ### Sanaky DETC — 已回 Trung（S/Q 不可互换）
 - priority: OK
 - tags: 已回客户
+- people: Trung (Sanaky) / 你已回
 - meta: 7/22 09:43；仅 CC quoctin@huaming 退信（地址不存在），主送正常
 
 ## fyi | 知会
@@ -124,36 +133,37 @@ meetings:
 - date: 7/22
 - meta: John 同意 Anthony 提议的 7/23 10:30 Teams，点名 Rose/Kimmy/Eric/Shen 参加；等链接。
 - tags: 会议见上方, 必读 SG 流程附件
-- people: John / Anthony
+- people: John Lu / Anthony
 
 ### PO25-535 继电器顶盖 — 缺件
 - priority: FYI
 - date: 7/16
 - meta: 包装少顶盖，已问 Grace；暂无新回复。
 - tags: 缺继电器顶盖, 等 Grace 补发
-- people: Hoa / Grace Zhou
+- people: Hoa / Grace Zhou（售后主跟）
 
 ### HLG / MEE / DPTSC / BTDA / MBT 等询价
 - priority: FYI
 - tags: 询价非你主谈, 旁听即可
-- people: Anthony / Kimmy / Hoa
+- people: Anthony / 李倩 / Hoa
 - meta: 含 MBT 15MVA 标准图 Kimmy 已回；Bangladesh / DPTSC 等主谈他人
 
 ### Gerrick OLTC Product Approval — 合规核对
 - priority: FYI
 - tags: 转 Kimmy 做合规核对
+- people: Gerrick Ong / 李倩
 
 ### Bambang PX-373 — 无法匹配 / 工程约束讨论
 - priority: FYI
 - tags: 工程约束讨论中, 非你主谈
-- people: Yoeli / Kimmy
+- people: Yoeli (Bambang) / 李倩
 
 ### Sanaky QS2606175 — 新 4 台议价
 - priority: FYI
 - date: 7/21
 - meta: Trung 找 Tony 要再降价，主谈 Anthony。
 - tags: 议价主谈 Anthony, 你旁听
-- people: Trung / Anthony
+- people: Trung (Sanaky) / Anthony
 
 ### PTE HMIET-I 蓝屏 E-HMIET250007
 - priority: FYI
