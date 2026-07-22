@@ -4,7 +4,8 @@ import AppHeader from "@/components/AppHeader";
 
 /**
  * Order: 紧急 → 需跟进 → 知会 → 已完成
- * Section headers use WorkBuddy-style colored bars.
+ * Section title = WorkBuddy style: emoji + thin left hairline (no fill bar)
+ * Card left stripe = per-priority color
  */
 const STATS = [
   {
@@ -12,36 +13,44 @@ const STATS = [
     id: "block-urgent",
     label: "紧急处理",
     tone: "urgent" as const,
+    emoji: "🔴",
     match: (p: Priority) => p === "P0",
     sectionTitle: "紧急处理",
     hideAction: false,
+    cardTone: "urgent" as const,
   },
   {
     key: "follow" as const,
     id: "block-follow",
     label: "需跟进",
     tone: "follow" as const,
+    emoji: "🟠",
     match: (p: Priority) => p === "P1" || p === "P2",
     sectionTitle: "需跟进",
     hideAction: false,
+    cardTone: "follow" as const,
   },
   {
     key: "info" as const,
     id: "block-info",
     label: "知会",
     tone: "info" as const,
+    emoji: "⚪",
     match: (p: Priority) => p === "FYI",
     sectionTitle: "知会",
     hideAction: true,
+    cardTone: "info" as const,
   },
   {
     key: "done" as const,
     id: "block-done",
     label: "已完成",
     tone: "done" as const,
+    emoji: "✅",
     match: (p: Priority) => p === "OK",
     sectionTitle: "已完成",
     hideAction: true,
+    cardTone: "done" as const,
   },
 ];
 
@@ -52,7 +61,6 @@ const TONE_NUM: Record<(typeof STATS)[number]["tone"], string> = {
   info: "text-[var(--info)]",
 };
 
-/** Stat cards — soft lift + tinted wash */
 const TONE_HOVER: Record<(typeof STATS)[number]["tone"], string> = {
   urgent:
     "hover:-translate-y-0.5 hover:border-[var(--urgent-border)] hover:bg-[var(--urgent-soft)] hover:shadow-md",
@@ -64,16 +72,12 @@ const TONE_HOVER: Record<(typeof STATS)[number]["tone"], string> = {
     "hover:-translate-y-0.5 hover:border-[var(--info-border)] hover:bg-[var(--info-soft)] hover:shadow-md",
 };
 
-/** WorkBuddy-like section title bars */
-const SECTION_HEAD: Record<(typeof STATS)[number]["tone"], string> = {
-  urgent:
-    "border-l-[4px] border-l-[var(--urgent)] bg-[var(--urgent-soft)] text-[var(--urgent)]",
-  follow:
-    "border-l-[4px] border-l-[var(--follow)] bg-[var(--follow-soft)] text-[var(--follow)]",
-  done:
-    "border-l-[4px] border-l-[var(--done)] bg-[var(--done-soft)] text-[var(--done)]",
-  info:
-    "border-l-[4px] border-l-[var(--info)] bg-[var(--info-soft)] text-[var(--info)]",
+/** WorkBuddy h2: padding-left + 4px border-left, no background */
+const SECTION_LINE: Record<(typeof STATS)[number]["tone"], string> = {
+  urgent: "border-l-[var(--urgent)]",
+  follow: "border-l-[var(--follow)]",
+  done: "border-l-[var(--done)]",
+  info: "border-l-[var(--info)]",
 };
 
 export default function Board({ board }: { board: BoardData }) {
@@ -146,16 +150,18 @@ export default function Board({ board }: { board: BoardData }) {
             if (items.length === 0) return null;
             return (
               <section key={block.id} id={block.id} className="scroll-mt-20">
-                <div
-                  className={`mb-3 flex items-center gap-2 rounded-lg px-3 py-2.5 ${SECTION_HEAD[block.tone]}`}
+                {/* WorkBuddy: emoji + left hairline title, no colored fill */}
+                <h2
+                  className={`mb-3 flex items-baseline gap-2 border-l-4 pl-2.5 text-[15px] font-semibold text-[var(--fg)] ${SECTION_LINE[block.tone]}`}
                 >
-                  <h2 className="text-sm font-bold tracking-tight">
-                    {block.sectionTitle}
-                  </h2>
-                  <span className="text-xs font-semibold tabular-nums opacity-70">
+                  <span className="select-none" aria-hidden>
+                    {block.emoji}
+                  </span>
+                  <span>{block.sectionTitle}</span>
+                  <span className="text-xs font-medium tabular-nums text-neutral-400">
                     {items.length}
                   </span>
-                </div>
+                </h2>
                 <div className="space-y-2">
                   {items.map((item) => {
                     globalIndex += 1;
@@ -165,6 +171,7 @@ export default function Board({ board }: { board: BoardData }) {
                         item={item}
                         index={globalIndex}
                         hideAction={block.hideAction}
+                        tone={block.cardTone}
                       />
                     );
                   })}

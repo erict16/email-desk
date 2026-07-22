@@ -1,5 +1,7 @@
 import type { BoardItem } from "@/lib/parse-board";
 
+export type CardTone = "urgent" | "follow" | "done" | "info";
+
 /**
  * Tags are short “who + what” phrases (not bare 等工厂/待客户).
  */
@@ -20,26 +22,36 @@ function tagClass(label: string): string {
   return "bg-neutral-100 text-neutral-700";
 }
 
+/** Left accent on each card (WorkBuddy card edge) */
+const TONE_EDGE: Record<CardTone, string> = {
+  urgent: "border-l-[3px] border-l-[var(--urgent)]",
+  follow: "border-l-[3px] border-l-[var(--follow)]",
+  done: "border-l-[3px] border-l-[var(--done)]",
+  info: "border-l-[3px] border-l-[var(--info)]",
+};
+
 export default function Card({
   item,
   index,
   hideAction = false,
+  tone = "follow",
 }: {
   item: BoardItem;
   index: number;
   /** 知会 / 已完成：不显示待办条 */
   hideAction?: boolean;
+  /** Left color stripe by section */
+  tone?: CardTone;
 }) {
   const isDone = item.priority === "OK";
-  const isP0 = item.priority === "P0";
   const isFyi = item.priority === "FYI";
   const showAction = !hideAction && Boolean(item.action);
 
   return (
     <article
-      className={`rounded-xl border border-neutral-200/90 bg-white px-4 py-3.5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950 ${
-        isP0 ? "border-l-[3px] border-l-[var(--urgent)]" : ""
-      } ${isDone || isFyi ? "opacity-[0.88]" : ""}`}
+      className={`rounded-xl border border-neutral-200/90 bg-white px-4 py-3.5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950 ${TONE_EDGE[tone]} ${
+        isDone || isFyi ? "opacity-[0.88]" : ""
+      }`}
     >
       <div className="flex items-start justify-between gap-3">
         <h3
