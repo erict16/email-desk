@@ -3,7 +3,8 @@ import "./globals.css";
 
 const isProd = process.env.NODE_ENV === "production";
 const base = isProd ? "/email-desk" : "";
-const v = "girl9";
+/** Bump when favicon / apple-touch assets change (cache bust). */
+const v = "girl10";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   title: "邮件跟进清单 · Email Desk",
   description: "Eric's weekday email follow-up board",
   applicationName: "Email Desk",
+  manifest: `${base}/manifest.webmanifest`,
   appleWebApp: {
     capable: true,
     title: "Email Desk",
@@ -23,11 +25,22 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    // Browser tabs — PNG is fine (Chrome/Edge/Safari all OK)
+    // Browser tabs — multi-size PNG + ICO; girl10 = tighter face crop (full-bleed)
     icon: [
+      { url: `${base}/favicon.ico?v=${v}`, sizes: "any" },
       { url: `${base}/favicon-32.png?v=${v}`, type: "image/png", sizes: "32x32" },
       { url: `${base}/favicon-48.png?v=${v}`, type: "image/png", sizes: "48x48" },
       { url: `${base}/favicon.png?v=${v}`, type: "image/png", sizes: "64x64" },
+      {
+        url: `${base}/icon-192.png?v=${v}`,
+        type: "image/png",
+        sizes: "192x192",
+      },
+      {
+        url: `${base}/icon-512.png?v=${v}`,
+        type: "image/png",
+        sizes: "512x512",
+      },
     ],
     // iOS home screen — opaque RGB squares; iOS applies its own mask
     apple: [
