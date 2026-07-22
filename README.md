@@ -107,7 +107,11 @@ tz: Asia/Shanghai             # 现在北京；出差新加坡改为 Asia/Singap
 - 宽度约 `max-w-3xl`；Linear/Notion 白灰
 - Sticky 头：Girl logo + Email Desk + 分享 + 下载
 - P0 仅左侧细红条，**不要** P0 文字 chip
-- Favicon：圆角透明角（`public/favicon.png`）
+- 图标三套（勿混用裁切）：
+  - 页头 `logo.png` = 原 padded 构图
+  - Tab favicon = 圆角透明角（`favicon*.png` / `.ico`）
+  - iOS/Android = `source/mobile.png` 原样缩放（`apple-touch*` + `icon-192/512`）
+  - 重生成：`python scripts/icons/build.py`，再 bump `ASSET_V`（`src/lib/brand.ts`）
 
 ---
 

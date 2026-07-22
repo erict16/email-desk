@@ -22,6 +22,8 @@
 .DS_Store
 *.pem
 index.html.bak
+# legacy static shell (Pages deploys Next out/ via Actions)
+/index.html
 
 # debug
 npm-debug.log*
