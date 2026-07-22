@@ -1,6 +1,7 @@
 import type { BoardData, BoardItem, Priority } from "@/lib/parse-board";
 import Card from "@/components/Card";
 import AppHeader from "@/components/AppHeader";
+import StatsNav from "@/components/StatsNav";
 
 /**
  * Order: 紧急 → 需跟进 → 已推进 → 知会
@@ -50,24 +51,6 @@ const STATS = [
   },
 ];
 
-const TONE_NUM: Record<(typeof STATS)[number]["tone"], string> = {
-  urgent: "text-[var(--urgent)]",
-  follow: "text-[var(--follow)]",
-  done: "text-[var(--done)]",
-  info: "text-[var(--info)]",
-};
-
-const TONE_HOVER: Record<(typeof STATS)[number]["tone"], string> = {
-  urgent:
-    "hover:-translate-y-0.5 hover:border-[var(--urgent-border)] hover:bg-[var(--urgent-soft)] hover:shadow-md",
-  follow:
-    "hover:-translate-y-0.5 hover:border-[var(--follow-border)] hover:bg-[var(--follow-soft)] hover:shadow-md",
-  done:
-    "hover:-translate-y-0.5 hover:border-[var(--done-border)] hover:bg-[var(--done-soft)] hover:shadow-md",
-  info:
-    "hover:-translate-y-0.5 hover:border-[var(--info-border)] hover:bg-[var(--info-soft)] hover:shadow-md",
-};
-
 const MARK_COLOR: Record<(typeof STATS)[number]["tone"], string> = {
   urgent: "var(--urgent)",
   follow: "var(--follow)",
@@ -99,7 +82,6 @@ function SectionMark({ tone }: { tone: (typeof STATS)[number]["tone"] }) {
       </svg>
     );
   }
-  // solid disc for urgent / follow / info
   return (
     <svg
       width="12"
@@ -117,8 +99,16 @@ export default function Board({ board }: { board: BoardData }) {
   const allItems: BoardItem[] = board.sections.flatMap((s) => s.items);
   let globalIndex = 0;
 
+  const statItems = STATS.map((s) => ({
+    key: s.key,
+    id: s.id,
+    label: s.label,
+    tone: s.tone,
+    value: board.stats[s.key],
+  }));
+
   return (
-    <div className="min-h-full">
+    <div id="top" className="min-h-full">
       <AppHeader title={board.title} />
 
       <main
@@ -137,27 +127,7 @@ export default function Board({ board }: { board: BoardData }) {
           )}
         </header>
 
-        <section
-          className="mb-7 grid grid-cols-4 gap-2.5 sm:gap-3"
-          aria-label="总览"
-        >
-          {STATS.map((s) => (
-            <a
-              key={s.key}
-              href={`#${s.id}`}
-              className={`rounded-xl border border-[var(--line)] bg-[var(--card)] px-2 py-3.5 text-center sm:px-3 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 active:scale-[0.98] ${TONE_HOVER[s.tone]}`}
-            >
-              <div
-                className={`text-[1.85rem] font-bold leading-none tracking-tight tabular-nums ${TONE_NUM[s.tone]}`}
-              >
-                {board.stats[s.key]}
-              </div>
-              <div className="mt-1.5 text-[10px] font-medium leading-tight text-[var(--muted)] sm:text-[11px]">
-                {s.label}
-              </div>
-            </a>
-          ))}
-        </section>
+        <StatsNav stats={statItems} />
 
         {board.meetings.length > 0 && (
           <section className="mb-8 rounded-xl border border-[var(--line)] bg-[var(--card)] p-4 transition-shadow duration-200 hover:shadow-sm">
@@ -183,7 +153,6 @@ export default function Board({ board }: { board: BoardData }) {
             if (items.length === 0) return null;
             return (
               <section key={block.id} id={block.id} className="scroll-mt-20">
-                {/* Thin horizontal rule under title — no vertical bar */}
                 <h2 className="mb-3.5 flex items-center gap-2 border-b border-[var(--line)] pb-2.5 text-[15px] font-semibold text-[var(--fg)]">
                   <SectionMark tone={block.tone} />
                   <span>{block.sectionTitle}</span>
