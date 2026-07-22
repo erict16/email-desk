@@ -2,16 +2,36 @@ import type { BoardData } from "@/lib/parse-board";
 import Card from "@/components/Card";
 import AppHeader from "@/components/AppHeader";
 
+/** WorkBuddy 四块：紧急 / 需跟进 / 已完成·进展 / 知会·内部 */
 const STATS = [
   {
     key: "urgent" as const,
-    label: "需立即处理",
-    urgent: true,
+    label: "紧急处理",
+    tone: "urgent" as const,
   },
-  { key: "pending" as const, label: "待跟进", urgent: false },
-  { key: "follow" as const, label: "报价 / 技术", urgent: false },
-  { key: "other" as const, label: "已推进", urgent: false },
+  {
+    key: "follow" as const,
+    label: "需跟进",
+    tone: "follow" as const,
+  },
+  {
+    key: "done" as const,
+    label: "已完成 / 进展",
+    tone: "done" as const,
+  },
+  {
+    key: "info" as const,
+    label: "知会 / 内部",
+    tone: "info" as const,
+  },
 ];
+
+const TONE_NUM: Record<(typeof STATS)[number]["tone"], string> = {
+  urgent: "text-[var(--urgent)]",
+  follow: "text-orange-600 dark:text-orange-400",
+  done: "text-emerald-600 dark:text-emerald-400",
+  info: "text-sky-600 dark:text-sky-400",
+};
 
 export default function Board({ board }: { board: BoardData }) {
   let globalIndex = 0;
@@ -22,7 +42,7 @@ export default function Board({ board }: { board: BoardData }) {
 
       <main
         id="email-desk-print"
-        className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-5"
+        className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6"
       >
         <header className="mb-7">
           <h1 className="text-2xl font-semibold tracking-tight text-[var(--fg)]">
@@ -36,21 +56,19 @@ export default function Board({ board }: { board: BoardData }) {
           )}
         </header>
 
-        {/* Overview — only urgent number is red */}
-        <section className="mb-7 grid grid-cols-4 gap-2.5" aria-label="总览">
+        {/* Overview — WorkBuddy-style four blocks with tone colors */}
+        <section className="mb-7 grid grid-cols-4 gap-2.5 sm:gap-3" aria-label="总览">
           {STATS.map((s) => (
             <div
               key={s.key}
-              className="rounded-xl border border-[var(--line)] bg-[var(--card)] px-2 py-3.5 text-center"
+              className="rounded-xl border border-[var(--line)] bg-[var(--card)] px-2 py-3.5 text-center sm:px-3"
             >
               <div
-                className={`text-[1.85rem] font-semibold leading-none tracking-tight tabular-nums ${
-                  s.urgent ? "text-[var(--urgent)]" : "text-[var(--fg)]"
-                }`}
+                className={`text-[1.85rem] font-semibold leading-none tracking-tight tabular-nums ${TONE_NUM[s.tone]}`}
               >
                 {board.stats[s.key]}
               </div>
-              <div className="mt-1.5 text-[10px] font-medium leading-tight text-[var(--muted)]">
+              <div className="mt-1.5 text-[10px] font-medium leading-tight text-[var(--muted)] sm:text-[11px]">
                 {s.label}
               </div>
             </div>

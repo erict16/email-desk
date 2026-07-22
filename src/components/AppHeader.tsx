@@ -39,7 +39,7 @@ export default function AppHeader({ title }: Props) {
   return (
     <>
       <header className="print:hidden sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/95">
-        <div className="mx-auto flex h-14 max-w-2xl items-center justify-between gap-3 px-4 sm:px-5">
+        <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-3 px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-2.5">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

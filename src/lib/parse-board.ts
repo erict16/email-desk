@@ -26,11 +26,12 @@ export type BoardData = {
   updated: string;
   priorities: string[];
   sections: BoardSection[];
+  /** WorkBuddy four blocks: 紧急 / 需跟进 / 已完成 / 知会 */
   stats: {
     urgent: number; // P0
-    pending: number; // P1
-    follow: number; // P2
-    other: number; // FYI + OK still open? or FYI only
+    follow: number; // P1 + P2
+    done: number; // OK
+    info: number; // FYI
   };
 };
 
@@ -58,7 +59,9 @@ function parseItems(block: string): BoardItem[] {
     let tags: string[] | undefined;
 
     for (const line of lines.slice(1)) {
-      const m = line.match(/^-?\s*(priority|meta|action|date|people|tags)\s*:\s*(.+)$/i);
+      const m = line.match(
+        /^-?\s*(priority|meta|action|date|people|tags)\s*:\s*(.+)$/i,
+      );
       if (!m) continue;
       const key = m[1].toLowerCase();
       const val = stripBold(m[2]);
@@ -131,11 +134,13 @@ export function loadBoard(): BoardData {
   }
 
   const all = sections.flatMap((s) => s.items);
+  // Align with WorkBuddy overview: 紧急 / 需跟进(P1+P2) / 已完成 / 知会
   const stats = {
     urgent: all.filter((i) => i.priority === "P0").length,
-    pending: all.filter((i) => i.priority === "P1").length,
-    follow: all.filter((i) => i.priority === "P2").length,
-    other: all.filter((i) => i.priority === "FYI" || i.priority === "OK").length,
+    follow: all.filter((i) => i.priority === "P1" || i.priority === "P2")
+      .length,
+    done: all.filter((i) => i.priority === "OK").length,
+    info: all.filter((i) => i.priority === "FYI").length,
   };
 
   const priorities = Array.isArray(data.priorities)
