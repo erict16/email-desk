@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import SiteFooter from "@/components/SiteFooter";
 import {
   ASSET_V,
   SITE_DESCRIPTION,
@@ -30,7 +31,6 @@ export const metadata: Metadata = {
   },
   formatDetection: { telephone: false },
   icons: {
-    // Tab: rounded PNG/ICO. Mobile home-screen uses apple-touch (opaque square).
     icon: [
       { url: `${base}/favicon.ico?v=${v}`, sizes: "any" },
       icon("favicon-32.png", "32x32"),
@@ -61,7 +61,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN" className="h-full antialiased">
-      <body className="min-h-full">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <div className="flex-1">{children}</div>
+        <SiteFooter />
+      </body>
     </html>
   );
 }
