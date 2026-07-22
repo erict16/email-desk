@@ -125,7 +125,6 @@ meetings:
 - meta: John 同意 Anthony 提议的 7/23 10:30 Teams，点名 Rose/Kimmy/Eric/Shen 参加；等链接。
 - tags: 会议见上方, 必读 SG 流程附件
 - people: John / Anthony
-- action: 会前翻附件；准时参会
 
 ### PO25-535 继电器顶盖 — 缺件
 - priority: FYI
@@ -133,25 +132,21 @@ meetings:
 - meta: 包装少顶盖，已问 Grace；暂无新回复。
 - tags: 缺继电器顶盖, 等 Grace 补发
 - people: Hoa / Grace Zhou
-- action: 有空跟一下补发节点
 
 ### HLG / MEE / DPTSC / BTDA / MBT 等询价
 - priority: FYI
 - tags: 询价非你主谈, 旁听即可
 - people: Anthony / Kimmy / Hoa
 - meta: 含 MBT 15MVA 标准图 Kimmy 已回；Bangladesh / DPTSC 等主谈他人
-- action: 旁听，不用你主导
 
 ### Gerrick OLTC Product Approval — 合规核对
 - priority: FYI
 - tags: 转 Kimmy 做合规核对
-- action: 让 Kimmy 做 full compliance check
 
 ### Bambang PX-373 — 无法匹配 / 工程约束讨论
 - priority: FYI
 - tags: 工程约束讨论中, 非你主谈
 - people: Yoeli / Kimmy
-- action: Kimmy/工程主跟
 
 ### Sanaky QS2606175 — 新 4 台议价
 - priority: FYI
@@ -159,7 +154,6 @@ meetings:
 - meta: Trung 找 Tony 要再降价，主谈 Anthony。
 - tags: 议价主谈 Anthony, 你旁听
 - people: Trung / Anthony
-- action: 旁听即可
 
 ### PTE HMIET-I 蓝屏 E-HMIET250007
 - priority: FYI
@@ -167,4 +161,3 @@ meetings:
 - meta: Grace / PTE 继续技术跟进蓝屏；非你主责。
 - tags: 售后 Grace 主跟, 旁听即可
 - people: Grace Zhou / PTE
-- action: 旁听

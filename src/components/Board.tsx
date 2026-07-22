@@ -2,7 +2,10 @@ import type { BoardData, BoardItem, Priority } from "@/lib/parse-board";
 import Card from "@/components/Card";
 import AppHeader from "@/components/AppHeader";
 
-/** WorkBuddy 四块：紧急 / 需跟进 / 已完成·进展 / 知会·内部 */
+/**
+ * Order: 紧急 → 需跟进 → 知会 → 已完成
+ * Section headers use WorkBuddy-style colored bars.
+ */
 const STATS = [
   {
     key: "urgent" as const,
@@ -11,6 +14,7 @@ const STATS = [
     tone: "urgent" as const,
     match: (p: Priority) => p === "P0",
     sectionTitle: "紧急处理",
+    hideAction: false,
   },
   {
     key: "follow" as const,
@@ -19,22 +23,25 @@ const STATS = [
     tone: "follow" as const,
     match: (p: Priority) => p === "P1" || p === "P2",
     sectionTitle: "需跟进",
-  },
-  {
-    key: "done" as const,
-    id: "block-done",
-    label: "已完成 / 进展",
-    tone: "done" as const,
-    match: (p: Priority) => p === "OK",
-    sectionTitle: "已推进",
+    hideAction: false,
   },
   {
     key: "info" as const,
     id: "block-info",
-    label: "知会 / 内部",
+    label: "知会",
     tone: "info" as const,
     match: (p: Priority) => p === "FYI",
     sectionTitle: "知会",
+    hideAction: true,
+  },
+  {
+    key: "done" as const,
+    id: "block-done",
+    label: "已完成",
+    tone: "done" as const,
+    match: (p: Priority) => p === "OK",
+    sectionTitle: "已完成",
+    hideAction: true,
   },
 ];
 
@@ -45,15 +52,28 @@ const TONE_NUM: Record<(typeof STATS)[number]["tone"], string> = {
   info: "text-[var(--info)]",
 };
 
+/** Stat cards — soft lift + tinted wash */
 const TONE_HOVER: Record<(typeof STATS)[number]["tone"], string> = {
   urgent:
-    "hover:border-[var(--urgent-border)] hover:bg-[var(--urgent-soft)] hover:shadow-sm",
+    "hover:-translate-y-0.5 hover:border-[var(--urgent-border)] hover:bg-[var(--urgent-soft)] hover:shadow-md",
   follow:
-    "hover:border-orange-200 hover:bg-orange-50/80 hover:shadow-sm dark:hover:border-orange-800/60 dark:hover:bg-orange-950/25",
+    "hover:-translate-y-0.5 hover:border-[var(--follow-border)] hover:bg-[var(--follow-soft)] hover:shadow-md",
   done:
-    "hover:border-emerald-200 hover:bg-emerald-50/80 hover:shadow-sm dark:hover:border-emerald-800/60 dark:hover:bg-emerald-950/25",
+    "hover:-translate-y-0.5 hover:border-[var(--done-border)] hover:bg-[var(--done-soft)] hover:shadow-md",
   info:
-    "hover:border-sky-200 hover:bg-sky-50/80 hover:shadow-sm dark:hover:border-sky-800/60 dark:hover:bg-sky-950/25",
+    "hover:-translate-y-0.5 hover:border-[var(--info-border)] hover:bg-[var(--info-soft)] hover:shadow-md",
+};
+
+/** WorkBuddy-like section title bars */
+const SECTION_HEAD: Record<(typeof STATS)[number]["tone"], string> = {
+  urgent:
+    "border-l-[4px] border-l-[var(--urgent)] bg-[var(--urgent-soft)] text-[var(--urgent)]",
+  follow:
+    "border-l-[4px] border-l-[var(--follow)] bg-[var(--follow-soft)] text-[var(--follow)]",
+  done:
+    "border-l-[4px] border-l-[var(--done)] bg-[var(--done-soft)] text-[var(--done)]",
+  info:
+    "border-l-[4px] border-l-[var(--info)] bg-[var(--info-soft)] text-[var(--info)]",
 };
 
 export default function Board({ board }: { board: BoardData }) {
@@ -80,7 +100,6 @@ export default function Board({ board }: { board: BoardData }) {
           )}
         </header>
 
-        {/* Overview — clickable anchors + hover */}
         <section
           className="mb-7 grid grid-cols-4 gap-2.5 sm:gap-3"
           aria-label="总览"
@@ -89,11 +108,11 @@ export default function Board({ board }: { board: BoardData }) {
             <a
               key={s.key}
               href={`#${s.id}`}
-              className={`rounded-xl border border-[var(--line)] bg-[var(--card)] px-2 py-3.5 text-center sm:px-3 transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/50 active:scale-[0.98] ${TONE_HOVER[s.tone]}`}
+              className={`rounded-xl border border-[var(--line)] bg-[var(--card)] px-2 py-3.5 text-center sm:px-3 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 active:scale-[0.98] ${TONE_HOVER[s.tone]}`}
             >
               <div
-                              className={`text-[1.85rem] font-bold leading-none tracking-tight tabular-nums ${TONE_NUM[s.tone]}`}
-                            >
+                className={`text-[1.85rem] font-bold leading-none tracking-tight tabular-nums ${TONE_NUM[s.tone]}`}
+              >
                 {board.stats[s.key]}
               </div>
               <div className="mt-1.5 text-[10px] font-medium leading-tight text-[var(--muted)] sm:text-[11px]">
@@ -104,7 +123,7 @@ export default function Board({ board }: { board: BoardData }) {
         </section>
 
         {board.meetings.length > 0 && (
-          <section className="mb-7 rounded-xl border border-[var(--line)] bg-[var(--card)] p-4">
+          <section className="mb-7 rounded-xl border border-[var(--line)] bg-[var(--card)] p-4 transition-shadow duration-200 hover:shadow-sm">
             <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[var(--muted)]">
               需参加的会议
             </div>
@@ -126,16 +145,14 @@ export default function Board({ board }: { board: BoardData }) {
             const items = allItems.filter((it) => block.match(it.priority));
             if (items.length === 0) return null;
             return (
-              <section
-                key={block.id}
-                id={block.id}
-                className="scroll-mt-20"
-              >
-                <div className="mb-2.5 flex items-baseline gap-2 border-b border-[var(--line)] pb-2">
-                  <h2 className="text-sm font-semibold text-[var(--fg)]">
+              <section key={block.id} id={block.id} className="scroll-mt-20">
+                <div
+                  className={`mb-3 flex items-center gap-2 rounded-lg px-3 py-2.5 ${SECTION_HEAD[block.tone]}`}
+                >
+                  <h2 className="text-sm font-bold tracking-tight">
                     {block.sectionTitle}
                   </h2>
-                  <span className="text-xs tabular-nums text-neutral-400">
+                  <span className="text-xs font-semibold tabular-nums opacity-70">
                     {items.length}
                   </span>
                 </div>
@@ -147,6 +164,7 @@ export default function Board({ board }: { board: BoardData }) {
                         key={`${block.id}-${item.title}`}
                         item={item}
                         index={globalIndex}
+                        hideAction={block.hideAction}
                       />
                     );
                   })}

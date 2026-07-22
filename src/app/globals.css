@@ -6,13 +6,20 @@
   --muted: #737373;
   --line: #e5e5e5;
   --card: #ffffff;
-  /* WorkBuddy-smooth red (#e53e3e) — not harsh rose/pink #e11d48 */
+  /* WorkBuddy-smooth tones */
   --urgent: #e53e3e;
-  --follow: #dd6b20;
-  --done: #38a169;
-  --info: #3182ce;
   --urgent-soft: #fff5f5;
   --urgent-border: #feb2b2;
+  --follow: #dd6b20;
+  --follow-soft: #fffaf0;
+  --follow-border: #fbd38d;
+  --done: #38a169;
+  --done-soft: #f0fff4;
+  --done-border: #9ae6b4;
+  /* 知会 = gray bar (not blue) */
+  --info: #718096;
+  --info-soft: #f7fafc;
+  --info-border: #cbd5e0;
 }
 
 @theme inline {
@@ -40,11 +47,17 @@ body {
     --line: #262626;
     --card: #141414;
     --urgent: #fc8181;
-    --follow: #f6ad55;
-    --done: #68d391;
-    --info: #63b3ed;
     --urgent-soft: rgba(229, 62, 62, 0.12);
     --urgent-border: rgba(252, 129, 129, 0.45);
+    --follow: #f6ad55;
+    --follow-soft: rgba(221, 107, 32, 0.12);
+    --follow-border: rgba(246, 173, 85, 0.4);
+    --done: #68d391;
+    --done-soft: rgba(56, 161, 105, 0.12);
+    --done-border: rgba(104, 211, 145, 0.4);
+    --info: #a0aec0;
+    --info-soft: rgba(160, 174, 192, 0.12);
+    --info-border: rgba(160, 174, 192, 0.35);
   }
 }
 
