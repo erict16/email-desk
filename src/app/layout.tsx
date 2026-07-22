@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   title: "邮件跟进清单 · Email Desk",
   description: "Eric's weekday email follow-up board",
   icons: {
-    icon: [{ url: `${base}/favicon.png?v=girl4`, type: "image/png", sizes: "64x64" }],
-    apple: [{ url: `${base}/apple-touch-icon.png?v=girl4`, sizes: "180x180" }],
+    icon: [{ url: `${base}/favicon.png?v=girl5`, type: "image/png", sizes: "64x64" }],
+        apple: [{ url: `${base}/apple-touch-icon.png?v=girl5`, sizes: "180x180" }],
   },
 };
 
