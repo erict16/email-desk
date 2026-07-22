@@ -1,21 +1,23 @@
 import type { BoardItem } from "@/lib/parse-board";
 
 /**
- * Status tags — short plain words, semantic color (no harsh 「死线」).
- * e.g. 需尽快 / 待回复 / 等工程 / 待客户 / 已完成
+ * Tags are short “who + what” phrases (not bare 等工厂/待客户).
+ * Color by intent keyword still works when the phrase is longer.
  */
 function tagClass(label: string): string {
   const t = label.trim();
   if (/需尽快|优先|紧急|催你|阻塞/.test(t)) return "bg-rose-100 text-rose-800";
-  if (/待回复|待发|待补|待打包|待你|待放图|你欠/.test(t))
+  if (/待你|待发|待打包|待放行|待补|你欠/.test(t))
     return "bg-orange-100 text-orange-900";
-  if (/待客户|等客户|等确认|谈判/.test(t)) return "bg-amber-100 text-amber-900";
-  if (/等工程|等工厂|等评审|等型号|内转中/.test(t))
+  if (/待客户|等客户|客户已|3D|外形|OS|图纸|议价|谈判/.test(t))
+    return "bg-amber-100 text-amber-900";
+  if (/待工程|待工厂|待沈工|等工程|等工厂|评审|型号|提货日|管位/.test(t))
     return "bg-sky-100 text-sky-800";
-  if (/已完成|已回|已投产|已内转|已发|已收口|已确认|关闭/.test(t))
+  if (/已发|已回|已转|已下|已用|已出|已 Noted|已确认|够用|关闭|投产/.test(t))
     return "bg-emerald-100 text-emerald-800";
-  if (/知会|旁听|非主责|流程|合规/.test(t)) return "bg-slate-100 text-slate-700";
-  if (/缺件|售后|物流/.test(t)) return "bg-violet-100 text-violet-800";
+  if (/知会|旁听|非你|非主|必读|流程|培训|合规|转 Kimmy/.test(t))
+    return "bg-slate-100 text-slate-700";
+  if (/缺|售后|物流|补发|顶盖/.test(t)) return "bg-violet-100 text-violet-800";
   return "bg-neutral-100 text-neutral-700";
 }
 
