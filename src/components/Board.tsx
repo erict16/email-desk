@@ -4,8 +4,8 @@ import AppHeader from "@/components/AppHeader";
 
 /**
  * Order: 紧急 → 需跟进 → 知会 → 已完成
- * Section title = WorkBuddy style: emoji + thin left hairline (no fill bar)
- * Card left stripe = per-priority color
+ * Section title: crisp SVG mark + text + thin bottom hairline (no vertical bar)
+ * Only 紧急 cards get left accent stripe (flush to rounded edge)
  */
 const STATS = [
   {
@@ -13,44 +13,40 @@ const STATS = [
     id: "block-urgent",
     label: "紧急处理",
     tone: "urgent" as const,
-    emoji: "🔴",
     match: (p: Priority) => p === "P0",
     sectionTitle: "紧急处理",
     hideAction: false,
-    cardTone: "urgent" as const,
+    stripe: true,
   },
   {
     key: "follow" as const,
     id: "block-follow",
     label: "需跟进",
     tone: "follow" as const,
-    emoji: "🟠",
     match: (p: Priority) => p === "P1" || p === "P2",
     sectionTitle: "需跟进",
     hideAction: false,
-    cardTone: "follow" as const,
+    stripe: false,
   },
   {
     key: "info" as const,
     id: "block-info",
     label: "知会",
     tone: "info" as const,
-    emoji: "⚪",
     match: (p: Priority) => p === "FYI",
     sectionTitle: "知会",
     hideAction: true,
-    cardTone: "info" as const,
+    stripe: false,
   },
   {
     key: "done" as const,
     id: "block-done",
     label: "已完成",
     tone: "done" as const,
-    emoji: "✅",
     match: (p: Priority) => p === "OK",
     sectionTitle: "已完成",
     hideAction: true,
-    cardTone: "done" as const,
+    stripe: false,
   },
 ];
 
@@ -72,13 +68,50 @@ const TONE_HOVER: Record<(typeof STATS)[number]["tone"], string> = {
     "hover:-translate-y-0.5 hover:border-[var(--info-border)] hover:bg-[var(--info-soft)] hover:shadow-md",
 };
 
-/** WorkBuddy h2: padding-left + 4px border-left, no background */
-const SECTION_LINE: Record<(typeof STATS)[number]["tone"], string> = {
-  urgent: "border-l-[var(--urgent)]",
-  follow: "border-l-[var(--follow)]",
-  done: "border-l-[var(--done)]",
-  info: "border-l-[var(--info)]",
+const MARK_COLOR: Record<(typeof STATS)[number]["tone"], string> = {
+  urgent: "var(--urgent)",
+  follow: "var(--follow)",
+  done: "var(--done)",
+  info: "var(--info)",
 };
+
+/** Crisp vector marks — no system emoji blur on Windows */
+function SectionMark({ tone }: { tone: (typeof STATS)[number]["tone"] }) {
+  const c = MARK_COLOR[tone];
+  if (tone === "done") {
+    return (
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 16 16"
+        className="shrink-0"
+        aria-hidden
+      >
+        <circle cx="8" cy="8" r="7" fill={c} />
+        <path
+          d="M4.8 8.2l2.1 2.1 4.3-4.4"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  // solid disc for urgent / follow / info
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      className="shrink-0"
+      aria-hidden
+    >
+      <circle cx="6" cy="6" r="5" fill={c} />
+    </svg>
+  );
+}
 
 export default function Board({ board }: { board: BoardData }) {
   const allItems: BoardItem[] = board.sections.flatMap((s) => s.items);
@@ -127,7 +160,7 @@ export default function Board({ board }: { board: BoardData }) {
         </section>
 
         {board.meetings.length > 0 && (
-          <section className="mb-7 rounded-xl border border-[var(--line)] bg-[var(--card)] p-4 transition-shadow duration-200 hover:shadow-sm">
+          <section className="mb-8 rounded-xl border border-[var(--line)] bg-[var(--card)] p-4 transition-shadow duration-200 hover:shadow-sm">
             <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[var(--muted)]">
               需参加的会议
             </div>
@@ -144,25 +177,21 @@ export default function Board({ board }: { board: BoardData }) {
           </section>
         )}
 
-        <div className="space-y-7">
+        <div className="space-y-9">
           {STATS.map((block) => {
             const items = allItems.filter((it) => block.match(it.priority));
             if (items.length === 0) return null;
             return (
               <section key={block.id} id={block.id} className="scroll-mt-20">
-                {/* WorkBuddy: emoji + left hairline title, no colored fill */}
-                <h2
-                  className={`mb-3 flex items-baseline gap-2 border-l-4 pl-2.5 text-[15px] font-semibold text-[var(--fg)] ${SECTION_LINE[block.tone]}`}
-                >
-                  <span className="select-none" aria-hidden>
-                    {block.emoji}
-                  </span>
+                {/* Thin horizontal rule under title — no vertical bar */}
+                <h2 className="mb-3.5 flex items-center gap-2 border-b border-[var(--line)] pb-2.5 text-[15px] font-semibold text-[var(--fg)]">
+                  <SectionMark tone={block.tone} />
                   <span>{block.sectionTitle}</span>
                   <span className="text-xs font-medium tabular-nums text-neutral-400">
                     {items.length}
                   </span>
                 </h2>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {items.map((item) => {
                     globalIndex += 1;
                     return (
@@ -171,7 +200,7 @@ export default function Board({ board }: { board: BoardData }) {
                         item={item}
                         index={globalIndex}
                         hideAction={block.hideAction}
-                        tone={block.cardTone}
+                        showStripe={block.stripe}
                       />
                     );
                   })}

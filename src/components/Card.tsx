@@ -1,7 +1,5 @@
 import type { BoardItem } from "@/lib/parse-board";
 
-export type CardTone = "urgent" | "follow" | "done" | "info";
-
 /**
  * Tags are short “who + what” phrases (not bare 等工厂/待客户).
  */
@@ -22,26 +20,18 @@ function tagClass(label: string): string {
   return "bg-neutral-100 text-neutral-700";
 }
 
-/** Left accent on each card (WorkBuddy card edge) */
-const TONE_EDGE: Record<CardTone, string> = {
-  urgent: "border-l-[3px] border-l-[var(--urgent)]",
-  follow: "border-l-[3px] border-l-[var(--follow)]",
-  done: "border-l-[3px] border-l-[var(--done)]",
-  info: "border-l-[3px] border-l-[var(--info)]",
-};
-
 export default function Card({
   item,
   index,
   hideAction = false,
-  tone = "follow",
+  showStripe = false,
 }: {
   item: BoardItem;
   index: number;
   /** 知会 / 已完成：不显示待办条 */
   hideAction?: boolean;
-  /** Left color stripe by section */
-  tone?: CardTone;
+  /** Only 紧急: left accent flush to rounded edge via ::before */
+  showStripe?: boolean;
 }) {
   const isDone = item.priority === "OK";
   const isFyi = item.priority === "FYI";
@@ -49,10 +39,21 @@ export default function Card({
 
   return (
     <article
-      className={`rounded-xl border border-neutral-200/90 bg-white px-4 py-3.5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950 ${TONE_EDGE[tone]} ${
+      className={`relative overflow-hidden rounded-xl border border-neutral-200/90 bg-white px-4 py-3.5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950 ${
         isDone || isFyi ? "opacity-[0.88]" : ""
       }`}
     >
+      {/*
+        Flush left stripe: absolute full-height bar + left radii match card.
+        border-left on rounded box leaves gaps at corners — this doesn't.
+      */}
+      {showStripe && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 w-[3px] rounded-l-xl bg-[var(--urgent)]"
+        />
+      )}
+
       <div className="flex items-start justify-between gap-3">
         <h3
           className="min-w-0 select-text text-[0.95rem] font-semibold leading-snug text-neutral-900 dark:text-neutral-50"
