@@ -1,6 +1,6 @@
 ---
 title: 邮件跟进清单
-subtitle: Eric Tan · Inbox + Sent
+subtitle: Eric Tan
 updated: "2026-07-22 10:20"
 tz: Asia/Shanghai
 meetings:

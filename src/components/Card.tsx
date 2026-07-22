@@ -30,7 +30,10 @@ export default function Card({
   index: number;
   /** 知会 / 已完成：不显示待办条 */
   hideAction?: boolean;
-  /** Only 紧急: left accent flush to rounded edge via ::before */
+  /**
+   * Only 紧急: WorkBuddy-style left edge.
+   * Use real border-left (the red IS the edge) — not an inset bar.
+   */
   showStripe?: boolean;
 }) {
   const isDone = item.priority === "OK";
@@ -39,21 +42,12 @@ export default function Card({
 
   return (
     <article
-      className={`relative overflow-hidden rounded-xl border border-neutral-200/90 bg-white px-4 py-3.5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950 ${
-        isDone || isFyi ? "opacity-[0.88]" : ""
-      }`}
+      className={`rounded-xl border border-neutral-200/90 bg-white px-4 py-3.5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950 ${
+        showStripe
+          ? "border-l-[3px] border-l-[var(--urgent)]"
+          : ""
+      } ${isDone || isFyi ? "opacity-[0.88]" : ""}`}
     >
-      {/*
-        Flush left stripe: absolute full-height bar + left radii match card.
-        border-left on rounded box leaves gaps at corners — this doesn't.
-      */}
-      {showStripe && (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 left-0 w-[3px] rounded-l-xl bg-[var(--urgent)]"
-        />
-      )}
-
       <div className="flex items-start justify-between gap-3">
         <h3
           className="min-w-0 select-text text-[0.95rem] font-semibold leading-snug text-neutral-900 dark:text-neutral-50"

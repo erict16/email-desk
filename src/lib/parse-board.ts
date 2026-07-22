@@ -88,54 +88,63 @@ function parseItems(block: string): BoardItem[] {
 }
 
 /**
- * Short updated stamp, e.g. `7月22日 10:10` (no GMT dump).
- * Accepts: Date | "YYYY-MM-DD" | "YYYY-MM-DD HH:mm" | ISO
+ * Short updated stamp for the subtitle line.
+ * With time → `北京时间 10:20 am` / `新加坡时间 3:05 pm` (no GMT dump).
+ * Date-only → `7月22日`
  */
+function tzLabel(tz: string): string {
+  if (/Shanghai|Beijing|Chongqing|Hong_Kong/i.test(tz)) return "北京时间";
+  if (/Singapore/i.test(tz)) return "新加坡时间";
+  return "";
+}
+
+function formatWallClock(hour24: number, minute: string, tz: string): string {
+  const ampm = hour24 >= 12 ? "pm" : "am";
+  const h12 = hour24 % 12 || 12;
+  const label = tzLabel(tz);
+  const clock = `${h12}:${minute} ${ampm}`;
+  return label ? `${label} ${clock}` : clock;
+}
+
 function formatUpdated(raw: unknown, tz: string): string {
   if (raw == null || raw === "") return "";
 
-  let d: Date | null = null;
-
   if (raw instanceof Date && !Number.isNaN(raw.getTime())) {
-    d = raw;
-  } else {
-    const s = String(raw).trim();
-    // YYYY-MM-DD HH:mm or YYYY-MM-DDTHH:mm
-    const m = s.match(
-      /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::\d{2})?)?$/,
-    );
-    if (m) {
-      const iso = `${m[1]}-${m[2]}-${m[3]}T${m[4] || "12"}:${m[5] || "00"}:00`;
-      // Interpret naive wall time as already-in-tz for display: format parts directly
-      if (m[4]) {
-        return `${Number(m[2])}月${Number(m[3])}日 ${m[4]}:${m[5]}`;
-      }
-      return `${Number(m[2])}月${Number(m[3])}日`;
-    }
-    const t = Date.parse(s);
-    if (!Number.isNaN(t)) d = new Date(t);
-    else return s;
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).formatToParts(raw);
+    const get = (type: string) =>
+      parts.find((p) => p.type === type)?.value || "";
+    const hour = Number(get("hour"));
+    // en-US hour12 gives 1-12 already; rebuild from hour cycle carefully
+    const dayParts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: tz,
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).formatToParts(raw);
+    const h24 = Number(dayParts.find((p) => p.type === "hour")?.value || 0);
+    const minute = dayParts.find((p) => p.type === "minute")?.value || "00";
+    return formatWallClock(h24, minute, tz);
   }
 
-  if (!d) return "";
+  const s = String(raw).trim();
+  const m = s.match(
+    /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::\d{2})?)?$/,
+  );
+  if (m) {
+    if (m[4]) {
+      return formatWallClock(Number(m[4]), m[5], tz);
+    }
+    return `${Number(m[2])}月${Number(m[3])}日`;
+  }
 
-  const parts = new Intl.DateTimeFormat("zh-CN", {
-    timeZone: tz,
-    month: "numeric",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(d);
-
-  const get = (type: string) =>
-    parts.find((p) => p.type === type)?.value || "";
-  const month = get("month");
-  const day = get("day");
-  const hour = get("hour");
-  const minute = get("minute");
-  if (hour && minute) return `${month}月${day}日 ${hour}:${minute}`;
-  return `${month}月${day}日`;
+  const t = Date.parse(s);
+  if (!Number.isNaN(t)) return formatUpdated(new Date(t), tz);
+  return s;
 }
 
 export function loadBoard(): BoardData {
