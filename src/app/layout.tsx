@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: "Eric's weekday email follow-up board",
   icons: {
     icon: [{ url: `${base}/favicon.png?v=girl7`, type: "image/png", sizes: "64x64" }],
-        apple: [{ url: `${base}/apple-touch-icon.png?v=girl7`, sizes: "180x180" }],
+    apple: [{ url: `${base}/apple-touch-icon.png?v=girl7`, sizes: "180x180" }],
   },
 };
 
