@@ -1,7 +1,7 @@
 ---
 title: 邮件跟进清单
 subtitle: Eric Tan · Inbox + Sent
-updated: "2026-07-22 10:15"
+updated: "2026-07-22 10:20"
 tz: Asia/Shanghai
 meetings:
   - 周四 7/23 10:30 Teams — HMSG Trading Process（John 已确认；Rose / Kimmy / Eric / Shen 出席；等 Anthony 发链接）
@@ -12,18 +12,10 @@ meetings:
 ### Sanaky BSHV Air bill — 空运文件包 Invoice PL CQ TR Form E
 - priority: P0
 - date: 7/20
-- meta: Trung 已收 final Air bill，点名要全套单证；Sent 仍未见你回文件包。Unitex 提单/到货数据已出（见已推进）。
+- meta: Trung 已收 final Air bill，点名要全套单证；Sent 仍未见你回文件包。Unitex 提单/到货数据已出（见已完成）。
 - tags: 需尽快, 待你发 Invoice/PL/CQ/TR/Form E
 - people: Trung (Sanaky)
 - action: 发 Invoice、PL、CQ、Test Report、Form E 草稿供核对（CQ/TR 归你）
-
-### PO26-025 EEMC — Kimmy 要全套附件+沟通邮件
-- priority: P0
-- date: 7/20
-- meta: 她要「所有附件+沟通邮件」；你 7/21 只回了「已经下好了」，打包仍欠。投产/ERP 已下。
-- tags: 需尽快, 待你打包附件+往来邮件
-- people: 李倩
-- action: 把全套附件 + 往来邮件整理发给她
 
 ### HAVEC QS2607196R1 ET-SZ6 — 审批图放行
 - priority: P0
@@ -75,6 +67,12 @@ meetings:
 
 ## done | 已推进
 
+### PO26-025 EEMC — 投产已下 · 单子已办妥
+- priority: OK
+- tags: ERP 已下投产, 单子已下好
+- people: 李倩 / Hoa
+- meta: 投产已回 Hoa/Kimmy；ERP 已下，预估提货 8/12。Kimmy 附件包诉求按「单子已下好」关闭。
+
 ### EEMC SOA 截至6/30 — 已回 Hà
 - priority: OK
 - tags: 已发 SOA 对账表
@@ -85,12 +83,6 @@ meetings:
 - priority: OK
 - tags: 阿姐明细已用上
 - people: 赵玫（阿姐）
-
-### PO26-025 投产 — 已回 Hoa / Kimmy（ERP 已下）
-- priority: OK
-- tags: ERP 已下投产
-- people: Hoa / 李倩
-- meta: 预估提货 8/12；资料打包仍见上方 todo
 
 ### WTC PO155798 — 3D 已发 · 客户收口
 - priority: OK
