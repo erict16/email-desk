@@ -1,14 +1,20 @@
 import type { BoardData, BoardItem, Priority } from "@/lib/parse-board";
+import { isOrderItem } from "@/lib/parse-board";
+import {
+  ORDER_STAGES,
+  compareByStageThenTitle,
+  type OrderStageId,
+} from "@/lib/order-stages";
 import Card from "@/components/Card";
+import OrderCard from "@/components/OrderCard";
 import AppHeader from "@/components/AppHeader";
 import StatsNav from "@/components/StatsNav";
 
 /**
- * Order: 紧急 → 需跟进 → 已推进 → 知会
- * Section title: crisp SVG mark + text + thin bottom hairline (no vertical bar)
- * Only 紧急 cards get left accent stripe (flush to rounded edge)
+ * Order: 紧急 → 需跟进 → 订单跟踪 → 知会
+ * 订单跟踪 replaces 已推进 — portfolio view by commercial stage
  */
-const STATS = [
+const TRIAGE = [
   {
     key: "urgent" as const,
     id: "block-urgent",
@@ -30,14 +36,11 @@ const STATS = [
     stripe: false,
   },
   {
-    key: "done" as const,
-    id: "block-done",
-    label: "已推进",
-    tone: "done" as const,
-    match: (p: Priority) => p === "OK",
-    sectionTitle: "已推进",
-    hideAction: true,
-    stripe: false,
+    key: "orders" as const,
+    id: "block-orders",
+    label: "订单跟踪",
+    tone: "orders" as const,
+    sectionTitle: "订单跟踪",
   },
   {
     key: "info" as const,
@@ -51,17 +54,16 @@ const STATS = [
   },
 ];
 
-const MARK_COLOR: Record<(typeof STATS)[number]["tone"], string> = {
+const MARK_COLOR: Record<string, string> = {
   urgent: "var(--urgent)",
   follow: "var(--follow)",
-  done: "var(--done)",
+  orders: "var(--orders)",
   info: "var(--info)",
 };
 
-/** Crisp vector marks — no system emoji blur on Windows */
-function SectionMark({ tone }: { tone: (typeof STATS)[number]["tone"] }) {
-  const c = MARK_COLOR[tone];
-  if (tone === "done") {
+function SectionMark({ tone }: { tone: string }) {
+  const c = MARK_COLOR[tone] ?? "var(--muted)";
+  if (tone === "orders") {
     return (
       <svg
         width="14"
@@ -70,14 +72,12 @@ function SectionMark({ tone }: { tone: (typeof STATS)[number]["tone"] }) {
         className="shrink-0"
         aria-hidden
       >
-        <circle cx="8" cy="8" r="7" fill={c} />
+        <rect x="1.5" y="3" width="13" height="10" rx="2" fill={c} />
         <path
-          d="M4.8 8.2l2.1 2.1 4.3-4.4"
-          fill="none"
+          d="M4 7h8M4 10h5"
           stroke="#fff"
-          strokeWidth="1.8"
+          strokeWidth="1.5"
           strokeLinecap="round"
-          strokeLinejoin="round"
         />
       </svg>
     );
@@ -95,16 +95,61 @@ function SectionMark({ tone }: { tone: (typeof STATS)[number]["tone"] }) {
   );
 }
 
+function OrderStageGroup({
+  stageId,
+  items,
+  startIndex,
+}: {
+  stageId: OrderStageId;
+  items: BoardItem[];
+  startIndex: number;
+}) {
+  const def = ORDER_STAGES.find((s) => s.id === stageId)!;
+  let idx = startIndex;
+  return (
+    <div className="mb-5 last:mb-0">
+      <div className="mb-2 flex items-baseline gap-2">
+        <h3 className="text-[13px] font-semibold text-indigo-900 dark:text-indigo-200">
+          {def.label}
+        </h3>
+        <span className="text-[11px] text-neutral-400">{def.hint}</span>
+        <span className="text-[11px] font-medium tabular-nums text-neutral-400">
+          {items.length}
+        </span>
+      </div>
+      <div className="space-y-3">
+        {items.map((item) => {
+          idx += 1;
+          return (
+            <OrderCard
+              key={`order-${item.title}`}
+              item={item}
+              index={idx}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function Board({ board }: { board: BoardData }) {
   const allItems: BoardItem[] = board.sections.flatMap((s) => s.items);
   let globalIndex = 0;
 
-  const statItems = STATS.map((s) => ({
+  const orderItems = allItems
+    .filter(isOrderItem)
+    .sort(compareByStageThenTitle);
+
+  const statItems = TRIAGE.map((s) => ({
     key: s.key,
     id: s.id,
     label: s.label,
     tone: s.tone,
-    value: board.stats[s.key],
+    value:
+      s.key === "orders"
+        ? board.stats.orders
+        : board.stats[s.key as "urgent" | "follow" | "info"],
   }));
 
   return (
@@ -148,8 +193,10 @@ export default function Board({ board }: { board: BoardData }) {
         )}
 
         <div className="space-y-9">
-          {STATS.map((block) => {
-            const items = allItems.filter((it) => block.match(it.priority));
+          {/* 紧急 */}
+          {(() => {
+            const block = TRIAGE[0];
+            const items = allItems.filter((it) => block.match!(it.priority));
             if (items.length === 0) return null;
             return (
               <section key={block.id} id={block.id} className="scroll-mt-20">
@@ -168,15 +215,171 @@ export default function Board({ board }: { board: BoardData }) {
                         key={`${block.id}-${item.title}`}
                         item={item}
                         index={globalIndex}
-                        hideAction={block.hideAction}
-                        showStripe={block.stripe}
+                        hideAction={false}
+                        showStripe
                       />
                     );
                   })}
                 </div>
               </section>
             );
-          })}
+          })()}
+
+          {/* 需跟进 */}
+          {(() => {
+            const block = TRIAGE[1];
+            const items = allItems.filter((it) => block.match!(it.priority));
+            if (items.length === 0) return null;
+            return (
+              <section key={block.id} id={block.id} className="scroll-mt-20">
+                <h2 className="mb-3.5 flex items-center gap-2 border-b border-[var(--line)] pb-2.5 text-[15px] font-semibold text-[var(--fg)]">
+                  <SectionMark tone={block.tone} />
+                  <span>{block.sectionTitle}</span>
+                  <span className="text-xs font-medium tabular-nums text-neutral-400">
+                    {items.length}
+                  </span>
+                </h2>
+                <div className="space-y-3">
+                  {items.map((item) => {
+                    globalIndex += 1;
+                    return (
+                      <Card
+                        key={`${block.id}-${item.title}`}
+                        item={item}
+                        index={globalIndex}
+                        hideAction={false}
+                        showStripe={false}
+                      />
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })()}
+
+          {/* 订单跟踪 — replaces 已推进 */}
+          {orderItems.length > 0 && (
+            <section id="block-orders" className="scroll-mt-20">
+              <h2 className="mb-2 flex items-center gap-2 border-b border-[var(--line)] pb-2.5 text-[15px] font-semibold text-[var(--fg)]">
+                <SectionMark tone="orders" />
+                <span>订单跟踪</span>
+                <span className="text-xs font-medium tabular-nums text-neutral-400">
+                  {orderItems.length}
+                </span>
+              </h2>
+              <p className="mb-4 text-[12px] leading-relaxed text-neutral-500">
+                按项目阶段看全局：技术讨论 → OS → QS → 等 PO → 销售确认 →
+                CI/PL/CO。每张卡显示当前位置与卡点，避免多单并行时丢焦点。
+              </p>
+
+              {/* Stage summary chips */}
+              <div className="mb-5 flex flex-wrap gap-1.5">
+                {ORDER_STAGES.map((s) => {
+                  const n = orderItems.filter((i) => i.stage === s.id).length;
+                  if (n === 0) return null;
+                  return (
+                    <a
+                      key={s.id}
+                      href={`#order-stage-${s.id}`}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-indigo-200/80 bg-indigo-50/80 px-2.5 py-1 text-[11px] font-medium text-indigo-900 transition-colors hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-100"
+                    >
+                      {s.short}
+                      <span className="tabular-nums text-indigo-600 dark:text-indigo-300">
+                        {n}
+                      </span>
+                    </a>
+                  );
+                })}
+                {/* unstaged */}
+                {orderItems.filter((i) => !i.stage).length > 0 && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[11px] font-medium text-neutral-600">
+                    未标阶段
+                    <span className="tabular-nums">
+                      {orderItems.filter((i) => !i.stage).length}
+                    </span>
+                  </span>
+                )}
+              </div>
+
+              {ORDER_STAGES.map((s) => {
+                const items = orderItems.filter((i) => i.stage === s.id);
+                if (items.length === 0) return null;
+                const start = globalIndex;
+                globalIndex += items.length;
+                return (
+                  <div key={s.id} id={`order-stage-${s.id}`} className="scroll-mt-24">
+                    <OrderStageGroup
+                      stageId={s.id}
+                      items={items}
+                      startIndex={start}
+                    />
+                  </div>
+                );
+              })}
+
+              {/* Legacy OK without stage */}
+              {(() => {
+                const unstaged = orderItems.filter((i) => !i.stage);
+                if (unstaged.length === 0) return null;
+                return (
+                  <div className="mb-5">
+                    <div className="mb-2 flex items-baseline gap-2">
+                      <h3 className="text-[13px] font-semibold text-neutral-600">
+                        未标阶段
+                      </h3>
+                      <span className="text-[11px] text-neutral-400">
+                        补 stage: 字段即可归入流水线
+                      </span>
+                    </div>
+                    <div className="space-y-3">
+                      {unstaged.map((item) => {
+                        globalIndex += 1;
+                        return (
+                          <OrderCard
+                            key={`order-u-${item.title}`}
+                            item={item}
+                            index={globalIndex}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
+            </section>
+          )}
+
+          {/* 知会 */}
+          {(() => {
+            const block = TRIAGE[3];
+            const items = allItems.filter((it) => block.match!(it.priority));
+            if (items.length === 0) return null;
+            return (
+              <section key={block.id} id={block.id} className="scroll-mt-20">
+                <h2 className="mb-3.5 flex items-center gap-2 border-b border-[var(--line)] pb-2.5 text-[15px] font-semibold text-[var(--fg)]">
+                  <SectionMark tone={block.tone} />
+                  <span>{block.sectionTitle}</span>
+                  <span className="text-xs font-medium tabular-nums text-neutral-400">
+                    {items.length}
+                  </span>
+                </h2>
+                <div className="space-y-3">
+                  {items.map((item) => {
+                    globalIndex += 1;
+                    return (
+                      <Card
+                        key={`${block.id}-${item.title}`}
+                        item={item}
+                        index={globalIndex}
+                        hideAction
+                        showStripe={false}
+                      />
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })()}
         </div>
       </main>
     </div>

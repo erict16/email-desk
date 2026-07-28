@@ -13,9 +13,14 @@
   --follow: #dd6b20;
   --follow-soft: #fffaf0;
   --follow-border: #fbd38d;
-  --done: #38a169;
-  --done-soft: #f0fff4;
-  --done-border: #9ae6b4;
+  /* 订单跟踪 (was 已推进 / done) */
+  --orders: #5a67d8;
+  --orders-soft: #eef2ff;
+  --orders-border: #a3bffa;
+  /* legacy aliases if anything still references --done */
+  --done: #5a67d8;
+  --done-soft: #eef2ff;
+  --done-border: #a3bffa;
   /* 知会 = gray bar (not blue) */
   --info: #718096;
   --info-soft: #f7fafc;
@@ -52,9 +57,12 @@ body {
     --follow: #f6ad55;
     --follow-soft: rgba(221, 107, 32, 0.12);
     --follow-border: rgba(246, 173, 85, 0.4);
-    --done: #68d391;
-    --done-soft: rgba(56, 161, 105, 0.12);
-    --done-border: rgba(104, 211, 145, 0.4);
+    --orders: #7f9cf5;
+    --orders-soft: rgba(90, 103, 216, 0.14);
+    --orders-border: rgba(127, 156, 245, 0.45);
+    --done: #7f9cf5;
+    --done-soft: rgba(90, 103, 216, 0.14);
+    --done-border: rgba(127, 156, 245, 0.45);
     --info: #a0aec0;
     --info-soft: rgba(160, 174, 192, 0.12);
     --info-border: rgba(160, 174, 192, 0.35);

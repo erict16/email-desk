@@ -73,90 +73,113 @@ meetings:
 - people: Yoeli / Kimmy
 - action: 旁听 Yoeli 确认，确认后配合投产即可
 
-## done | 已推进
+## orders | 订单跟踪
 
-### 越南客户购开关（阿姐转发）
-- priority: OK
-- tags: Kimmy 已回有越南代理, 不走国内贸易商
-- people: 赵珺 / 李倩 / 梁霞
-- meta: 阿姐 7/27 Fw 黄女士线索；Kimmy 7/27 已回赵珺：越南已有销售代理，一般不通过国内贸易商。你侧可关。
+### PO 155798
+- stage: tech
+- customer: WTC / Cameron
+- date: 7/24
+- meta: 电位电阻王工已确认需要；相量/接线 tie-in 与全套图+3D 尚未正式回客户。外置结构曾导致外形图不显示电阻——需工程补全后一次说清。
+- tags: 阻塞在图纸, 待回客户
+- people: Cameron / 王俊杰 / 沈旭 / 周晓冬
+- action: 确认 tie-in → 要齐全套图+3D → 正式回 Cameron
 
-### WTC Updated Technical Data
-- priority: OK
-- tags: 已回标准图说明+附件, 晓东对接客户
-- people: 周晓冬 / 李倩 / 你已回
-- meta: 晓东 7/27 转 Wilson 要 Generic Drawings/Ordering Form；你已回说明+资料，晓东将向客户解释。
+### United Energy HWV
+- stage: qs
+- customer: United Energy / Cameron Finlayson
+- date: 7/25
+- meta: Qu-ET260012 已发（带油枕 HWVIII-400Y/72.5-10193W+CMA7）。沈工现有非标图是不带油枕版，与客户确认不一致；报价等客户反馈。
+- tags: 报价已出, 图纸版本不对齐
+- people: Cameron / 沈旭 / 周晓冬 / Colin
+- action: 带油枕图纸对齐后再跟报价反馈
 
-### HMSG Trading Process 会议确认
-- priority: OK
-- tags: 周五 7/31 9:30 已确认参加
-- people: John Lu / Anthony / Kimmy / Rose
-- meta: 玲玲本周休假；会议不含她。见上方 meetings。
+### QS2606173R2 EVN UZF
+- stage: qs
+- customer: EVN / Hoa
+- date: 7/18
+- meta: 报价与交期在谈；Hoa 嫌提货 9/5 太晚，你已 Noted 再争取工厂新提货日。
+- tags: 交期谈判中
+- people: Hoa Nguyen / 李倩
+- action: 工厂新提货日 → 回 Hoa
+
+### CLOUGH KWINANA QS260719-R0
+- stage: os
+- customer: CLOUGH / Anthony 主谈
+- date: 7/27
+- meta: OS 绝缘提到 D，Anthony 已按更新 OS 重发改价；Kimmy 请王工出 2D/3D。你旁听为主。
+- tags: OS 更新改价中, 主谈 Anthony
+- people: Anthony / Kimmy / 王工
+- action: 旁听 OS/图纸闭环，无需你主催
+
+### SANAKY 4 units QS2606175-R2
+- stage: po
+- customer: Sanaky / Trung
+- date: 7/27
+- meta: Trung 已接受 QS2606175-R2 价；要 RAL 7032、整合全套图。Kimmy 已发图，Anthony 接合同/色号。等正式 PO/合同闭环。
+- tags: 客户已接受报价, 等合同/PO
+- people: Trung / Anthony / Kimmy
+- action: Anthony 主谈合同；你侧无需重复报价
+
+### HAVEC SV 15MVA Cambodia QS2607201
+- stage: os
+- customer: HAVEC / Hoa
+- date: 7/25
+- meta: Anthony 已发 QS2607201-R0；Hoa 改 OS 倾向 12231W；樊工已出电动机构二次图。主谈 Anthony/Kimmy。
+- tags: OS 改型中, 主谈 Anthony
+- people: Anthony / Hoa / 樊顺东
+- action: 旁听 OS 定稿
+
+### EEMC PO26-025
+- stage: sc
+- customer: EEMC / Linh
+- date: 7/23
+- meta: ERP 已投产，预估提货约 8/12。销售合同 draft 7/23 已发 Linh，待客户确认签署。
+- tags: 已投产, 合同待签
+- people: Linh / Hoa / 李倩
+- action: 盯合同确认；交期变化再同步
 
 ### QS2607196R1 HAVEC 合同+投产
-- priority: OK
-- tags: 客户已签合同, Kimmy 将投产
+- stage: sc
+- customer: HAVEC / Hoa
+- date: 7/24
+- meta: Hoa 已回 signed contract + 图纸 OK；Kimmy will process to production soon。
+- tags: 合同已签, 待投产落地
 - people: Hoa / 李倩 / Anthony
-- meta: Hoa 7/24 回 signed contract + 图纸 OK；Kimmy will process to production soon。
+- action: 确认 Kimmy 投产完成即可关单
 
-### EEMC PO26-028 报价
-- priority: OK
-- tags: Anthony 已发 QS2607203+QS2607204
-- people: Linh / Anthony
-- meta: OCTC WSG 与 SHZV 预算价均已回；你旁听即可
+### PX-360 PO 26005587
+- stage: sc
+- customer: Bambang Djaja / Yoeli
+- date: 7/23
+- meta: 外形/3D 已更新；卡在 Yoeli 确认后才能投产。Kimmy 主催。
+- tags: 待客户确认图, 投产前门
+- people: Yoeli / Kimmy
+- action: 旁听 Yoeli 确认 → 投产
 
-### United Energy HWV 报价首发
-- priority: OK
-- tags: Qu-ET260012 已发客户
-- people: Cameron Finlayson / 你已发
-- meta: 带油枕确认后已报价；图纸对齐见上方 todo
-
-### BSHV 品名修订首轮
-- priority: OK
-- tags: CI/PL/Form E 已改正品名重发
-- people: Trung / 你已发
-- meta: 客户仍要求 fix 见上方 todo
-
-### PO 155798 王工确认电位电阻
-- priority: OK
-- tags: 王工已回需要电位电阻
-- people: 王俊杰
-- meta: 回客户+补图见上方 todo
+### BSHV-HUAMING/2605/02
+- stage: docs
+- customer: Sanaky / Trung
+- date: 7/26
+- meta: 品名改为 De-energized Tap Changer 后 CI/PL/Form E 已重发一轮；Trung 仍要求 fix 标红处。玲玲本周休假，改件未闭环。
+- tags: 单证待改, 玲玲休假
+- people: 沈丽玲 / 李倩 / Trung
+- action: 改完 CI/PL/Form E 立刻重发 Trung
 
 ### EEMC PO26-667 正本
-- priority: OK
-- tags: draft CO 客户已确认, 正本/Form E 玲玲已 FYI
-- people: Hà Lâm Phú / 沈丽玲 / 你已转发
-- meta: Phu 确认 draft 无问题要 original；玲玲已出正式件路径
-
-### PO26-025 投产+合同草稿
-- priority: OK
-- tags: ERP 已投产, 草稿合同已发
-- people: 李倩 / Linh
-- meta: 提货约 8/12；合同待客户见 todo
-
-### Statement of Account EEMC
-- priority: OK
-- tags: 已发 SOA 对账表
-- people: Hà (EEMC) / 你已回
-- meta: HMSG + 海外清晰表 7/21 已发
-
-### Employment Contract CPF
-- priority: OK
-- tags: 合同 CPF 已 Noted
-- people: Grace Low / 你已 Noted
-
-### QS2605154-R1 DETC
-- priority: OK
-- tags: 已回 S/Q 管不可互换
-- people: Trung / 你已回
+- stage: docs
+- customer: EEMC / Hà Lâm Phú
+- date: 7/21
+- meta: draft CO 客户已确认要 original；玲玲已走正式件路径（Form E 等 FYI）。
+- tags: 正本单证路径中
+- people: Hà Lâm Phú / 沈丽玲
+- action: 玲玲出正本后确认客户收妥即可
 
 ## fyi | 知会
 
 ### SANAKY 4 units QS2606175-R2
 - priority: FYI
 - date: 7/27
-- meta: Trung 已接受 QS2606175-R2 价；要 RAL 7032、整合全套图。Kimmy 已发图，Anthony 接合同/色号。主谈 Anthony/Kimmy。
+- meta: Trung 已接受 QS2606175-R2 价；要 RAL 7032、整合全套图。Kimmy 已发图，Anthony 接合同/色号。主谈 Anthony/Kimmy。订单阶段见上方「等 PO」。
 - tags: 客户已接受报价, 主谈 Anthony
 - people: Trung / Anthony / Kimmy / Khanh
 
@@ -222,3 +245,50 @@ meetings:
 - meta: Kimmy 回 Yoeli：电流变化范围过大，SHZV 无法满足。Kimmy 主谈。
 - tags: 工程电流范围风险, Kimmy 主谈
 - people: Yoeli / 李倩
+
+### 越南客户购开关（阿姐转发）
+- priority: FYI
+- date: 7/27
+- meta: 阿姐 7/27 Fw 黄女士线索；Kimmy 7/27 已回赵珺：越南已有销售代理，一般不通过国内贸易商。你侧可关。
+- tags: Kimmy 已回有越南代理, 不走国内贸易商
+- people: 赵珺 / 李倩 / 梁霞
+
+### WTC Updated Technical Data
+- priority: FYI
+- date: 7/27
+- meta: 晓东 7/27 转 Wilson 要 Generic Drawings/Ordering Form；你已回说明+资料，晓东将向客户解释。
+- tags: 已回标准图说明+附件, 晓东对接客户
+- people: 周晓冬 / 李倩
+
+### HMSG Trading Process 会议确认
+- priority: FYI
+- date: 7/27
+- meta: 周五 7/31 9:30 已确认参加；玲玲本周休假，会议不含她。见上方 meetings。
+- tags: 周五 7/31 9:30 已确认参加
+- people: John Lu / Anthony / Kimmy / Rose
+
+### EEMC PO26-028 报价
+- priority: FYI
+- date: 7/24
+- meta: OCTC WSG 与 SHZV 预算价均已回；你旁听即可。
+- tags: Anthony 已发 QS2607203+QS2607204
+- people: Linh / Anthony
+
+### Statement of Account EEMC
+- priority: FYI
+- date: 7/21
+- meta: HMSG + 海外清晰表 7/21 已发。
+- tags: 已发 SOA 对账表
+- people: Hà (EEMC)
+
+### Employment Contract CPF
+- priority: FYI
+- meta: 合同 CPF 已 Noted。
+- tags: 合同 CPF 已 Noted
+- people: Grace Low
+
+### QS2605154-R1 DETC
+- priority: FYI
+- meta: 已回 S/Q 管不可互换。
+- tags: 已回 S/Q 管不可互换
+- people: Trung

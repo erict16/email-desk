@@ -1,8 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import {
+  type OrderStageId,
+  parseOrderStage,
+} from "@/lib/order-stages";
 
-export type Priority = "P0" | "P1" | "P2" | "OK" | "FYI";
+export type Priority = "P0" | "P1" | "P2" | "OK" | "FYI" | "ORDER";
 
 export type BoardItem = {
   title: string;
@@ -12,6 +16,10 @@ export type BoardItem = {
   date?: string;
   tags?: string[];
   people?: string;
+  /** Current order pipeline stage — present on project order cards */
+  stage?: OrderStageId;
+  /** Customer / project short name for order focus */
+  customer?: string;
 };
 
 export type BoardSection = {
@@ -30,12 +38,12 @@ export type BoardData = {
   stats: {
     urgent: number;
     follow: number;
-    done: number;
+    orders: number;
     info: number;
   };
 };
 
-const PRI = new Set(["P0", "P1", "P2", "OK", "FYI"]);
+const PRI = new Set(["P0", "P1", "P2", "OK", "FYI", "ORDER"]);
 
 /** Display tz: Beijing now; switch frontmatter tz → Asia/Singapore when abroad */
 const DEFAULT_TZ = "Asia/Shanghai";
@@ -55,26 +63,34 @@ function parseItems(block: string): BoardItem[] {
     const lines = chunk.split(/\r?\n/).map((l) => l.trim());
     const title = lines[0] || "Untitled";
     let priority: Priority = "P2";
+    let prioritySet = false;
     let meta: string | undefined;
     let action: string | undefined;
     let date: string | undefined;
     let people: string | undefined;
     let tags: string[] | undefined;
+    let stage: OrderStageId | undefined;
+    let customer: string | undefined;
 
     for (const line of lines.slice(1)) {
       const m = line.match(
-        /^-?\s*(priority|meta|action|date|people|tags)\s*:\s*(.+)$/i,
+        /^-?\s*(priority|meta|action|date|people|tags|stage|customer|next)\s*:\s*(.+)$/i,
       );
       if (!m) continue;
       const key = m[1].toLowerCase();
       const val = stripBold(m[2]);
       if (key === "priority") {
         const p = val.toUpperCase();
-        if (PRI.has(p)) priority = p as Priority;
+        if (PRI.has(p)) {
+          priority = p as Priority;
+          prioritySet = true;
+        }
       } else if (key === "meta") meta = val;
-      else if (key === "action") action = val;
+      else if (key === "action" || key === "next") action = val;
       else if (key === "date") date = val;
       else if (key === "people") people = val;
+      else if (key === "customer") customer = val;
+      else if (key === "stage") stage = parseOrderStage(val);
       else if (key === "tags")
         tags = val
           .split(/[,|]/)
@@ -82,7 +98,31 @@ function parseItems(block: string): BoardItem[] {
           .filter(Boolean);
     }
 
-    items.push({ title, priority, meta, action, date, people, tags });
+    // Cards with stage: become ORDER unless explicitly P0/P1/P2 (rare dual use)
+    if (stage && !prioritySet) {
+      priority = "ORDER";
+    } else if (
+      stage &&
+      prioritySet &&
+      priority !== "P0" &&
+      priority !== "P1" &&
+      priority !== "P2" &&
+      priority !== "FYI"
+    ) {
+      priority = "ORDER";
+    }
+
+    items.push({
+      title,
+      priority,
+      meta,
+      action,
+      date,
+      people,
+      tags,
+      stage,
+      customer,
+    });
   }
   return items;
 }
@@ -110,16 +150,6 @@ function formatUpdated(raw: unknown, tz: string): string {
   if (raw == null || raw === "") return "";
 
   if (raw instanceof Date && !Number.isNaN(raw.getTime())) {
-    const parts = new Intl.DateTimeFormat("en-US", {
-      timeZone: tz,
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    }).formatToParts(raw);
-    const get = (type: string) =>
-      parts.find((p) => p.type === type)?.value || "";
-    const hour = Number(get("hour"));
-    // en-US hour12 gives 1-12 already; rebuild from hour cycle carefully
     const dayParts = new Intl.DateTimeFormat("en-GB", {
       timeZone: tz,
       hour: "2-digit",
@@ -171,11 +201,21 @@ export function loadBoard(): BoardData {
   }
 
   const all = sections.flatMap((s) => s.items);
+
+  // Order cards: have stage, or live in orders section, or priority ORDER
+  // Exclude pure P0/P1/P2 triage items even if they also carry stage (rare dual)
+  const isOrder = (i: BoardItem) =>
+    Boolean(i.stage) || i.priority === "ORDER" || i.priority === "OK";
+
+  // Triage blocks only count non-order priorities
+  const isTriage = (i: BoardItem) =>
+    i.priority === "P0" || i.priority === "P1" || i.priority === "P2";
+
   const stats = {
     urgent: all.filter((i) => i.priority === "P0").length,
     follow: all.filter((i) => i.priority === "P1" || i.priority === "P2")
       .length,
-    done: all.filter((i) => i.priority === "OK").length,
+    orders: all.filter((i) => isOrder(i) && !isTriage(i)).length,
     info: all.filter((i) => i.priority === "FYI").length,
   };
 
@@ -192,4 +232,12 @@ export function loadBoard(): BoardData {
     sections,
     stats,
   };
+}
+
+/** Helpers used by Board */
+export function isOrderItem(item: BoardItem): boolean {
+  if (item.priority === "P0" || item.priority === "P1" || item.priority === "P2")
+    return false;
+  if (item.priority === "FYI") return false;
+  return Boolean(item.stage) || item.priority === "ORDER" || item.priority === "OK";
 }

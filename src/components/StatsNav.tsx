@@ -2,7 +2,7 @@
 
 import { scrollToHash } from "@/lib/smooth-scroll";
 
-export type StatTone = "urgent" | "follow" | "done" | "info";
+export type StatTone = "urgent" | "follow" | "orders" | "info";
 
 export type StatItem = {
   key: string;
@@ -15,7 +15,7 @@ export type StatItem = {
 const TONE_NUM: Record<StatTone, string> = {
   urgent: "text-[var(--urgent)]",
   follow: "text-[var(--follow)]",
-  done: "text-[var(--done)]",
+  orders: "text-[var(--orders)]",
   info: "text-[var(--info)]",
 };
 
@@ -24,8 +24,8 @@ const TONE_HOVER: Record<StatTone, string> = {
     "hover:-translate-y-0.5 hover:border-[var(--urgent-border)] hover:bg-[var(--urgent-soft)] hover:shadow-md",
   follow:
     "hover:-translate-y-0.5 hover:border-[var(--follow-border)] hover:bg-[var(--follow-soft)] hover:shadow-md",
-  done:
-    "hover:-translate-y-0.5 hover:border-[var(--done-border)] hover:bg-[var(--done-soft)] hover:shadow-md",
+  orders:
+    "hover:-translate-y-0.5 hover:border-[var(--orders-border)] hover:bg-[var(--orders-soft)] hover:shadow-md",
   info:
     "hover:-translate-y-0.5 hover:border-[var(--info-border)] hover:bg-[var(--info-soft)] hover:shadow-md",
 };
