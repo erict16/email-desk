@@ -3,63 +3,60 @@ import {
   ORDER_STAGES,
   stageDef,
   stageIndex,
+  stageProgress,
   type OrderStageId,
 } from "@/lib/order-stages";
 
 function tagClass(label: string): string {
   const t = label.trim();
-  if (/需尽快|优先|紧急|催你|阻塞|卡住/.test(t)) return "bg-rose-100 text-rose-800";
+  if (/需尽快|优先|紧急|催你|阻塞|卡住/.test(t))
+    return "bg-[var(--urgent-soft)] text-[var(--urgent)]";
   if (/待你|待发|待打包|待放行|待补|你欠|等你/.test(t))
-    return "bg-orange-100 text-orange-900";
-  if (/待客户|等客户|客户已|3D|外形|OS|图纸|议价|谈判|等PO|等 PO/.test(t))
-    return "bg-amber-100 text-amber-900";
+    return "bg-[var(--follow-soft)] text-[var(--follow)]";
+  if (/待客户|等客户|客户已|3D|外形|OS|图纸|议价|谈判|等PO|等 PO|PO/.test(t))
+    return "bg-[var(--follow-soft)] text-[var(--follow)]";
   if (/待工程|待工厂|待沈工|等工程|等工厂|评审|型号|提货日|管位/.test(t))
-    return "bg-sky-100 text-sky-800";
+    return "bg-[var(--orders-soft)] text-[var(--orders)]";
   if (/已发|已回|已转|已下|已用|已出|已 Noted|已确认|够用|关闭|投产|已签/.test(t))
-    return "bg-emerald-100 text-emerald-800";
+    return "bg-[var(--paper-2)] text-[var(--muted)]";
   if (/知会|旁听|非你|非主|必读|流程|培训|合规|转 Kimmy|会议/.test(t))
-    return "bg-slate-100 text-slate-700";
+    return "bg-[var(--paper-2)] text-[var(--muted)]";
   if (/缺|售后|物流|补发|顶盖|单证|CI|PL|CO/.test(t))
-    return "bg-violet-100 text-violet-800";
-  return "bg-neutral-100 text-neutral-700";
+    return "bg-[var(--orders-soft)] text-[var(--orders)]";
+  return "bg-[var(--paper-2)] text-[var(--muted)]";
 }
 
-/** Past muted · current solid · future ghost */
-function StagePipeline({ current }: { current: OrderStageId }) {
+/** Compact progress: dots + fraction, not full pipeline labels */
+function StageProgress({ current }: { current: OrderStageId }) {
   const cur = stageIndex(current);
+  const { current: n, total } = stageProgress(current);
+  const def = stageDef(current);
   return (
     <div
-      className="mt-2.5 flex flex-wrap items-center gap-0.5"
-      aria-label={`当前：${stageDef(current).label}`}
+      className="mt-2 flex items-center gap-2"
+      aria-label={`${def.label} · ${n}/${total}`}
     >
-      {ORDER_STAGES.map((s, i) => {
-        const isPast = i < cur;
-        const isCurrent = i === cur;
-        return (
-          <div key={s.id} className="flex items-center gap-0.5">
-            {i > 0 && (
-              <span
-                className={`mx-0.5 h-px w-1.5 sm:w-2 ${
-                  isPast || isCurrent ? "bg-indigo-300" : "bg-neutral-200"
-                }`}
-                aria-hidden
-              />
-            )}
-            <span
-              className={`inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold tracking-wide sm:px-1.5 sm:text-[10px] ${
-                isCurrent
-                  ? "bg-indigo-600 text-white"
-                  : isPast
-                    ? "bg-indigo-100 text-indigo-800"
-                    : "bg-neutral-100 text-neutral-400"
-              }`}
-              title={s.label}
-            >
-              {s.short}
-            </span>
-          </div>
-        );
-      })}
+      <div className="flex items-center gap-1" aria-hidden>
+        {ORDER_STAGES.map((s, i) => (
+          <span
+            key={s.id}
+            className="h-1.5 w-1.5 rounded-full"
+            style={{
+              background:
+                i < cur
+                  ? "var(--orders)"
+                  : i === cur
+                    ? "var(--ink)"
+                    : "var(--line-strong)",
+              opacity: i === cur ? 1 : i < cur ? 0.55 : 0.45,
+            }}
+            title={s.label}
+          />
+        ))}
+      </div>
+      <span className="text-[11px] tabular-nums text-[var(--faint)]">
+        {n}/{total}
+      </span>
     </div>
   );
 }
@@ -75,55 +72,52 @@ export default function OrderCard({
   const def = stage ? stageDef(stage) : null;
 
   return (
-    <article className="rounded-xl border border-neutral-200/90 bg-white px-4 py-3 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950">
+    <article className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3 shadow-[var(--shadow-whisper)] transition-[border-color,box-shadow] duration-150 hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-card)]">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3
-            className="select-text text-[0.95rem] font-semibold leading-snug text-neutral-900 dark:text-neutral-50"
+            className="select-text text-[0.9375rem] font-semibold leading-snug tracking-tight text-[var(--ink)]"
             title="可复制标题 → 邮箱搜索"
           >
-            <span className="mr-1.5 font-semibold tabular-nums text-neutral-400">
+            <span className="mr-1.5 font-medium tabular-nums text-[var(--faint)]">
               {index}.
             </span>
             {item.title}
           </h3>
-          {(item.customer || def) && (
-            <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-neutral-500">
-              {item.customer && (
-                <span className="font-medium text-neutral-700 dark:text-neutral-300">
-                  {item.customer}
-                </span>
-              )}
-              {def && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-800 dark:bg-indigo-950/50 dark:text-indigo-200">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
-                  {def.label}
-                </span>
-              )}
-            </p>
-          )}
+          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-[var(--muted)]">
+            {item.customer && (
+              <span className="font-medium text-[var(--ink)]/80">
+                {item.customer}
+              </span>
+            )}
+            {def && (
+              <span className="inline-flex items-center rounded-full bg-[var(--paper-2)] px-2 py-0.5 text-[10px] font-semibold tracking-wide text-[var(--ink)]">
+                {def.label}
+              </span>
+            )}
+          </div>
         </div>
         {item.date && (
-          <span className="shrink-0 pt-0.5 text-[11px] tabular-nums text-neutral-400">
+          <span className="shrink-0 pt-0.5 text-[11px] tabular-nums text-[var(--faint)]">
             {item.date}
           </span>
         )}
       </div>
 
-      {stage && <StagePipeline current={stage} />}
+      {stage && <StageProgress current={stage} />}
 
       {item.meta && (
-        <p className="mt-2 text-[13px] leading-snug text-neutral-600 dark:text-neutral-400">
+        <p className="mt-2 text-[13px] leading-snug text-[var(--muted)]">
           {item.meta}
         </p>
       )}
 
       {item.tags && item.tags.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-1.5">
+        <div className="mt-2 flex flex-wrap gap-1">
           {item.tags.map((t) => (
             <span
               key={t}
-              className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-medium ${tagClass(t)}`}
+              className={`inline-flex items-center rounded-[var(--radius-sm)] px-1.5 py-0.5 text-[10px] font-medium ${tagClass(t)}`}
             >
               {t}
             </span>
@@ -132,18 +126,16 @@ export default function OrderCard({
       )}
 
       {item.people && (
-        <p className="mt-1.5 text-[12px] text-neutral-500 dark:text-neutral-400">
-          发件人：{item.people}
+        <p className="mt-1.5 text-[11px] text-[var(--faint)]">
+          {item.people}
         </p>
       )}
 
       {item.action && (
-        <div className="mt-2 rounded-lg border border-indigo-200/80 bg-indigo-50 px-3 py-2 text-[13px] leading-snug text-indigo-950 dark:border-indigo-900/40 dark:bg-indigo-950/30 dark:text-indigo-100">
-          <span className="font-semibold text-indigo-900 dark:text-indigo-200">
-            卡点 ·{" "}
-          </span>
+        <p className="mt-2 border-l-2 border-[var(--orders)] pl-2.5 text-[13px] leading-snug text-[var(--ink)]">
+          <span className="font-medium text-[var(--orders)]">卡点 </span>
           {item.action}
-        </div>
+        </p>
       )}
     </article>
   );

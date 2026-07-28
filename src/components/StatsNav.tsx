@@ -12,52 +12,43 @@ export type StatItem = {
   value: number;
 };
 
-const TONE_NUM: Record<StatTone, string> = {
-  urgent: "text-[var(--urgent)]",
-  follow: "text-[var(--follow)]",
-  orders: "text-[var(--orders)]",
-  info: "text-[var(--info)]",
-};
-
-const TONE_HOVER: Record<StatTone, string> = {
-  urgent:
-    "hover:-translate-y-0.5 hover:border-[var(--urgent-border)] hover:bg-[var(--urgent-soft)] hover:shadow-md",
-  follow:
-    "hover:-translate-y-0.5 hover:border-[var(--follow-border)] hover:bg-[var(--follow-soft)] hover:shadow-md",
-  orders:
-    "hover:-translate-y-0.5 hover:border-[var(--orders-border)] hover:bg-[var(--orders-soft)] hover:shadow-md",
-  info:
-    "hover:-translate-y-0.5 hover:border-[var(--info-border)] hover:bg-[var(--info-soft)] hover:shadow-md",
+const TONE: Record<StatTone, string> = {
+  urgent: "var(--urgent)",
+  follow: "var(--follow)",
+  orders: "var(--orders)",
+  info: "var(--info)",
 };
 
 export default function StatsNav({ stats }: { stats: StatItem[] }) {
   return (
     <section
-      className="mb-7 grid grid-cols-4 gap-2.5 sm:gap-3"
+      className="mb-8 overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] shadow-[var(--shadow-whisper)]"
       aria-label="总览"
     >
-      {stats.map((s) => (
-        <a
-          key={s.key}
-          href={`#${s.id}`}
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToHash(`#${s.id}`, 280);
-            // keep URL in sync without native jump
-            history.replaceState(null, "", `#${s.id}`);
-          }}
-          className={`rounded-xl border border-[var(--line)] bg-[var(--card)] px-2 py-3.5 text-center sm:px-3 transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 active:scale-[0.98] ${TONE_HOVER[s.tone]}`}
-        >
-          <div
-            className={`text-[1.85rem] font-bold leading-none tracking-tight tabular-nums ${TONE_NUM[s.tone]}`}
+      <div className="grid grid-cols-4 divide-x divide-[var(--line)]">
+        {stats.map((s) => (
+          <a
+            key={s.key}
+            href={`#${s.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToHash(`#${s.id}`, 280);
+              history.replaceState(null, "", `#${s.id}`);
+            }}
+            className="group flex flex-col items-start gap-1 px-3 py-3.5 transition-colors duration-150 hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] focus-visible:ring-inset sm:px-4 sm:py-4"
           >
-            {s.value}
-          </div>
-          <div className="mt-1.5 text-[10px] font-medium leading-tight text-[var(--muted)] sm:text-[11px]">
-            {s.label}
-          </div>
-        </a>
-      ))}
+            <span
+              className="text-[1.65rem] font-semibold leading-none tracking-tight tabular-nums sm:text-[1.85rem]"
+              style={{ color: TONE[s.tone] }}
+            >
+              {s.value}
+            </span>
+            <span className="text-[10px] font-medium leading-tight text-[var(--muted)] sm:text-[11px]">
+              {s.label}
+            </span>
+          </a>
+        ))}
+      </div>
     </section>
   );
 }

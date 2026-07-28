@@ -1,7 +1,7 @@
 ---
 title: 邮件跟进清单
 subtitle: Eric Tan · Inbox + Sent
-updated: "2026-07-28 22:30"
+updated: "2026-07-29 10:40"
 tz: Asia/Shanghai
 meetings:
   - 周五 7/31 09:30–10:30 SST Teams — HMSG Trading Process（John/Anthony；玲玲本周休假）
@@ -130,20 +130,20 @@ meetings:
 - action: Anthony 主谈合同
 
 ### PX-360 PO 26005587
-- stage: sc
+- stage: erp
 - customer: Bambang Djaja / Yoeli
 - date: 7/23
-- meta: 已发 corrected SC（按最新 OS）。等 Yoeli 确认后投产。
-- tags: 待客户确认图
+- meta: 个别客户要 SC，已发 corrected 版。等 Yoeli 确认图后投产。
+- tags: 待客户确认图, 有SC
 - people: Yoeli / Kimmy
 - action: 确认后投产
 
 ### QS2607196R1 HAVEC 合同+投产
-- stage: sc
+- stage: erp
 - customer: HAVEC / Hoa
 - date: 7/24
 - meta: 合同已签、图纸 OK；Kimmy 说马上投产。
-- tags: 合同已签, 待投产
+- tags: 合同已签, 待投产落地
 - people: Hoa / 李倩 / Anthony
 - action: 确认 Kimmy 投产落地
 
@@ -151,7 +151,7 @@ meetings:
 - stage: erp
 - customer: EEMC / Linh
 - date: 7/23
-- meta: ERP 已投产，预估提货约 8/12。销售合同 draft 待签。
+- meta: ERP 已投产，预估提货约 8/12。draft 合同待签。
 - tags: 已投产, 合同待签
 - people: Linh / Hoa / 李倩
 - action: 合同 + 交期变化同步

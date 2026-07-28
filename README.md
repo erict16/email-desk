@@ -80,12 +80,11 @@ Tag 必须是**人话短句**，一眼知道卡在哪，**禁止**孤零零的�
 
 ### 5b. 订单跟踪
 
-按真实邮件流程排阶段（OS 常在技术沟通前；投产、提货单独成段）：
+按真实邮件流程排阶段（OS 常在技术沟通前）。**没有常规 SC 阶段**——只有个别客户要 Sales Confirmation，写在 `meta`/`tags` 即可。
 
 ```text
-询价                  成交              履约
-OS → 技术 → QS   →   等PO → SC   →   ERP投产 → 单证 → 完工提货
-os   tech   qs       po    sc        erp      docs   ship
+OS → 技术 → QS → 等PO → ERP投产 → 单证 → 完工提货
+os   tech   qs   po     erp      docs   ship
 ```
 
 | `stage:` | 含义 |
@@ -94,10 +93,11 @@ os   tech   qs       po    sc        erp      docs   ship
 | `tech` / `技术沟通` | 图纸、参数、非标 |
 | `qs` / `报价` | QS 报价 / 改价 |
 | `po` / `等PO` | 等客户正式 PO |
-| `sc` / `销售确认` | SC / 合同签署 |
-| `erp` / `投产` | ERP 已下投产、生产中 |
+| `erp` / `投产` | ERP 已下投产、生产中（含合同已签待投产） |
 | `docs` / `CI/PL/CO` / `单证` | 发票、装箱单、产地证 |
 | `ship` / `提货` / `完工提货` | 生产完工、客户提货/发运 |
+
+旧写法 `sc` / `销售确认` 会解析为 `erp`。
 
 ```markdown
 ## orders | 订单跟踪
