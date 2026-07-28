@@ -24,39 +24,36 @@ function tagClass(label: string): string {
   return "bg-neutral-100 text-neutral-700";
 }
 
-/**
- * Mini pipeline: past stages muted, current filled, future ghost.
- * Helps answer “where is this project?” at a glance.
- */
+/** Past muted · current solid · future ghost */
 function StagePipeline({ current }: { current: OrderStageId }) {
   const cur = stageIndex(current);
   return (
     <div
-      className="mt-3 flex flex-wrap items-center gap-1"
-      aria-label={`当前阶段：${stageDef(current).label}`}
+      className="mt-2.5 flex flex-wrap items-center gap-0.5"
+      aria-label={`当前：${stageDef(current).label}`}
     >
       {ORDER_STAGES.map((s, i) => {
         const isPast = i < cur;
         const isCurrent = i === cur;
         return (
-          <div key={s.id} className="flex items-center gap-1">
+          <div key={s.id} className="flex items-center gap-0.5">
             {i > 0 && (
               <span
-                className={`mx-0.5 h-px w-2 sm:w-3 ${
+                className={`mx-0.5 h-px w-1.5 sm:w-2 ${
                   isPast || isCurrent ? "bg-indigo-300" : "bg-neutral-200"
                 }`}
                 aria-hidden
               />
             )}
             <span
-              className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold tracking-wide sm:px-2 sm:text-[11px] ${
+              className={`inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold tracking-wide sm:px-1.5 sm:text-[10px] ${
                 isCurrent
-                  ? "bg-indigo-600 text-white shadow-sm"
+                  ? "bg-indigo-600 text-white"
                   : isPast
                     ? "bg-indigo-100 text-indigo-800"
                     : "bg-neutral-100 text-neutral-400"
               }`}
-              title={s.hint}
+              title={s.label}
             >
               {s.short}
             </span>
@@ -78,7 +75,7 @@ export default function OrderCard({
   const def = stage ? stageDef(stage) : null;
 
   return (
-    <article className="rounded-xl border border-neutral-200/90 bg-white px-4 py-3.5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950">
+    <article className="rounded-xl border border-neutral-200/90 bg-white px-4 py-3 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3
@@ -101,9 +98,6 @@ export default function OrderCard({
                 <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-800 dark:bg-indigo-950/50 dark:text-indigo-200">
                   <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
                   {def.label}
-                  <span className="font-normal text-indigo-600/80 dark:text-indigo-300/80">
-                    · {def.hint}
-                  </span>
                 </span>
               )}
             </p>
@@ -119,7 +113,7 @@ export default function OrderCard({
       {stage && <StagePipeline current={stage} />}
 
       {item.meta && (
-        <p className="mt-2.5 text-[13px] leading-relaxed text-neutral-600 dark:text-neutral-400">
+        <p className="mt-2 text-[13px] leading-snug text-neutral-600 dark:text-neutral-400">
           {item.meta}
         </p>
       )}
@@ -139,12 +133,12 @@ export default function OrderCard({
 
       {item.people && (
         <p className="mt-1.5 text-[12px] text-neutral-500 dark:text-neutral-400">
-          相关：{item.people}
+          发件人：{item.people}
         </p>
       )}
 
       {item.action && (
-        <div className="mt-2.5 rounded-lg border border-indigo-200/80 bg-indigo-50 px-3 py-2.5 text-[13px] leading-relaxed text-indigo-950 dark:border-indigo-900/40 dark:bg-indigo-950/30 dark:text-indigo-100">
+        <div className="mt-2 rounded-lg border border-indigo-200/80 bg-indigo-50 px-3 py-2 text-[13px] leading-snug text-indigo-950 dark:border-indigo-900/40 dark:bg-indigo-950/30 dark:text-indigo-100">
           <span className="font-semibold text-indigo-900 dark:text-indigo-200">
             卡点 ·{" "}
           </span>

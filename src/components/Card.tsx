@@ -42,7 +42,7 @@ export default function Card({
 
   return (
     <article
-      className={`rounded-xl border border-neutral-200/90 bg-white px-4 py-3.5 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950 ${
+      className={`rounded-xl border border-neutral-200/90 bg-white px-4 py-3 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-950 ${
         showStripe
           ? "border-l-[3px] border-l-[var(--urgent)]"
           : ""
@@ -66,7 +66,7 @@ export default function Card({
       </div>
 
       {item.meta && (
-        <p className="mt-1.5 text-[13px] leading-relaxed text-neutral-600 dark:text-neutral-400">
+        <p className="mt-1.5 text-[13px] leading-snug text-neutral-600 dark:text-neutral-400">
           {item.meta}
         </p>
       )}
@@ -91,7 +91,7 @@ export default function Card({
       )}
 
       {showAction && (
-        <div className="mt-2.5 rounded-lg border border-amber-200/80 bg-amber-50 px-3 py-2.5 text-[13px] leading-relaxed text-amber-950 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-100">
+        <div className="mt-2 rounded-lg border border-amber-200/80 bg-amber-50 px-3 py-2 text-[13px] leading-snug text-amber-950 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-100">
           <span className="font-semibold text-amber-900 dark:text-amber-200">
             待办 ·{" "}
           </span>

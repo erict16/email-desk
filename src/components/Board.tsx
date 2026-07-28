@@ -1,6 +1,7 @@
 import type { BoardData, BoardItem, Priority } from "@/lib/parse-board";
 import { isOrderItem } from "@/lib/parse-board";
 import {
+  ORDER_PHASES,
   ORDER_STAGES,
   compareByStageThenTitle,
   type OrderStageId,
@@ -10,10 +11,7 @@ import OrderCard from "@/components/OrderCard";
 import AppHeader from "@/components/AppHeader";
 import StatsNav from "@/components/StatsNav";
 
-/**
- * Order: 紧急 → 需跟进 → 订单跟踪 → 知会
- * 订单跟踪 replaces 已推进 — portfolio view by commercial stage
- */
+/** 紧急 → 需跟进 → 订单跟踪 → 知会 */
 const TRIAGE = [
   {
     key: "urgent" as const,
@@ -22,8 +20,6 @@ const TRIAGE = [
     tone: "urgent" as const,
     match: (p: Priority) => p === "P0",
     sectionTitle: "紧急处理",
-    hideAction: false,
-    stripe: true,
   },
   {
     key: "follow" as const,
@@ -32,8 +28,6 @@ const TRIAGE = [
     tone: "follow" as const,
     match: (p: Priority) => p === "P1" || p === "P2",
     sectionTitle: "需跟进",
-    hideAction: false,
-    stripe: false,
   },
   {
     key: "orders" as const,
@@ -49,8 +43,6 @@ const TRIAGE = [
     tone: "info" as const,
     match: (p: Priority) => p === "FYI",
     sectionTitle: "知会",
-    hideAction: true,
-    stripe: false,
   },
 ];
 
@@ -95,7 +87,7 @@ function SectionMark({ tone }: { tone: string }) {
   );
 }
 
-function OrderStageGroup({
+function StageBucket({
   stageId,
   items,
   startIndex,
@@ -107,17 +99,17 @@ function OrderStageGroup({
   const def = ORDER_STAGES.find((s) => s.id === stageId)!;
   let idx = startIndex;
   return (
-    <div className="mb-5 last:mb-0">
+    <div className="mb-4 last:mb-0">
       <div className="mb-2 flex items-baseline gap-2">
-        <h3 className="text-[13px] font-semibold text-indigo-900 dark:text-indigo-200">
+        <h4 className="text-[13px] font-semibold text-indigo-900 dark:text-indigo-200">
           {def.label}
-        </h3>
+        </h4>
         <span className="text-[11px] text-neutral-400">{def.hint}</span>
         <span className="text-[11px] font-medium tabular-nums text-neutral-400">
           {items.length}
         </span>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {items.map((item) => {
           idx += 1;
           return (
@@ -160,7 +152,7 @@ export default function Board({ board }: { board: BoardData }) {
         id="email-desk-print"
         className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6"
       >
-        <header className="mb-7">
+        <header className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight text-[var(--fg)]">
             {board.title}
           </h1>
@@ -175,15 +167,15 @@ export default function Board({ board }: { board: BoardData }) {
         <StatsNav stats={statItems} />
 
         {board.meetings.length > 0 && (
-          <section className="mb-8 rounded-xl border border-[var(--line)] bg-[var(--card)] p-4 transition-shadow duration-200 hover:shadow-sm">
-            <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[var(--muted)]">
-              需参加的会议
+          <section className="mb-7 rounded-xl border border-[var(--line)] bg-[var(--card)] p-3.5">
+            <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--muted)]">
+              会议
             </div>
-            <ul className="space-y-2 text-sm text-[var(--fg)]">
+            <ul className="space-y-1.5 text-sm text-[var(--fg)]">
               {board.meetings.map((m, i) => (
                 <li
                   key={i}
-                  className="flex gap-2 leading-relaxed before:mt-2 before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-sky-500 before:content-['']"
+                  className="flex gap-2 leading-snug before:mt-2 before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-sky-500 before:content-['']"
                 >
                   <span>{m}</span>
                 </li>
@@ -192,7 +184,7 @@ export default function Board({ board }: { board: BoardData }) {
           </section>
         )}
 
-        <div className="space-y-9">
+        <div className="space-y-8">
           {/* 紧急 */}
           {(() => {
             const block = TRIAGE[0];
@@ -200,14 +192,14 @@ export default function Board({ board }: { board: BoardData }) {
             if (items.length === 0) return null;
             return (
               <section key={block.id} id={block.id} className="scroll-mt-20">
-                <h2 className="mb-3.5 flex items-center gap-2 border-b border-[var(--line)] pb-2.5 text-[15px] font-semibold text-[var(--fg)]">
+                <h2 className="mb-3 flex items-center gap-2 border-b border-[var(--line)] pb-2 text-[15px] font-semibold text-[var(--fg)]">
                   <SectionMark tone={block.tone} />
                   <span>{block.sectionTitle}</span>
                   <span className="text-xs font-medium tabular-nums text-neutral-400">
                     {items.length}
                   </span>
                 </h2>
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {items.map((item) => {
                     globalIndex += 1;
                     return (
@@ -232,14 +224,14 @@ export default function Board({ board }: { board: BoardData }) {
             if (items.length === 0) return null;
             return (
               <section key={block.id} id={block.id} className="scroll-mt-20">
-                <h2 className="mb-3.5 flex items-center gap-2 border-b border-[var(--line)] pb-2.5 text-[15px] font-semibold text-[var(--fg)]">
+                <h2 className="mb-3 flex items-center gap-2 border-b border-[var(--line)] pb-2 text-[15px] font-semibold text-[var(--fg)]">
                   <SectionMark tone={block.tone} />
                   <span>{block.sectionTitle}</span>
                   <span className="text-xs font-medium tabular-nums text-neutral-400">
                     {items.length}
                   </span>
                 </h2>
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {items.map((item) => {
                     globalIndex += 1;
                     return (
@@ -257,23 +249,19 @@ export default function Board({ board }: { board: BoardData }) {
             );
           })()}
 
-          {/* 订单跟踪 — replaces 已推进 */}
+          {/* 订单跟踪 — 按完成度：询价 → 成交 → 履约 */}
           {orderItems.length > 0 && (
             <section id="block-orders" className="scroll-mt-20">
-              <h2 className="mb-2 flex items-center gap-2 border-b border-[var(--line)] pb-2.5 text-[15px] font-semibold text-[var(--fg)]">
+              <h2 className="mb-3 flex items-center gap-2 border-b border-[var(--line)] pb-2 text-[15px] font-semibold text-[var(--fg)]">
                 <SectionMark tone="orders" />
                 <span>订单跟踪</span>
                 <span className="text-xs font-medium tabular-nums text-neutral-400">
                   {orderItems.length}
                 </span>
               </h2>
-              <p className="mb-4 text-[12px] leading-relaxed text-neutral-500">
-                按项目阶段看全局：技术讨论 → OS → QS → 等 PO → 销售确认 →
-                CI/PL/CO。每张卡显示当前位置与卡点，避免多单并行时丢焦点。
-              </p>
 
-              {/* Stage summary chips */}
-              <div className="mb-5 flex flex-wrap gap-1.5">
+              {/* Stage jump chips */}
+              <div className="mb-4 flex flex-wrap gap-1.5">
                 {ORDER_STAGES.map((s) => {
                   const n = orderItems.filter((i) => i.stage === s.id).length;
                   if (n === 0) return null;
@@ -290,10 +278,9 @@ export default function Board({ board }: { board: BoardData }) {
                     </a>
                   );
                 })}
-                {/* unstaged */}
                 {orderItems.filter((i) => !i.stage).length > 0 && (
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[11px] font-medium text-neutral-600">
-                    未标阶段
+                    未标
                     <span className="tabular-nums">
                       {orderItems.filter((i) => !i.stage).length}
                     </span>
@@ -301,37 +288,65 @@ export default function Board({ board }: { board: BoardData }) {
                 )}
               </div>
 
-              {ORDER_STAGES.map((s) => {
-                const items = orderItems.filter((i) => i.stage === s.id);
-                if (items.length === 0) return null;
-                const start = globalIndex;
-                globalIndex += items.length;
+              {ORDER_PHASES.map((phase) => {
+                const phaseItems = orderItems.filter(
+                  (i) => i.stage && phase.stageIds.includes(i.stage),
+                );
+                if (phaseItems.length === 0) return null;
+
                 return (
-                  <div key={s.id} id={`order-stage-${s.id}`} className="scroll-mt-24">
-                    <OrderStageGroup
-                      stageId={s.id}
-                      items={items}
-                      startIndex={start}
-                    />
+                  <div
+                    key={phase.id}
+                    id={`order-phase-${phase.id}`}
+                    className="mb-6 last:mb-0"
+                  >
+                    <div className="mb-3 flex items-center gap-2">
+                      <h3 className="text-[12px] font-semibold uppercase tracking-wide text-neutral-500">
+                        {phase.label}
+                      </h3>
+                      <span className="h-px flex-1 bg-neutral-200 dark:bg-neutral-800" />
+                      <span className="text-[11px] tabular-nums text-neutral-400">
+                        {phaseItems.length}
+                      </span>
+                    </div>
+
+                    {phase.stageIds.map((sid) => {
+                      const items = orderItems.filter((i) => i.stage === sid);
+                      if (items.length === 0) return null;
+                      const start = globalIndex;
+                      globalIndex += items.length;
+                      return (
+                        <div
+                          key={sid}
+                          id={`order-stage-${sid}`}
+                          className="scroll-mt-24"
+                        >
+                          <StageBucket
+                            stageId={sid}
+                            items={items}
+                            startIndex={start}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 );
               })}
 
-              {/* Legacy OK without stage */}
               {(() => {
                 const unstaged = orderItems.filter((i) => !i.stage);
                 if (unstaged.length === 0) return null;
                 return (
-                  <div className="mb-5">
+                  <div className="mb-4">
                     <div className="mb-2 flex items-baseline gap-2">
                       <h3 className="text-[13px] font-semibold text-neutral-600">
                         未标阶段
                       </h3>
                       <span className="text-[11px] text-neutral-400">
-                        补 stage: 字段即可归入流水线
+                        补 stage:
                       </span>
                     </div>
-                    <div className="space-y-3">
+                    <div className="space-y-2.5">
                       {unstaged.map((item) => {
                         globalIndex += 1;
                         return (
@@ -356,14 +371,14 @@ export default function Board({ board }: { board: BoardData }) {
             if (items.length === 0) return null;
             return (
               <section key={block.id} id={block.id} className="scroll-mt-20">
-                <h2 className="mb-3.5 flex items-center gap-2 border-b border-[var(--line)] pb-2.5 text-[15px] font-semibold text-[var(--fg)]">
+                <h2 className="mb-3 flex items-center gap-2 border-b border-[var(--line)] pb-2 text-[15px] font-semibold text-[var(--fg)]">
                   <SectionMark tone={block.tone} />
                   <span>{block.sectionTitle}</span>
                   <span className="text-xs font-medium tabular-nums text-neutral-400">
                     {items.length}
                   </span>
                 </h2>
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {items.map((item) => {
                     globalIndex += 1;
                     return (
