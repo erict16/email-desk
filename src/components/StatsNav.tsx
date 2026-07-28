@@ -2,7 +2,7 @@
 
 import { scrollToHash } from "@/lib/smooth-scroll";
 
-export type StatTone = "urgent" | "follow" | "orders" | "info";
+export type StatTone = "urgent" | "follow" | "orders";
 
 export type StatItem = {
   key: string;
@@ -16,16 +16,18 @@ const TONE: Record<StatTone, string> = {
   urgent: "var(--urgent)",
   follow: "var(--follow)",
   orders: "var(--orders)",
-  info: "var(--info)",
 };
 
 export default function StatsNav({ stats }: { stats: StatItem[] }) {
   return (
     <section
-      className="mb-8 overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] shadow-[var(--shadow-whisper)]"
+      className="mb-6 overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)]"
       aria-label="总览"
     >
-      <div className="grid grid-cols-4 divide-x divide-[var(--line)]">
+      <div
+        className="grid divide-x divide-[var(--line)]"
+        style={{ gridTemplateColumns: `repeat(${stats.length}, minmax(0, 1fr))` }}
+      >
         {stats.map((s) => (
           <a
             key={s.key}
@@ -35,15 +37,15 @@ export default function StatsNav({ stats }: { stats: StatItem[] }) {
               scrollToHash(`#${s.id}`, 280);
               history.replaceState(null, "", `#${s.id}`);
             }}
-            className="group flex flex-col items-start gap-1 px-3 py-3.5 transition-colors duration-150 hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] focus-visible:ring-inset sm:px-4 sm:py-4"
+            className="flex flex-col items-start gap-1 px-3 py-3.5 transition-colors duration-150 hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] focus-visible:ring-inset sm:px-4"
           >
             <span
-              className="text-[1.65rem] font-semibold leading-none tracking-tight tabular-nums sm:text-[1.85rem]"
+              className="text-[1.6rem] font-semibold leading-none tracking-tight tabular-nums sm:text-[1.75rem]"
               style={{ color: TONE[s.tone] }}
             >
               {s.value}
             </span>
-            <span className="text-[10px] font-medium leading-tight text-[var(--muted)] sm:text-[11px]">
+            <span className="text-[11px] font-medium text-[var(--muted)]">
               {s.label}
             </span>
           </a>

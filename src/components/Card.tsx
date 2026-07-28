@@ -37,7 +37,7 @@ export default function Card({
 
   return (
     <article
-      className={`rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3 shadow-[var(--shadow-whisper)] transition-[border-color,box-shadow] duration-150 hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-card)] ${
+      className={`rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3 transition-[border-color,background-color] duration-150 hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)] ${
         showStripe ? "border-l-2 border-l-[var(--urgent)]" : ""
       } ${isDone || isFyi ? "opacity-90" : ""}`}
     >

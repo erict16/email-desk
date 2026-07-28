@@ -72,7 +72,7 @@ export default function OrderCard({
   const def = stage ? stageDef(stage) : null;
 
   return (
-    <article className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3 shadow-[var(--shadow-whisper)] transition-[border-color,box-shadow] duration-150 hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-card)]">
+    <article className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3 transition-[border-color,background-color] duration-150 hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)]">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3
