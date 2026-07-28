@@ -26,7 +26,9 @@ export default function StatsNav({ stats }: { stats: StatItem[] }) {
     >
       <div
         className="grid divide-x divide-[var(--line)]"
-        style={{ gridTemplateColumns: `repeat(${stats.length}, minmax(0, 1fr))` }}
+        style={{
+          gridTemplateColumns: `repeat(${stats.length}, minmax(0, 1fr))`,
+        }}
       >
         {stats.map((s) => (
           <a
@@ -37,7 +39,7 @@ export default function StatsNav({ stats }: { stats: StatItem[] }) {
               scrollToHash(`#${s.id}`, 280);
               history.replaceState(null, "", `#${s.id}`);
             }}
-            className="flex flex-col items-start gap-1 px-3 py-3.5 transition-colors duration-150 hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] focus-visible:ring-inset sm:px-4"
+            className="flex flex-col items-start gap-1.5 px-3.5 py-3.5 transition-colors duration-150 hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] focus-visible:ring-inset sm:px-4 sm:py-4"
           >
             <span
               className="text-[1.6rem] font-semibold leading-none tracking-tight tabular-nums sm:text-[1.75rem]"
@@ -45,7 +47,7 @@ export default function StatsNav({ stats }: { stats: StatItem[] }) {
             >
               {s.value}
             </span>
-            <span className="text-[11px] font-medium text-[var(--muted)]">
+            <span className="text-[11px] font-medium leading-none text-[var(--muted)]">
               {s.label}
             </span>
           </a>

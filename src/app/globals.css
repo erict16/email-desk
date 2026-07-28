@@ -58,8 +58,18 @@
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 0 0 1px rgb(0 0 0 / 0.03);
   --radius: 10px;
   --radius-sm: 6px;
-  --banner-height: 3.5rem;
+  /* sticky pill nav: top pad + bar + breathing room below */
+  --banner-height: 4rem;
   --measure: 40rem;
+
+  /* layout rhythm — use these, not one-off px */
+  --gap-card: 0.625rem; /* between cards in a list */
+  --gap-stack: 0.5rem; /* inside a card, related lines */
+  --gap-block: 0.75rem; /* inside a card, block break (tags / action) */
+  --gap-lane: 1.5rem; /* between order stage lanes */
+  --gap-section: 2.25rem; /* between major sections */
+  --pad-card-x: 1rem;
+  --pad-card-y: 0.875rem;
 }
 
 @theme inline {

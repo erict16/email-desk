@@ -26,14 +26,13 @@ function tagClass(label: string): string {
   return "bg-[var(--paper-2)] text-[var(--muted)]";
 }
 
-/** Compact progress: dots + fraction, not full pipeline labels */
 function StageProgress({ current }: { current: OrderStageId }) {
   const cur = stageIndex(current);
   const { current: n, total } = stageProgress(current);
   const def = stageDef(current);
   return (
     <div
-      className="mt-2 flex items-center gap-2"
+      className="flex items-center gap-2"
       aria-label={`${def.label} · ${n}/${total}`}
     >
       <div className="flex items-center gap-1" aria-hidden>
@@ -54,7 +53,7 @@ function StageProgress({ current }: { current: OrderStageId }) {
           />
         ))}
       </div>
-      <span className="text-[11px] tabular-nums text-[var(--faint)]">
+      <span className="text-[11px] leading-none tabular-nums text-[var(--faint)]">
         {n}/{total}
       </span>
     </div>
@@ -72,71 +71,75 @@ export default function OrderCard({
   const def = stage ? stageDef(stage) : null;
 
   return (
-    <article className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3 transition-[border-color,background-color] duration-150 hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)]">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h3
-            className="select-text text-[0.9375rem] font-semibold leading-snug tracking-tight text-[var(--ink)]"
-            title="可复制标题 → 邮箱搜索"
-          >
-            <span className="mr-1.5 font-medium tabular-nums text-[var(--faint)]">
-              {index}.
-            </span>
-            {item.title}
-          </h3>
-          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-[var(--muted)]">
-            {item.customer && (
-              <span className="font-medium text-[var(--ink)]/80">
-                {item.customer}
+    <article className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-[var(--pad-card-x)] py-[var(--pad-card-y)] transition-[border-color,background-color] duration-150 hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)]">
+      <div className="flex flex-col gap-[var(--gap-stack)]">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3
+              className="select-text text-[0.9375rem] font-semibold leading-snug tracking-tight text-[var(--ink)]"
+              title="可复制标题 → 邮箱搜索"
+            >
+              <span className="mr-1.5 font-medium tabular-nums text-[var(--faint)]">
+                {index}.
               </span>
-            )}
-            {def && (
-              <span className="inline-flex items-center rounded-full bg-[var(--paper-2)] px-2 py-0.5 text-[10px] font-semibold tracking-wide text-[var(--ink)]">
-                {def.label}
-              </span>
+              {item.title}
+            </h3>
+            {(item.customer || def) && (
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] leading-none text-[var(--muted)]">
+                {item.customer && (
+                  <span className="font-medium text-[var(--ink)]/80">
+                    {item.customer}
+                  </span>
+                )}
+                {def && (
+                  <span className="inline-flex items-center rounded-full bg-[var(--paper-2)] px-2 py-0.5 text-[10px] font-semibold tracking-wide text-[var(--ink)]">
+                    {def.label}
+                  </span>
+                )}
+              </div>
             )}
           </div>
+          {item.date && (
+            <span className="shrink-0 pt-0.5 text-[11px] leading-none tabular-nums text-[var(--faint)]">
+              {item.date}
+            </span>
+          )}
         </div>
-        {item.date && (
-          <span className="shrink-0 pt-0.5 text-[11px] tabular-nums text-[var(--faint)]">
-            {item.date}
-          </span>
+
+        {stage && <StageProgress current={stage} />}
+
+        {item.meta && (
+          <p className="text-[13px] leading-relaxed text-[var(--muted)]">
+            {item.meta}
+          </p>
+        )}
+
+        {item.tags && item.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-0.5">
+            {item.tags.map((t) => (
+              <span
+                key={t}
+                className={`inline-flex items-center rounded-[var(--radius-sm)] px-1.5 py-0.5 text-[10px] font-medium leading-none ${tagClass(t)}`}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {item.people && (
+          <p className="text-[11px] leading-normal text-[var(--faint)]">
+            {item.people}
+          </p>
+        )}
+
+        {item.action && (
+          <p className="mt-0.5 border-l-2 border-[var(--orders)] pl-2.5 text-[13px] leading-snug text-[var(--ink)]">
+            <span className="font-medium text-[var(--orders)]">卡点 </span>
+            {item.action}
+          </p>
         )}
       </div>
-
-      {stage && <StageProgress current={stage} />}
-
-      {item.meta && (
-        <p className="mt-2 text-[13px] leading-snug text-[var(--muted)]">
-          {item.meta}
-        </p>
-      )}
-
-      {item.tags && item.tags.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-1">
-          {item.tags.map((t) => (
-            <span
-              key={t}
-              className={`inline-flex items-center rounded-[var(--radius-sm)] px-1.5 py-0.5 text-[10px] font-medium ${tagClass(t)}`}
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {item.people && (
-        <p className="mt-1.5 text-[11px] text-[var(--faint)]">
-          {item.people}
-        </p>
-      )}
-
-      {item.action && (
-        <p className="mt-2 border-l-2 border-[var(--orders)] pl-2.5 text-[13px] leading-snug text-[var(--ink)]">
-          <span className="font-medium text-[var(--orders)]">卡点 </span>
-          {item.action}
-        </p>
-      )}
     </article>
   );
 }

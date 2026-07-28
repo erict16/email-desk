@@ -52,8 +52,8 @@ export default function AppHeader({ title }: Props) {
   return (
     <>
       {/* N5 floating pill nav */}
-      <header className="print:hidden sticky top-0 z-[var(--z-sticky-nav)] px-3 pt-3 sm:px-4">
-        <div className="mx-auto flex h-11 max-w-[var(--measure)] items-center justify-between gap-3 rounded-full border border-[var(--line)] bg-white/95 px-3 shadow-[var(--shadow-whisper)] backdrop-blur-md sm:px-4 dark:bg-[var(--card)]/95">
+      <header className="print:hidden sticky top-0 z-[var(--z-sticky-nav)] px-3 pt-2.5 sm:px-4">
+        <div className="mx-auto flex h-11 max-w-[var(--measure)] items-center justify-between gap-3 rounded-full border border-[var(--line)] bg-white/95 px-3.5 shadow-[var(--shadow-whisper)] backdrop-blur-md sm:px-4 dark:bg-[var(--card)]/95">
           <a
             href="#top"
             onClick={onLogo}

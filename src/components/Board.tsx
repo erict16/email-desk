@@ -10,7 +10,7 @@ import OrderCard from "@/components/OrderCard";
 import AppHeader from "@/components/AppHeader";
 import StatsNav from "@/components/StatsNav";
 
-/** 紧急 → 需跟进 → 订单跟踪（知会已下线，减信息过载） */
+/** 紧急 → 需跟进 → 订单 */
 const TRIAGE = [
   {
     key: "urgent" as const,
@@ -53,9 +53,9 @@ function SectionHead({
         ? "var(--follow)"
         : "var(--orders)";
   return (
-    <h2 className="mb-3 flex items-baseline gap-2 border-b border-[var(--line)] pb-2">
+    <h2 className="mb-4 flex items-baseline gap-2 border-b border-[var(--line)] pb-2.5">
       <span
-        className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
+        className="mt-[0.35em] h-1.5 w-1.5 shrink-0 rounded-full"
         style={{ background: color }}
         aria-hidden
       />
@@ -81,8 +81,8 @@ function StageLane({
   const def = ORDER_STAGES.find((s) => s.id === stageId)!;
   let idx = startIndex;
   return (
-    <div className="mb-5 last:mb-0">
-      <div className="mb-2 flex items-baseline gap-2">
+    <div className="mb-[var(--gap-lane)] last:mb-0">
+      <div className="mb-2.5 flex items-baseline gap-2">
         <h3 className="text-[12px] font-semibold text-[var(--ink)]">
           {def.label}
         </h3>
@@ -91,7 +91,7 @@ function StageLane({
           {items.length}
         </span>
       </div>
-      <div className="space-y-2">
+      <div className="flex flex-col gap-[var(--gap-card)]">
         {items.map((item) => {
           idx += 1;
           return (
@@ -128,14 +128,15 @@ export default function Board({ board }: { board: BoardData }) {
 
       <main
         id="email-desk-print"
-        className="mx-auto w-full max-w-[var(--measure)] px-4 pb-14 pt-5 sm:px-6"
+        className="mx-auto w-full max-w-[var(--measure)] px-4 pb-16 pt-6 sm:px-6"
       >
-        <header className="mb-5">
-          <h1 className="text-[1.5rem] font-semibold leading-tight tracking-[-0.025em] text-[var(--ink)] sm:text-[1.65rem]">
+        {/* page intro */}
+        <header className="mb-6">
+          <h1 className="text-[1.5rem] font-semibold leading-[1.2] tracking-[-0.025em] text-[var(--ink)] sm:text-[1.65rem]">
             {board.title}
           </h1>
           {board.subtitle && (
-            <p className="mt-1 text-[13px] text-[var(--muted)]">
+            <p className="mt-1.5 text-[13px] leading-normal text-[var(--muted)]">
               {board.subtitle}
               {board.updated ? ` · ${board.updated}` : ""}
             </p>
@@ -145,15 +146,15 @@ export default function Board({ board }: { board: BoardData }) {
         <StatsNav stats={statItems} />
 
         {board.meetings.length > 0 && (
-          <section className="mb-7 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3">
-            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-[var(--faint)]">
+          <section className="mb-[var(--gap-section)] rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-4 py-3.5">
+            <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.06em] text-[var(--faint)]">
               会议
             </div>
-            <ul className="space-y-1.5 text-[13px] leading-snug text-[var(--ink)]">
+            <ul className="flex flex-col gap-2 text-[13px] leading-snug text-[var(--ink)]">
               {board.meetings.map((m, i) => (
-                <li key={i} className="flex gap-2">
+                <li key={i} className="flex gap-2.5">
                   <span
-                    className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[var(--ink)]"
+                    className="mt-[0.4em] h-1 w-1 shrink-0 rounded-full bg-[var(--ink)]"
                     aria-hidden
                   />
                   <span>{m}</span>
@@ -163,18 +164,22 @@ export default function Board({ board }: { board: BoardData }) {
           </section>
         )}
 
-        <div className="space-y-8">
+        <div className="flex flex-col gap-[var(--gap-section)]">
           {TRIAGE.filter((b) => b.key !== "orders").map((block) => {
             const items = allItems.filter((it) => block.match(it.priority));
             if (items.length === 0) return null;
             return (
-              <section key={block.id} id={block.id} className="scroll-mt-24">
+              <section
+                key={block.id}
+                id={block.id}
+                className="scroll-mt-[calc(var(--banner-height)+1rem)]"
+              >
                 <SectionHead
                   tone={block.tone}
                   title={block.sectionTitle}
                   count={items.length}
                 />
-                <div className="space-y-2">
+                <div className="flex flex-col gap-[var(--gap-card)]">
                   {items.map((item) => {
                     globalIndex += 1;
                     return (
@@ -193,14 +198,17 @@ export default function Board({ board }: { board: BoardData }) {
           })}
 
           {orderItems.length > 0 && (
-            <section id="block-orders" className="scroll-mt-24">
+            <section
+              id="block-orders"
+              className="scroll-mt-[calc(var(--banner-height)+1rem)]"
+            >
               <SectionHead
                 tone="orders"
                 title="订单"
                 count={orderItems.length}
               />
 
-              <div className="mb-3.5 flex flex-wrap gap-1.5">
+              <div className="mb-4 flex flex-wrap gap-1.5">
                 {ORDER_STAGES.map((s) => {
                   const n = orderItems.filter((i) => i.stage === s.id).length;
                   if (n === 0) return null;
@@ -208,7 +216,7 @@ export default function Board({ board }: { board: BoardData }) {
                     <a
                       key={s.id}
                       href={`#order-stage-${s.id}`}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--card)] px-2.5 py-1 text-[11px] font-medium text-[var(--ink)] transition-colors duration-150 hover:bg-[var(--paper-2)]"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--card)] px-2.5 py-1 text-[11px] font-medium leading-none text-[var(--ink)] transition-colors duration-150 hover:bg-[var(--paper-2)]"
                     >
                       {s.short}
                       <span className="tabular-nums text-[var(--faint)]">
@@ -228,7 +236,7 @@ export default function Board({ board }: { board: BoardData }) {
                   <div
                     key={s.id}
                     id={`order-stage-${s.id}`}
-                    className="scroll-mt-28"
+                    className="scroll-mt-[calc(var(--banner-height)+1.25rem)]"
                   >
                     <StageLane
                       stageId={s.id}
@@ -243,11 +251,11 @@ export default function Board({ board }: { board: BoardData }) {
                 const unstaged = orderItems.filter((i) => !i.stage);
                 if (unstaged.length === 0) return null;
                 return (
-                  <div className="mb-4">
-                    <h3 className="mb-2 text-[12px] font-semibold text-[var(--muted)]">
+                  <div>
+                    <h3 className="mb-2.5 text-[12px] font-semibold text-[var(--muted)]">
                       未标阶段
                     </h3>
-                    <div className="space-y-2">
+                    <div className="flex flex-col gap-[var(--gap-card)]">
                       {unstaged.map((item) => {
                         globalIndex += 1;
                         return (
