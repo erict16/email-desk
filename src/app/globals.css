@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
 /*
- * Hallmark · genre: modern-minimal · theme: white-desk · macrostructure: workbench-index
- * nav: N5-pill · footer: Ft2 · pre-emit: P4 H5 E5 S5 R5 V4
- * contrast: pass · tokens: pass · honest: pass
- * IA: 紧急 / 需跟进 / 订单 — 无「知会」栏，减信息过载
+ * Email Desk — warm dispatch tokens
+ * See design.md for audience, signature (action bar spine), and non-goals.
  */
 
 :root {
@@ -23,44 +21,52 @@
   --z-sticky-nav: 300;
   --z-toast: 500;
 
-  /* pure white canvas · monochrome neutrals · one cool accent */
-  --paper: #ffffff;
-  --paper-2: #f4f4f5;
-  --card: #ffffff;
-  --ink: #171717;
-  --muted: #737373;
-  --faint: #a3a3a3;
-  --line: #e5e5e5;
-  --line-strong: #d4d4d4;
+  /* warm dispatch system */
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --ink: #1a1a1a;
+  --mute: #5c5c5c;
+  --faint: #8a8a8a;
+  --line: #e6e4df;
+  --urgent: #c43c2c;
+  --action-bg: #f3ead2;
+  --action-ink: #5c4a1f;
+  --pipe: #1f4d7a;
+  --pipe-soft: #e8eef4;
+  --follow: #b86e00;
+  --radius: 6px;
+  --measure: 42rem;
 
-  --accent: #404040;
-  --accent-soft: #f5f5f5;
-  --accent-ink: #fafafa;
-  --focus: #525252;
+  /* aliases — old classnames mid-migration */
+  --paper: var(--bg);
+  --card: var(--surface);
+  --muted: var(--mute);
+  --orders: var(--pipe);
+  --orders-soft: var(--pipe-soft);
 
-  --urgent: #dc2626;
-  --urgent-soft: #fef2f2;
-  --urgent-border: #fecaca;
-  --follow: #d97706;
-  --follow-soft: #fffbeb;
-  --follow-border: #fde68a;
-  --orders: #4f46e5;
-  --orders-soft: #eef2ff;
-  --orders-border: #c7d2fe;
-
-  --bg: var(--paper);
+  /* derived / compatibility for existing components */
+  --paper-2: #efece6;
+  --line-strong: #d4d1c9;
   --fg: var(--ink);
-  --done: var(--orders);
-  --done-soft: var(--orders-soft);
+  --accent: var(--pipe);
+  --accent-soft: var(--pipe-soft);
+  --accent-ink: #fafafa;
+  --focus: var(--pipe);
+
+  --urgent-soft: #f8ebe8;
+  --urgent-border: #e8b4ad;
+  --follow-soft: #f7efdf;
+  --follow-border: #e5c98a;
+  --orders-border: #b7c9db;
+  --done: var(--pipe);
+  --done-soft: var(--pipe-soft);
   --done-border: var(--orders-border);
 
-  --shadow-whisper: 0 1px 2px rgb(0 0 0 / 0.04);
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 0 0 1px rgb(0 0 0 / 0.03);
-  --radius: 10px;
-  --radius-sm: 6px;
-  /* sticky pill nav: top pad + bar + breathing room below */
+  /* prefer 1px border; whisper only for sticky chrome */
+  --shadow-whisper: 0 1px 0 rgb(0 0 0 / 0.04);
+  --shadow-card: none;
+  --radius-sm: 4px;
   --banner-height: 4rem;
-  --measure: 40rem;
 
   /* layout rhythm — use these, not one-off px */
   --gap-card: 0.625rem; /* between cards in a list */
@@ -73,8 +79,8 @@
 }
 
 @theme inline {
-  --font-sans: "Inter", "Segoe UI", "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
@@ -90,14 +96,15 @@ body {
   overflow-x: clip;
   color: var(--ink);
   font-family: var(--font-sans);
-  background: var(--paper);
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  font-variant-numeric: tabular-nums;
 }
 
 ::selection {
-  background: #e5e5e5;
-  color: var(--ink);
+  background: var(--action-bg);
+  color: var(--action-ink);
 }
 
 :focus-visible {
@@ -107,38 +114,48 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #0a0a0a;
-    --paper-2: #171717;
-    --card: #141414;
-    --ink: #fafafa;
-    --muted: #a3a3a3;
-    --faint: #737373;
-    --line: #262626;
-    --line-strong: #404040;
+    --bg: #121110;
+    --surface: #1c1b19;
+    --ink: #f3f2ef;
+    --mute: #a3a09a;
+    --faint: #7a7770;
+    --line: #2e2c28;
+    --urgent: #e06a5c;
+    --action-bg: #3a3220;
+    --action-ink: #f0e4c0;
+    --pipe: #7aa3c9;
+    --pipe-soft: #1e2a36;
+    --follow: #d4a04a;
 
-    --accent: #d4d4d4;
-    --accent-soft: #262626;
-    --accent-ink: #0a0a0a;
-    --focus: #a3a3a3;
+    --paper: var(--bg);
+    --card: var(--surface);
+    --muted: var(--mute);
+    --orders: var(--pipe);
+    --orders-soft: var(--pipe-soft);
 
-    --urgent: #f87171;
-    --urgent-soft: rgb(220 38 38 / 0.12);
-    --urgent-border: rgb(248 113 113 / 0.35);
-    --follow: #fbbf24;
-    --follow-soft: rgb(217 119 6 / 0.12);
-    --follow-border: rgb(251 191 36 / 0.35);
-    --orders: #818cf8;
-    --orders-soft: rgb(79 70 229 / 0.14);
-    --orders-border: rgb(129 140 248 / 0.4);
+    --paper-2: #24221e;
+    --line-strong: #3d3a34;
+    --accent: var(--pipe);
+    --accent-soft: var(--pipe-soft);
+    --accent-ink: #121110;
+    --focus: var(--pipe);
 
-    --shadow-whisper: 0 1px 2px rgb(0 0 0 / 0.4);
-    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35),
-      0 0 0 1px rgb(255 255 255 / 0.04);
+    --urgent-soft: rgb(196 60 44 / 0.16);
+    --urgent-border: rgb(224 106 92 / 0.4);
+    --follow-soft: rgb(184 110 0 / 0.16);
+    --follow-border: rgb(212 160 74 / 0.4);
+    --orders-border: rgb(122 163 201 / 0.4);
+    --done: var(--pipe);
+    --done-soft: var(--pipe-soft);
+    --done-border: var(--orders-border);
+
+    --shadow-whisper: 0 1px 0 rgb(0 0 0 / 0.35);
+    --shadow-card: none;
   }
 
   ::selection {
-    background: #404040;
-    color: var(--ink);
+    background: var(--action-bg);
+    color: var(--action-ink);
   }
 }
 
