@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { SITE_NAME, siteBase } from "@/lib/brand";
 
+const HUB_URL = "https://erict16.github.io/huaming-hub/";
+const SELECTOR_URL = "https://erict16.github.io/oltc-selector/";
+
 /** Ft2 — single-line quiet footer */
 export default function SiteFooter() {
   const base = siteBase();
@@ -26,6 +29,22 @@ export default function SiteFooter() {
             className="flex flex-wrap items-center gap-x-3 gap-y-1"
             aria-label="Footer"
           >
+            <a
+              href={HUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-[var(--ink)]"
+            >
+              Hub
+            </a>
+            <a
+              href={SELECTOR_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-150 hover:text-[var(--ink)]"
+            >
+              选型
+            </a>
             <Link
               href={`${base}/privacy/`}
               className="transition-colors duration-150 hover:text-[var(--ink)]"

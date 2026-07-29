@@ -1,57 +1,32 @@
-import type { BoardData, BoardItem, Priority } from "@/lib/parse-board";
-import { isOrderItem } from "@/lib/parse-board";
+import type { BoardData, BoardItem } from "@/lib/parse-board";
+import { buildDeskView } from "@/lib/board-view";
+import { titleKey } from "@/lib/title-key";
 import {
   ORDER_STAGES,
-  compareByStageThenTitle,
+  stageDef,
   type OrderStageId,
 } from "@/lib/order-stages";
-import Card from "@/components/Card";
+import ActionCard from "@/components/ActionCard";
 import OrderCard from "@/components/OrderCard";
 import AppHeader from "@/components/AppHeader";
-import StatsNav from "@/components/StatsNav";
-
-/** 紧急 → 需跟进 → 订单 */
-const TRIAGE = [
-  {
-    key: "urgent" as const,
-    id: "block-urgent",
-    label: "紧急",
-    tone: "urgent" as const,
-    match: (p: Priority) => p === "P0",
-    sectionTitle: "紧急",
-  },
-  {
-    key: "follow" as const,
-    id: "block-follow",
-    label: "需跟进",
-    tone: "follow" as const,
-    match: (p: Priority) => p === "P1" || p === "P2",
-    sectionTitle: "需跟进",
-  },
-  {
-    key: "orders" as const,
-    id: "block-orders",
-    label: "订单",
-    tone: "orders" as const,
-    sectionTitle: "订单",
-  },
-] as const;
+import FocusStrip from "@/components/FocusStrip";
+import WorkflowKit from "@/components/WorkflowKit";
 
 function SectionHead({
   tone,
   title,
   count,
 }: {
-  tone: string;
+  tone: "urgent" | "orders" | "later";
   title: string;
   count: number;
 }) {
   const color =
     tone === "urgent"
       ? "var(--urgent)"
-      : tone === "follow"
-        ? "var(--follow)"
-        : "var(--orders)";
+      : tone === "orders"
+        ? "var(--pipe)"
+        : "var(--mute)";
   return (
     <h2 className="mb-4 flex items-baseline gap-2 border-b border-[var(--line)] pb-2.5">
       <span
@@ -73,10 +48,14 @@ function StageLane({
   stageId,
   items,
   startIndex,
+  linkedKeys,
+  hasTodayOrLater,
 }: {
   stageId: OrderStageId;
   items: BoardItem[];
   startIndex: number;
+  linkedKeys: Set<string>;
+  hasTodayOrLater: (key: string) => boolean;
 }) {
   const def = ORDER_STAGES.find((s) => s.id === stageId)!;
   let idx = startIndex;
@@ -94,8 +73,15 @@ function StageLane({
       <div className="flex flex-col gap-[var(--gap-card)]">
         {items.map((item) => {
           idx += 1;
+          const key = titleKey(item.title);
+          const hasTodayLink = linkedKeys.has(key) && hasTodayOrLater(key);
           return (
-            <OrderCard key={`order-${item.title}`} item={item} index={idx} />
+            <OrderCard
+              key={`order-${item.title}`}
+              item={item}
+              index={idx}
+              hasTodayLink={hasTodayLink}
+            />
           );
         })}
       </div>
@@ -103,24 +89,37 @@ function StageLane({
   );
 }
 
+/** Resolve pipeline stage label for a triage title, if linked. */
+function linkedStageLabel(
+  title: string,
+  orders: BoardItem[],
+  linkedKeys: Set<string>,
+): string | undefined {
+  const key = titleKey(title);
+  if (!linkedKeys.has(key)) return undefined;
+  const order = orders.find((o) => titleKey(o.title) === key);
+  if (!order?.stage) return undefined;
+  return stageDef(order.stage).label;
+}
+
 export default function Board({ board }: { board: BoardData }) {
-  const allItems: BoardItem[] = board.sections.flatMap((s) => s.items);
+  const view = buildDeskView(board);
   let globalIndex = 0;
 
-  const orderItems = allItems
-    .filter(isOrderItem)
-    .sort(compareByStageThenTitle);
+  const todayOrLaterKeys = new Set([
+    ...view.today.map((i) => titleKey(i.title)),
+    ...view.later.map((i) => titleKey(i.title)),
+  ]);
+  const hasTodayOrLater = (key: string) => todayOrLaterKeys.has(key);
 
-  const statItems = TRIAGE.map((s) => ({
-    key: s.key,
-    id: s.id,
-    label: s.label,
-    tone: s.tone,
-    value:
-      s.key === "orders"
-        ? board.stats.orders
-        : board.stats[s.key as "urgent" | "follow"],
-  }));
+  const laterCollapsed = view.later.length > 3;
+
+  // Pre-assign display indices so Later doesn't need render-time mutation.
+  const todayStart = 0;
+  const pipelineStart = view.today.length;
+  const laterStart =
+    pipelineStart +
+    view.orders.length;
 
   return (
     <div id="top" className="min-h-full bg-[var(--paper)]">
@@ -143,74 +142,56 @@ export default function Board({ board }: { board: BoardData }) {
           )}
         </header>
 
-        <StatsNav stats={statItems} />
-
-        {board.meetings.length > 0 && (
-          <section className="mb-[var(--gap-section)] rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-4 py-3.5">
-            <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.06em] text-[var(--faint)]">
-              会议
-            </div>
-            <ul className="flex flex-col gap-2 text-[13px] leading-snug text-[var(--ink)]">
-              {board.meetings.map((m, i) => (
-                <li key={i} className="flex gap-2.5">
-                  <span
-                    className="mt-[0.4em] h-1 w-1 shrink-0 rounded-full bg-[var(--ink)]"
-                    aria-hidden
-                  />
-                  <span>{m}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+        <FocusStrip meetings={view.meetings} stats={view.stats} />
 
         <div className="flex flex-col gap-[var(--gap-section)]">
-          {TRIAGE.filter((b) => b.key !== "orders").map((block) => {
-            const items = allItems.filter((it) => block.match(it.priority));
-            if (items.length === 0) return null;
-            return (
-              <section
-                key={block.id}
-                id={block.id}
-                className="scroll-mt-[calc(var(--banner-height)+1rem)]"
-              >
-                <SectionHead
-                  tone={block.tone}
-                  title={block.sectionTitle}
-                  count={items.length}
-                />
-                <div className="flex flex-col gap-[var(--gap-card)]">
-                  {items.map((item) => {
-                    globalIndex += 1;
-                    return (
-                      <Card
-                        key={`${block.id}-${item.title}`}
-                        item={item}
-                        index={globalIndex}
-                        hideAction={false}
-                        showStripe={block.key === "urgent"}
-                      />
-                    );
-                  })}
-                </div>
-              </section>
-            );
-          })}
-
-          {orderItems.length > 0 && (
+          {/* ── 今日行动 ── */}
+          {view.today.length > 0 && (
             <section
-              id="block-orders"
+              id="today"
+              className="scroll-mt-[calc(var(--banner-height)+1rem)]"
+            >
+              <SectionHead
+                tone="urgent"
+                title="今日行动"
+                count={view.today.length}
+              />
+              <div className="flex flex-col gap-[var(--gap-card)]">
+                {view.today.map((item, i) => {
+                  const linkedStage = linkedStageLabel(
+                    item.title,
+                    view.orders,
+                    view.linkedKeys,
+                  );
+                  return (
+                    <ActionCard
+                      key={`today-${item.title}`}
+                      item={item}
+                      index={todayStart + i + 1}
+                      urgent={item.priority === "P0"}
+                      linkedStage={linkedStage}
+                    />
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ── 订单管线 ── */}
+          {view.orders.length > 0 && (
+            <section
+              id="pipeline"
               className="scroll-mt-[calc(var(--banner-height)+1rem)]"
             >
               <SectionHead
                 tone="orders"
-                title="订单"
-                count={orderItems.length}
+                title="订单管线"
+                count={view.orders.length}
               />
 
               <div className="mb-4 flex flex-wrap gap-1.5">
                 {ORDER_STAGES.map((s) => {
-                  const n = orderItems.filter((i) => i.stage === s.id).length;
+                  const n = view.orders.filter((i) => i.stage === s.id).length;
                   if (n === 0) return null;
                   return (
                     <a
@@ -228,9 +209,9 @@ export default function Board({ board }: { board: BoardData }) {
               </div>
 
               {ORDER_STAGES.map((s) => {
-                const items = orderItems.filter((i) => i.stage === s.id);
+                const items = view.orders.filter((i) => i.stage === s.id);
                 if (items.length === 0) return null;
-                const start = globalIndex;
+                const start = pipelineStart + globalIndex;
                 globalIndex += items.length;
                 return (
                   <div
@@ -242,13 +223,15 @@ export default function Board({ board }: { board: BoardData }) {
                       stageId={s.id}
                       items={items}
                       startIndex={start}
+                      linkedKeys={view.linkedKeys}
+                      hasTodayOrLater={hasTodayOrLater}
                     />
                   </div>
                 );
               })}
 
               {(() => {
-                const unstaged = orderItems.filter((i) => !i.stage);
+                const unstaged = view.orders.filter((i) => !i.stage);
                 if (unstaged.length === 0) return null;
                 return (
                   <div>
@@ -256,13 +239,16 @@ export default function Board({ board }: { board: BoardData }) {
                       未标阶段
                     </h3>
                     <div className="flex flex-col gap-[var(--gap-card)]">
-                      {unstaged.map((item) => {
-                        globalIndex += 1;
+                      {unstaged.map((item, i) => {
+                        const key = titleKey(item.title);
                         return (
                           <OrderCard
                             key={`order-u-${item.title}`}
                             item={item}
-                            index={globalIndex}
+                            index={pipelineStart + globalIndex + i + 1}
+                            hasTodayLink={
+                              view.linkedKeys.has(key) && hasTodayOrLater(key)
+                            }
                           />
                         );
                       })}
@@ -272,7 +258,82 @@ export default function Board({ board }: { board: BoardData }) {
               })()}
             </section>
           )}
+
+          {/* ── 稍后 ── */}
+          {view.later.length > 0 && (
+            <section
+              id="later"
+              className="scroll-mt-[calc(var(--banner-height)+1rem)]"
+            >
+              {laterCollapsed ? (
+                <details className="group">
+                  <summary className="mb-4 flex cursor-pointer list-none items-baseline gap-2 border-b border-[var(--line)] pb-2.5 marker:content-none [&::-webkit-details-marker]:hidden">
+                    <span
+                      className="mt-[0.35em] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--mute)]"
+                      aria-hidden
+                    />
+                    <span className="text-[14px] font-semibold tracking-tight text-[var(--ink)]">
+                      稍后
+                    </span>
+                    <span className="text-[12px] tabular-nums text-[var(--faint)]">
+                      {view.later.length}
+                    </span>
+                    <span className="ml-auto text-[11px] font-medium text-[var(--faint)] group-open:hidden">
+                      展开
+                    </span>
+                    <span className="ml-auto hidden text-[11px] font-medium text-[var(--faint)] group-open:inline">
+                      收起
+                    </span>
+                  </summary>
+                  <div className="flex flex-col gap-[var(--gap-card)] opacity-90">
+                    {view.later.map((item, i) => {
+                      const linkedStage = linkedStageLabel(
+                        item.title,
+                        view.orders,
+                        view.linkedKeys,
+                      );
+                      return (
+                        <ActionCard
+                          key={`later-${item.title}`}
+                          item={item}
+                          index={laterStart + i + 1}
+                          linkedStage={linkedStage}
+                        />
+                      );
+                    })}
+                  </div>
+                </details>
+              ) : (
+                <>
+                  <SectionHead
+                    tone="later"
+                    title="稍后"
+                    count={view.later.length}
+                  />
+                  <div className="flex flex-col gap-[var(--gap-card)] opacity-90">
+                    {view.later.map((item, i) => {
+                      const linkedStage = linkedStageLabel(
+                        item.title,
+                        view.orders,
+                        view.linkedKeys,
+                      );
+                      return (
+                        <ActionCard
+                          key={`later-${item.title}`}
+                          item={item}
+                          index={laterStart + i + 1}
+                          linkedStage={linkedStage}
+                        />
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </section>
+          )}
         </div>
+
+        <WorkflowKit />
       </main>
     </div>
   );
