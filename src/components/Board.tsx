@@ -32,20 +32,20 @@ function SectionHead({
           ? "var(--pipe)"
           : "var(--mute)";
   return (
-    <h2 className="mb-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 border-b border-[var(--line)] pb-2.5">
+    <h2 className="mb-4 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 border-b border-[var(--line)] pb-3">
       <span
-        className="mt-[0.35em] h-1.5 w-1.5 shrink-0 rounded-full"
+        className="mt-[0.4em] h-2 w-0.5 shrink-0 rounded-full"
         style={{ background: color }}
         aria-hidden
       />
-      <span className="text-[14px] font-semibold tracking-tight text-[var(--ink)]">
+      <span className="text-[15px] font-semibold tracking-tight text-[var(--ink)]">
         {title}
       </span>
-      <span className="text-[12px] tabular-nums text-[var(--faint)]">
+      <span className="rounded-full bg-[var(--paper-2)] px-1.5 py-0.5 font-mono text-[11px] tabular-nums text-[var(--mute)]">
         {count}
       </span>
       {hint && (
-        <span className="w-full text-[11px] font-normal text-[var(--faint)] sm:ml-1 sm:w-auto">
+        <span className="w-full text-[11px] font-normal text-[var(--faint)] sm:ml-0.5 sm:w-auto">
           {hint}
         </span>
       )}
@@ -138,14 +138,24 @@ export default function Board({ board }: { board: BoardData }) {
         id="email-desk-print"
         className="mx-auto w-full max-w-[var(--measure)] px-4 pb-16 pt-6 sm:px-6"
       >
-        <header className="mb-6">
-          <h1 className="text-[1.5rem] font-semibold leading-[1.2] tracking-[-0.025em] text-[var(--ink)] sm:text-[1.65rem]">
+        <header className="mb-7">
+          <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--signal)]">
+            Dispatch
+          </p>
+          <h1 className="text-[1.55rem] font-semibold leading-[1.15] tracking-[-0.03em] text-[var(--ink)] sm:text-[1.75rem]">
             {board.title}
           </h1>
           {board.subtitle && (
-            <p className="mt-1.5 text-[13px] leading-normal text-[var(--muted)]">
+            <p className="mt-2 text-[13px] leading-normal text-[var(--mute)]">
               {board.subtitle}
-              {board.updated ? ` · ${board.updated}` : ""}
+              {board.updated ? (
+                <>
+                  <span className="mx-1.5 text-[var(--line-strong)]" aria-hidden>
+                    ·
+                  </span>
+                  <span className="tabular-nums">更新 {board.updated}</span>
+                </>
+              ) : null}
             </p>
           )}
         </header>

@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 /*
- * Email Desk — warm dispatch tokens
- * See design.md for audience, signature (action bar spine), and non-goals.
+ * Email Desk — cool instrument desk
+ * Cool stone canvas, teal signal, navy pipeline.
+ * See design.md
  */
 
 :root {
@@ -21,68 +22,72 @@
   --z-sticky-nav: 300;
   --z-toast: 500;
 
-  /* warm dispatch system */
-  --bg: #f7f6f3;
+  /* cool instrument desk */
+  --bg: #e8eaee;
   --surface: #ffffff;
-  --ink: #1a1a1a;
-  --mute: #5c5c5c;
-  --faint: #8a8a8a;
-  --line: #e6e4df;
-  --urgent: #c43c2c;
-  --action-bg: #f3ead2;
-  --action-ink: #5c4a1f;
-  --wait-bg: #ebe8e2;
-  --wait-ink: #5a5248;
-  --pipe: #1f4d7a;
-  --pipe-soft: #e8eef4;
-  --follow: #b86e00;
-  --radius: 6px;
-  --measure: 52rem;
+  --ink: #0b1220;
+  --mute: #5c6570;
+  --faint: #8b939e;
+  --line: #d5dae2;
+  --urgent: #c81e1e;
+  --action-bg: #dceee9;
+  --action-ink: #0a5c4d;
+  --wait-bg: #eef0f3;
+  --wait-ink: #5a616c;
+  --pipe: #1a3a6b;
+  --pipe-soft: #e6edf6;
+  --follow: #8a5a12;
+  --signal: #0f6b5c;
+  --signal-soft: #e3f2ee;
+  --mark-bg: #0f6b5c;
+  --mark-fg: #f4fbf8;
+  --mark-dot: #f0c14a;
+  --radius: 10px;
+  --measure: 48rem;
 
-  /* aliases — old classnames mid-migration */
+  /* aliases */
   --paper: var(--bg);
   --card: var(--surface);
   --muted: var(--mute);
   --orders: var(--pipe);
   --orders-soft: var(--pipe-soft);
 
-  /* derived / compatibility for existing components */
-  --paper-2: #efece6;
-  --line-strong: #d4d1c9;
+  --paper-2: #f3f4f7;
+  --line-strong: #c2c8d2;
   --fg: var(--ink);
-  --accent: var(--pipe);
-  --accent-soft: var(--pipe-soft);
+  --accent: var(--signal);
+  --accent-soft: var(--signal-soft);
   --accent-ink: #fafafa;
-  --focus: var(--pipe);
+  --focus: var(--signal);
 
-  --urgent-soft: #f8ebe8;
-  --urgent-border: #e8b4ad;
-  --follow-soft: #f7efdf;
-  --follow-border: #e5c98a;
+  --urgent-soft: #fce8e8;
+  --urgent-border: #e8b4b4;
+  --follow-soft: #f5efe4;
+  --follow-border: #d9c4a0;
   --orders-border: #b7c9db;
   --done: var(--pipe);
   --done-soft: var(--pipe-soft);
   --done-border: var(--orders-border);
 
-  /* prefer 1px border; whisper only for sticky chrome */
-  --shadow-whisper: 0 1px 0 rgb(0 0 0 / 0.04);
-  --shadow-card: none;
-  --radius-sm: 4px;
-  --banner-height: 4rem;
+  --shadow-whisper: 0 1px 0 rgb(11 18 32 / 0.06);
+  --shadow-header: 0 1px 0 rgb(11 18 32 / 0.08);
+  --shadow-card: 0 1px 2px rgb(11 18 32 / 0.04);
+  --radius-sm: 6px;
+  --banner-height: 3.25rem;
 
-  /* layout rhythm — use these, not one-off px */
-  --gap-card: 0.625rem; /* between cards in a list */
-  --gap-stack: 0.5rem; /* inside a card, related lines */
-  --gap-block: 0.75rem; /* inside a card, block break (tags / action) */
-  --gap-lane: 1.5rem; /* between order stage lanes */
-  --gap-section: 2.25rem; /* between major sections */
+  --gap-card: 0.75rem;
+  --gap-stack: 0.5rem;
+  --gap-block: 0.75rem;
+  --gap-lane: 1.75rem;
+  --gap-section: 2.5rem;
   --pad-card-x: 1rem;
-  --pad-card-y: 0.875rem;
+  --pad-card-y: 0.9rem;
 }
 
 @theme inline {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
 }
 
 html {
@@ -104,6 +109,27 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* subtle top-edge wash — instrument desk, not gradient hero */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 12rem;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(15 107 92 / 0.06) 0%,
+    transparent 100%
+  );
+}
+
+#top,
+body > div {
+  position: relative;
+  z-index: 1;
+}
+
 ::selection {
   background: var(--action-bg);
   color: var(--action-ink);
@@ -116,20 +142,25 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #121110;
-    --surface: #1c1b19;
-    --ink: #f3f2ef;
-    --mute: #a3a09a;
-    --faint: #7a7770;
-    --line: #2e2c28;
-    --urgent: #e06a5c;
-    --action-bg: #3a3220;
-    --action-ink: #f0e4c0;
-    --wait-bg: #2a2824;
-    --wait-ink: #b8b0a4;
-    --pipe: #7aa3c9;
-    --pipe-soft: #1e2a36;
-    --follow: #d4a04a;
+    --bg: #0e1116;
+    --surface: #171b22;
+    --ink: #eef1f5;
+    --mute: #9aa3ae;
+    --faint: #6f7885;
+    --line: #2a303a;
+    --urgent: #f07171;
+    --action-bg: #14352f;
+    --action-ink: #9fd9cb;
+    --wait-bg: #1c2129;
+    --wait-ink: #a0a8b3;
+    --pipe: #8eb0e0;
+    --pipe-soft: #1a2434;
+    --follow: #e0b46a;
+    --signal: #3d9f8a;
+    --signal-soft: #152a26;
+    --mark-bg: #0f6b5c;
+    --mark-fg: #f4fbf8;
+    --mark-dot: #f0c14a;
 
     --paper: var(--bg);
     --card: var(--surface);
@@ -137,24 +168,33 @@ body {
     --orders: var(--pipe);
     --orders-soft: var(--pipe-soft);
 
-    --paper-2: #24221e;
-    --line-strong: #3d3a34;
-    --accent: var(--pipe);
-    --accent-soft: var(--pipe-soft);
-    --accent-ink: #121110;
-    --focus: var(--pipe);
+    --paper-2: #1c2129;
+    --line-strong: #3a424e;
+    --accent: var(--signal);
+    --accent-soft: var(--signal-soft);
+    --accent-ink: #0e1116;
+    --focus: var(--signal);
 
-    --urgent-soft: rgb(196 60 44 / 0.16);
-    --urgent-border: rgb(224 106 92 / 0.4);
-    --follow-soft: rgb(184 110 0 / 0.16);
-    --follow-border: rgb(212 160 74 / 0.4);
-    --orders-border: rgb(122 163 201 / 0.4);
+    --urgent-soft: rgb(240 113 113 / 0.12);
+    --urgent-border: rgb(240 113 113 / 0.35);
+    --follow-soft: rgb(224 180 106 / 0.12);
+    --follow-border: rgb(224 180 106 / 0.35);
+    --orders-border: rgb(142 176 224 / 0.35);
     --done: var(--pipe);
     --done-soft: var(--pipe-soft);
     --done-border: var(--orders-border);
 
-    --shadow-whisper: 0 1px 0 rgb(0 0 0 / 0.35);
+    --shadow-whisper: 0 1px 0 rgb(0 0 0 / 0.4);
+    --shadow-header: 0 1px 0 rgb(0 0 0 / 0.45);
     --shadow-card: none;
+  }
+
+  body::before {
+    background: linear-gradient(
+      180deg,
+      rgb(61 159 138 / 0.08) 0%,
+      transparent 100%
+    );
   }
 
   ::selection {
@@ -178,6 +218,9 @@ body {
   body {
     background: #fff !important;
     color: #000 !important;
+  }
+  body::before {
+    display: none;
   }
   article {
     break-inside: avoid;

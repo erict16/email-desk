@@ -1,9 +1,9 @@
 # Email Desk — design system
 
 **Product:** Email Desk (personal dispatch board)  
-**Audience:** Eric (overseas sales) — internal; shareable status view for colleagues  
-**Date:** 2026-07-29  
-**Scope:** visual tokens + product signature; static site; `content/board.md` is the daily source  
+**Audience:** Eric (overseas sales) — internal; shareable status view  
+**Date:** 2026-07-30  
+**Scope:** cool instrument desk · geometric mark · ball-in-court IA  
 
 ---
 
@@ -12,107 +12,97 @@
 | | |
 |--|--|
 | **Who** | Eric — mail-driven sales workflow |
-| **Job** | Decide next mail action + see where each order sits in the pipeline |
-| **Open-in-3s** | Urgent count, next actions, meetings, pipeline congestion |
-| **Not** | Public todo marketing page, buyer catalogue, or mail client |
+| **Job** | Decide next mail action + see where each order sits |
+| **Open-in-3s** | 要我动 count, next spines, meetings, pipeline |
+| **Not** | Public marketing page, buyer catalogue, or mail client |
 
-Desk is a **dispatch board**: dense, scannable, action-first. It is intentionally different from Huaming Hub (cool engineering catalogue).
+---
+
+## Aesthetic direction
+
+**Cool instrument desk** — cold stone canvas, teal signal, navy pipeline.  
+Not warm cream paper, not floating-pill chrome, not purple SaaS.
+
+**Signature:** teal left-edge on「待办 ·」spines + tray-stack mark (three lines + gold notch).
 
 ---
 
 ## Tokens
 
-Warm paper canvas; one urgent red; action strip in warm gold; pipeline in deep blue. Borders 1px only — no heavy dual shadows.
-
 | Role | Token | Hex | Note |
 |------|-------|-----|------|
-| Page | `--bg` | `#f7f6f3` | Warm paper (vs Hub cool paper) |
-| Surface | `--surface` | `#ffffff` | Cards / strips |
-| Ink | `--ink` | `#1a1a1a` | Primary text |
-| Mute | `--mute` | `#5c5c5c` | Secondary text |
-| Faint | `--faint` | `#8a8a8a` | Meta / tertiary |
-| Line | `--line` | `#e6e4df` | 1px rules |
-| Urgent | `--urgent` | `#c43c2c` | P0 bar / urgent count |
-| Action bg | `--action-bg` | `#f3ead2` | Mine spine「待办 ·」 |
-| Action ink | `--action-ink` | `#5c4a1f` | Action copy on spine |
-| Wait bg | `--wait-bg` | `#ebe8e2` | Waiting spine「等待 ·」 |
-| Wait ink | `--wait-ink` | `#5a5248` | Waiting spine text |
-| Pipeline | `--pipe` | `#1f4d7a` | Stage / 卡点 |
-| Pipe soft | `--pipe-soft` | `#e8eef4` | Soft stage chips |
-| Follow | `--follow` | `#b86e00` | Cross-link / secondary |
-| Radius | `--radius` | `6px` | Cards |
-| Measure | `--measure` | `52rem` | Single-column scan width |
+| Page | `--bg` | `#e8eaee` | Cool stone |
+| Surface | `--surface` | `#ffffff` | Cards / header |
+| Ink | `--ink` | `#0b1220` | Primary text |
+| Mute | `--mute` | `#5c6570` | Secondary |
+| Faint | `--faint` | `#8b939e` | Meta |
+| Line | `--line` | `#d5dae2` | 1px rules |
+| Signal | `--signal` | `#0f6b5c` | Brand teal / PDF btn / mark |
+| Urgent | `--urgent` | `#c81e1e` | P0 rail only |
+| Action bg | `--action-bg` | `#dceee9` | 待办 spine |
+| Action ink | `--action-ink` | `#0a5c4d` | 待办 text |
+| Wait bg | `--wait-bg` | `#eef0f3` | 等待 spine |
+| Wait ink | `--wait-ink` | `#5a616c` | 等待 text |
+| Pipeline | `--pipe` | `#1a3a6b` | Stage / 卡点 |
+| Pipe soft | `--pipe-soft` | `#e6edf6` | Soft stage |
+| Follow | `--follow` | `#8a5a12` | Cross-links |
+| Radius | `--radius` | `10px` | Cards |
+| Measure | `--measure` | `48rem` | Scan width |
 
-### Migration aliases (legacy classnames)
+### Migration aliases
 
-Keep components that still reference old names from hard-crashing mid-migration:
-
-| Alias | Maps to |
-|-------|---------|
-| `--paper` | `var(--bg)` |
-| `--card` | `var(--surface)` |
-| `--muted` | `var(--mute)` |
-| `--orders` | `var(--pipe)` |
-| `--orders-soft` | `var(--pipe-soft)` |
+`--paper` → bg · `--card` → surface · `--muted` → mute · `--orders` → pipe
 
 ---
 
-## Type & chrome
+## Logo / mark
 
-- **Type:** system UI stack (`-apple-system`, `"Segoe UI"`, PingFang / Hiragino / YaHei, sans-serif). Tabular nums where counts matter; stage shorts may use mono.
-- **No** display Google fonts (tool feel, fast load).
-- **Width:** `max-width: var(--measure)` — single column.
-- **Radius:** 6px cards; progress dots round.
-- **Shadow:** none (or whisper at most); prefer **1px border** on `--line`.
-- **Accent ≤ 5%** of UI surface; urgent and action bars carry the signal.
+Geometric **tray stack** (three horizontal lines + gold signal dot) on teal tile.
 
----
-
-## Signature element
-
-**「待办 / 卡点」action bar spine** — every card’s visual backbone is the next-step line (warm `--action-bg` + strong action copy). Focus-strip urgent counts use `--urgent`. The whole board should read as “what do I do next?” not a generic kanban skin.
+- Header: SVG `DeskMark` (currentColor-friendly CSS vars)
+- Favicon / PWA: `python scripts/icons/build-mark.py` (or `.venv-icons`)
+- Bump `ASSET_V` in `src/lib/brand.ts` after icon ship
 
 ---
 
-## Product layers (IA reminder)
+## Chrome
+
+| Element | Treatment |
+|---------|-----------|
+| **Header** | Full-width sticky surface, hairline bottom, mark + wordmark + 邮件调度, teal PDF |
+| **Footer** | Surface band, mark + short blurb, Tools / Legal columns |
+| **Focus strip** | Four separate chips with top tone bar (not one heavy divided card) |
+| **Cards** | Soft shadow whisper, spine with left edge accent |
+
+---
+
+## Product layers (IA)
 
 | Layer | Question | Source |
 |-------|----------|--------|
-| **要我动** | What must Eric reply / chase / send **now**? | P0/P1 **and not** waiting |
-| **等对方** | Ball with customer / factory / colleague | `ball: them` or non-empty `wait:` |
-| **订单管线** | Where is each order (OS→…→ship)? | `orders` + `stage:` |
-| **稍后** | Optional watch | P2 **and not** waiting |
-| **会** | Meetings this week | frontmatter `meetings:` |
+| **要我动** | Act now? | P0/P1 and not waiting |
+| **等对方** | Ball elsewhere? | `ball: them` or `wait:` |
+| **订单管线** | Stage? | `stage:` |
+| **稍后** | Optional | P2 not waiting |
+| **会** | Meetings | frontmatter |
 
-Hard rules: title = mailbox search string; mine = you act; wait = someone else holds the ball; order = project stage; spine (`待办` / `等待` / `卡点`) is the card’s main sentence.
-
-### Waiting detection
-
-1. `ball: them` / `球: 对方` → 等对方  
-2. `ball: me` / `球: 我` → 要我动 (even if `wait:` set)  
-3. Non-empty `wait:` / `等待:` → 等对方  
-4. Neither → P0/P1 要我动, P2 稍后  
-
-Red left bar: **要我动 ∩ P0 only** (never on waiting cards).
+Red bar: **要我动 ∩ P0 only**.
 
 ---
 
 ## Non-goals
 
-- No Spark / enterprise mail API; no live mailbox sync  
-- No quote calc, product selection, or send-mail UI in Desk  
-- No 7-column desktop Kanban as primary view (phone / narrow is a main surface)  
-- No FYI / 知会 column regression  
-- No forced `board.md` field renames (optional fields only; old fields keep parsing)  
-- No purple gradients, bento card walls, glassmorphism, heavy shadows  
-- No Hub-style dark bands or marketing hero treatment  
-- No amount / secret attachment content on the public static site  
+- No Spark / live mailbox API  
+- No warm-paper / floating-pill / girl-photo mark regression  
+- No 7-col Kanban primary  
+- No FYI on main board  
+- No amounts / secret attachments on public site  
 
 ---
 
-## Success (tokens slice)
+## Success
 
-- [x] Tokens locked in `design.md` + `:root`  
-- [x] Legacy aliases present (`--paper`, `--card`, `--muted`, `--orders`, …)  
-- [x] Ball-in-court IA: 要我动 / 等对方 / 管线 / 稍后  
-- [x] Optional `ball` / `wait` fields; legacy cards still render  
+- [x] Cool stone + teal signal tokens  
+- [x] Geometric mark + cache-bust ASSET_V  
+- [x] Header / footer rebuild  
+- [x] Ball-in-court IA preserved  

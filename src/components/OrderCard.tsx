@@ -32,26 +32,22 @@ function StageProgress({ current }: { current: OrderStageId }) {
                   : i === cur
                     ? "var(--ink)"
                     : "var(--line-strong)",
-              opacity: i === cur ? 1 : i < cur ? 0.55 : 0.45,
+              opacity: i === cur ? 1 : i < cur ? 0.55 : 0.4,
             }}
             title={s.label}
           />
         ))}
       </div>
-      <span className="text-[11px] leading-none text-[var(--mute)]">
+      <span className="text-[11px] font-medium leading-none text-[var(--pipe)]">
         {def.short}
       </span>
-      <span className="text-[11px] leading-none tabular-nums text-[var(--faint)]">
+      <span className="font-mono text-[11px] leading-none text-[var(--faint)]">
         {n}/{total}
       </span>
     </div>
   );
 }
 
-/**
- * Pipeline order card — stage dots + 卡点 spine.
- * Optional quiet 等待 line when ball is with others.
- */
 export default function OrderCard({
   item,
   index,
@@ -59,7 +55,6 @@ export default function OrderCard({
 }: {
   item: BoardItem;
   index: number;
-  /** When set, card has a matching triage item — link to that zone */
   triageHref?: "#mine" | "#wait" | "#later";
 }): JSX.Element {
   const stage = item.stage;
@@ -67,9 +62,8 @@ export default function OrderCard({
   const waitLine = item.wait?.trim();
 
   return (
-    <article className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-[var(--pad-card-x)] py-[var(--pad-card-y)] transition-[border-color,background-color] duration-150 hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)]">
+    <article className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-[var(--pad-card-x)] py-[var(--pad-card-y)] shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-150 hover:border-[var(--line-strong)]">
       <div className="flex flex-col gap-[var(--gap-stack)]">
-        {/* 1. Title + CopyTitle + customer */}
         <div className="min-w-0">
           <div className="flex items-start gap-1">
             <h3
@@ -84,24 +78,21 @@ export default function OrderCard({
             <CopyTitle title={item.title} />
           </div>
           {item.customer && (
-            <p className="mt-1 text-[12px] font-medium leading-none text-[var(--ink)]/80">
+            <p className="mt-1 text-[12px] font-medium leading-none text-[var(--mute)]">
               {item.customer}
             </p>
           )}
         </div>
 
-        {/* 2. 7 progress dots */}
         {stage && <StageProgress current={stage} />}
 
-        {/* 3. 卡点 spine */}
         {item.action && (
-          <p className="rounded-[var(--radius-sm)] bg-[var(--pipe-soft)] px-2.5 py-1.5 text-[13px] leading-snug text-[var(--ink)]">
+          <p className="rounded-[var(--radius-sm)] border-l-[3px] border-l-[var(--pipe)] bg-[var(--pipe-soft)] px-2.5 py-1.5 text-[13px] leading-snug text-[var(--ink)]">
             <span className="font-semibold text-[var(--pipe)]">卡点 · </span>
             {item.action}
           </p>
         )}
 
-        {/* 3b. Quiet wait line when ball is them */}
         {showWait && waitLine && (
           <p className="text-[12px] leading-snug text-[var(--wait-ink)]">
             <span className="font-medium">等待 · </span>
@@ -109,7 +100,6 @@ export default function OrderCard({
           </p>
         )}
 
-        {/* 4. tags / people / one-line meta */}
         {item.tags && item.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {item.tags.map((t) => (
@@ -135,7 +125,6 @@ export default function OrderCard({
           </p>
         )}
 
-        {/* 5. Cross-link to triage zone */}
         {triageHref && (
           <a
             href={triageHref}

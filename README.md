@@ -175,15 +175,14 @@ tz: Asia/Shanghai             # 现在北京；出差新加坡改为 Asia/Singap
 ### 9. 其他 UI 锁
 
 - 宽度约 `52rem`（`--measure`）；暖纸调度台（非 Hub 冷灰目录）
-- Sticky 头：Girl logo + Email Desk + 更新时间 + 分享 + 下载
-- Focus strip：会 + 要我动/等待/管线/稍后 跳转
+- Sticky 头：全宽表面 + 几何 DeskMark + Email Desk；青绿色 PDF 按钮
+- Focus strip：四枚独立 chip（顶部分色条）+ 会议卡
 - P0 红条 **仅**在「要我动」区；等对方不打红条；`action`/`wait` 是卡的主句
-- 页底可折叠工作流图例（七阶段 + 写作提示 + Hub/选型链）
-- 图标三套（勿混用裁切）：
-  - 页头 `logo.png` = 原 padded 构图
-  - Tab favicon = 圆角透明角（`favicon*.png` / `.ico`）
-  - iOS/Android = `source/mobile.png` 原样缩放（`apple-touch*` + `icon-192/512`）
-  - 重生成：`python scripts/icons/build.py`，再 bump `ASSET_V`（`src/lib/brand.ts`）
+- 页底：双列工具/法律 footer + 可折叠工作流图例
+- Logo / 图标（几何托盘 mark，非人像）：
+  - Header：SVG `DeskMark`；`public/logo.png` 备用
+  - Favicon / PWA：`python scripts/icons/build-mark.py`（或 `.venv-icons/bin/python …`）
+  - 改图后 bump `ASSET_V`（`src/lib/brand.ts`）
 
 ---
 

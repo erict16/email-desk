@@ -4,9 +4,8 @@ import CopyTitle from "@/components/CopyTitle";
 import { tagClass } from "@/lib/tag-class";
 
 /**
- * Action card for 要我动 / 等对方 / 稍后.
- * Mine: warm spine「待办 ·」, P0 left red bar.
- * Wait: muted spine「等待 ·」; no red bar.
+ * Action card — spine is the visual backbone.
+ * Mine: teal「待办 ·」; Wait: slate「等待 ·」; P0 left red rail.
  */
 export default function ActionCard({
   item,
@@ -17,7 +16,6 @@ export default function ActionCard({
 }: {
   item: BoardItem;
   index: number;
-  /** Red left bar — only mine ∩ P0 */
   urgent?: boolean;
   tone?: "act" | "wait";
   linkedStage?: string;
@@ -29,12 +27,11 @@ export default function ActionCard({
 
   return (
     <article
-      className={`rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-[var(--pad-card-x)] py-[var(--pad-card-y)] transition-[border-color,background-color] duration-150 hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)] ${
+      className={`rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-[var(--pad-card-x)] py-[var(--pad-card-y)] shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-150 hover:border-[var(--line-strong)] ${
         urgent ? "border-l-[3px] border-l-[var(--urgent)]" : ""
       }`}
     >
       <div className="flex flex-col gap-[var(--gap-stack)]">
-        {/* 1. Title row + CopyTitle + date */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 items-start gap-1">
             <h3
@@ -49,19 +46,18 @@ export default function ActionCard({
             <CopyTitle title={item.title} />
           </div>
           {item.date && (
-            <span className="shrink-0 pt-0.5 text-[11px] leading-none tabular-nums text-[var(--faint)]">
+            <span className="shrink-0 pt-0.5 font-mono text-[11px] leading-none text-[var(--faint)]">
               {item.date}
             </span>
           )}
         </div>
 
-        {/* 2. Spine — 待办 or 等待 */}
         {spineText && (
           <p
-            className={`rounded-[var(--radius-sm)] px-2.5 py-1.5 text-[13px] leading-snug ${
+            className={`rounded-[var(--radius-sm)] border-l-[3px] px-2.5 py-1.5 text-[13px] leading-snug ${
               isWait
-                ? "bg-[var(--wait-bg)] text-[var(--wait-ink)]"
-                : "bg-[var(--action-bg)] text-[var(--action-ink)]"
+                ? "border-l-[var(--line-strong)] bg-[var(--wait-bg)] text-[var(--wait-ink)]"
+                : "border-l-[var(--signal)] bg-[var(--action-bg)] text-[var(--action-ink)]"
             }`}
           >
             <span className="font-semibold">
@@ -71,7 +67,6 @@ export default function ActionCard({
           </p>
         )}
 
-        {/* 3. Tags — keep short; skip if empty */}
         {item.tags && item.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {item.tags.map((t) => (
@@ -85,21 +80,18 @@ export default function ActionCard({
           </div>
         )}
 
-        {/* 4. People */}
         {item.people && (
           <p className="text-[11px] leading-normal text-[var(--faint)]">
             发件人：{item.people}
           </p>
         )}
 
-        {/* 5. Meta ≤2 lines */}
         {item.meta && (
           <p className="line-clamp-2 text-[13px] leading-relaxed text-[var(--muted)]">
             {item.meta}
           </p>
         )}
 
-        {/* 6. Cross-link to pipeline */}
         {linkedStage && (
           <a
             href="#pipeline"
