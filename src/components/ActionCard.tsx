@@ -4,14 +4,10 @@ import { motion } from "framer-motion";
 import type { BoardItem } from "@/lib/board-types";
 import { formatShareBrief } from "@/lib/blocker-classify";
 import ContactPills from "@/components/ContactPills";
+import StaleDate from "@/components/StaleDate";
 import { tagClass } from "@/lib/tag-class";
 import { useToast, copyText } from "@/components/ToastProvider";
-import {
-  ArrowRight,
-  Check,
-  Circle,
-  Share2,
-} from "lucide-react";
+import { ArrowRight, Check, Circle, Share2 } from "lucide-react";
 
 export default function ActionCard({
   item,
@@ -53,7 +49,7 @@ export default function ActionCard({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: done ? 0.45 : 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.2) }}
-      className={`group rounded-xl border bg-[var(--surface)] p-3.5 shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--primary)]/25 hover:shadow-[var(--shadow-hover)] sm:p-4 ${
+      className={`group rounded-xl border bg-[var(--surface)] p-3.5 shadow-[var(--shadow-card)] transition-all duration-200 will-change-transform hover:-translate-y-0.5 hover:border-[var(--primary)]/25 hover:shadow-md sm:p-4 ${
         urgent && !done
           ? "border-l-[3px] border-l-[var(--urgent)] border-[var(--line)]"
           : "border-[var(--line)]"
@@ -65,7 +61,7 @@ export default function ActionCard({
             <button
               type="button"
               onClick={onToggleDone}
-              className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-[var(--faint)] hover:text-[var(--primary)] sm:h-auto sm:w-auto sm:p-0.5"
+              className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-[var(--faint)] hover:bg-[var(--surface-2)] hover:text-[var(--primary)] sm:h-8 sm:w-8"
               aria-label={done ? "取消勾选" : "本地勾选完成"}
               title={done ? "取消勾选" : "本地勾选（仅此设备）"}
             >
@@ -86,11 +82,7 @@ export default function ActionCard({
               >
                 {item.title}
               </button>
-              {item.date && (
-                <time className="shrink-0 text-[11px] tabular-nums text-[var(--faint)]">
-                  {item.date}
-                </time>
-              )}
+              <StaleDate date={item.date} />
             </div>
           </div>
         </div>
@@ -110,13 +102,13 @@ export default function ActionCard({
           </p>
         )}
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2.5">
           {item.tags && item.tags.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {item.tags.map((t) => (
                 <span
                   key={t}
-                  className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-medium ${tagClass(t)}`}
+                  className={`inline-flex min-h-[28px] items-center rounded-md px-2.5 py-1 text-[12px] font-medium ${tagClass(t)}`}
                 >
                   {t}
                 </span>
@@ -129,11 +121,11 @@ export default function ActionCard({
               {item.meta}
             </p>
           )}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-1">
             {linkedStage && (
               <a
                 href="#pipeline"
-                className="inline-flex items-center gap-1 text-[12px] font-medium text-[var(--primary)] hover:underline"
+                className="inline-flex min-h-[36px] items-center gap-1 rounded-md px-2 text-[12px] font-medium text-[var(--primary)] hover:bg-[var(--primary-soft)]"
               >
                 管线 · {linkedStage}
                 <ArrowRight size={12} aria-hidden />
@@ -142,9 +134,9 @@ export default function ActionCard({
             <button
               type="button"
               onClick={onShareBrief}
-              className="inline-flex items-center gap-1 text-[12px] font-medium text-[var(--mute)] hover:text-[var(--primary)]"
+              className="inline-flex min-h-[36px] items-center gap-1.5 rounded-md px-2 text-[12px] font-medium text-[var(--mute)] hover:bg-[var(--surface-2)] hover:text-[var(--primary)]"
             >
-              <Share2 size={12} aria-hidden />
+              <Share2 size={14} aria-hidden />
               Share Brief
             </button>
           </div>

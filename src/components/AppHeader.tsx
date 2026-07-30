@@ -107,14 +107,14 @@ export default function AppHeader({
 
   return (
     <>
-      <header className="print:hidden sticky top-0 z-[var(--z-sticky)] border-b border-[var(--glass-border)] bg-[var(--glass)] pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+      <header className="print:hidden sticky top-0 z-[var(--z-sticky)] border-b border-[var(--glass-border)] bg-[var(--glass)] pt-[env(safe-area-inset-top,0px)] shadow-[0_1px_0_rgb(15_23_42/0.04)] backdrop-blur-md supports-[backdrop-filter]:bg-[var(--glass)]">
         <div className="mx-auto max-w-[var(--measure)] px-3 py-2.5 sm:px-6 sm:py-2.5">
-          {/* Row 1: brand + icon actions (always one line) */}
-          <div className="flex items-center gap-2">
+          {/* Row 1: brand + clock (desktop) + actions */}
+          <div className="flex items-center gap-2 sm:gap-3">
             <a
               href="#top"
               onClick={onLogo}
-              className="flex min-w-0 flex-1 items-center gap-2 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              className="flex min-w-0 flex-1 items-center gap-2 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] sm:flex-none"
             >
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--primary-soft)] text-[var(--primary)]">
                 <Inbox size={18} strokeWidth={2} aria-hidden />
@@ -123,14 +123,21 @@ export default function AppHeader({
                 <span className="block truncate text-[14px] font-semibold tracking-tight text-[var(--ink)]">
                   Email Desk
                 </span>
-                <span className="mt-0.5 hidden text-[10px] tabular-nums text-[var(--faint)] sm:block">
+                <span className="mt-0.5 block text-[10px] tabular-nums text-[var(--faint)] sm:hidden">
                   {clock || tzLabel}
-                  {updated ? ` · ${updated}` : ""}
                 </span>
               </span>
             </a>
 
-            <div className="flex shrink-0 items-center">
+            {/* desktop clock — center-right between brand and icons */}
+            <div className="hidden min-w-0 flex-1 items-center justify-end sm:flex">
+              <span className="truncate rounded-md bg-[var(--surface-2)] px-2.5 py-1 text-[11px] tabular-nums text-[var(--mute)]">
+                {clock || tzLabel}
+                {updated ? ` · 更新 ${updated}` : ""}
+              </span>
+            </div>
+
+            <div className="flex shrink-0 items-center gap-0.5">
               <button
                 type="button"
                 onClick={toggle}

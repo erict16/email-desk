@@ -159,53 +159,63 @@ export default function PipelineBoard({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="relative -mx-3 overflow-x-auto overscroll-x-contain px-3 pb-2 sm:-mx-1 sm:px-1"
+            className="relative -mx-3 sm:-mx-1"
           >
-            {/* snap scroll for touch */}
-            <div className="flex snap-x snap-mandatory gap-3 pb-1">
-              {stagesWithItems.map((s) => {
-                const items = byStage.get(s.id) ?? [];
-                return (
-                  <div
-                    key={s.id}
-                    id={`order-stage-${s.id}`}
-                    className="kanban-col flex w-[min(85vw,280px)] shrink-0 snap-start flex-col overflow-hidden rounded-xl sm:w-[280px]"
-                  >
-                    <div className="kanban-col-header flex items-center justify-between gap-2 border-b border-[var(--line)] px-3 py-2.5">
-                      <div className="flex min-w-0 items-center gap-2">
-                        <span
-                          className={`stage-badge stage-badge-${s.id} shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-semibold`}
-                        >
-                          {s.short}
-                        </span>
-                        <span className="truncate text-[12px] text-[var(--faint)]">
-                          {s.hint}
+            {/* edge fade — hints horizontal scroll */}
+            <div
+              className="pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-gradient-to-r from-[var(--bg)] to-transparent sm:w-4"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-[var(--bg)] to-transparent sm:w-6"
+              aria-hidden
+            />
+            <div className="overflow-x-auto overscroll-x-contain px-3 pb-2 sm:px-1 [scrollbar-width:thin]">
+              <div className="flex snap-x snap-mandatory gap-3 pb-1">
+                {stagesWithItems.map((s) => {
+                  const items = byStage.get(s.id) ?? [];
+                  return (
+                    <div
+                      key={s.id}
+                      id={`order-stage-${s.id}`}
+                      className="kanban-col flex w-[min(85vw,280px)] shrink-0 snap-start flex-col overflow-hidden rounded-xl sm:w-[280px]"
+                    >
+                      <div className="kanban-col-header flex items-center justify-between gap-2 border-b border-[var(--line)] px-3 py-2.5">
+                        <div className="flex min-w-0 items-center gap-2">
+                          <span
+                            className={`stage-badge stage-badge-${s.id} shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-semibold`}
+                          >
+                            {s.short}
+                          </span>
+                          <span className="truncate text-[12px] text-[var(--faint)]">
+                            {s.hint}
+                          </span>
+                        </div>
+                        <span className="shrink-0 text-[12px] tabular-nums text-[var(--faint)]">
+                          {items.length}
                         </span>
                       </div>
-                      <span className="shrink-0 text-[12px] tabular-nums text-[var(--faint)]">
-                        {items.length}
-                      </span>
+                      <div className="flex flex-col gap-2.5 p-2.5">
+                        {items.map((item, i) => (
+                          <OrderCard
+                            key={item.title}
+                            item={item}
+                            index={i + 1}
+                            triageHref={triageHrefFor(item.title)}
+                            compact
+                            done={done?.has(itemDoneKey(item.title))}
+                            onToggleDone={
+                              onToggleDone
+                                ? () => onToggleDone(item.title)
+                                : undefined
+                            }
+                          />
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-2.5 p-2.5">
-                      {items.map((item, i) => (
-                        <OrderCard
-                          key={item.title}
-                          item={item}
-                          index={i + 1}
-                          triageHref={triageHrefFor(item.title)}
-                          compact
-                          done={done?.has(itemDoneKey(item.title))}
-                          onToggleDone={
-                            onToggleDone
-                              ? () => onToggleDone(item.title)
-                              : undefined
-                          }
-                        />
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
             {isMobile && (
               <p className="mt-1 text-center text-[11px] text-[var(--faint)]">

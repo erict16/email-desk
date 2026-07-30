@@ -256,8 +256,13 @@ html:not(.dark) .kanban-col-header {
 
 html:not(.dark) .seg-active {
   box-shadow: none;
-  outline: 1px solid rgb(15 23 42 / 0.08);
-  outline-offset: 1px;
+}
+
+/* card lift — reduce motion respects global rule */
+@media (hover: hover) and (pointer: fine) {
+  article.group:hover {
+    /* complements Tailwind hover:-translate-y-0.5 */
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
