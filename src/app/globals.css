@@ -8,7 +8,9 @@
 :root {
   --z-sticky: 300;
   --z-toast: 500;
-  --banner-height: 3.5rem;
+  /* sticky header ~ brand + search + counters (mobile-first) */
+  --banner-height: 7.25rem;
+  --header-offset: calc(var(--banner-height) + env(safe-area-inset-top, 0px) + 0.75rem);
   --measure: 80rem;
 
   /* light */
@@ -142,6 +144,22 @@ html.dark {
 html {
   overflow-x: clip;
   color-scheme: light;
+  /* prevent iOS text-size adjust blowing layout */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* mobile scroll margins for sticky header */
+@media (max-width: 767px) {
+  :root {
+    --banner-height: 8.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --banner-height: 6.5rem;
+  }
 }
 
 html.dark {

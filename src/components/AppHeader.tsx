@@ -107,44 +107,59 @@ export default function AppHeader({
 
   return (
     <>
-      <header className="print:hidden sticky top-0 z-[var(--z-sticky)] border-b border-[var(--glass-border)] bg-[var(--glass)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-[var(--measure)] flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-center lg:gap-4 lg:py-2.5">
-          {/* brand + clock */}
-          <div className="flex min-w-0 items-center justify-between gap-3 lg:justify-start lg:gap-4">
+      <header className="print:hidden sticky top-0 z-[var(--z-sticky)] border-b border-[var(--glass-border)] bg-[var(--glass)] pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+        <div className="mx-auto max-w-[var(--measure)] px-3 py-2.5 sm:px-6 sm:py-2.5">
+          {/* Row 1: brand + icon actions (always one line) */}
+          <div className="flex items-center gap-2">
             <a
               href="#top"
               onClick={onLogo}
-              className="flex min-w-0 items-center gap-2.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              className="flex min-w-0 flex-1 items-center gap-2 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--primary-soft)] text-[var(--primary)]">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--primary-soft)] text-[var(--primary)]">
                 <Inbox size={18} strokeWidth={2} aria-hidden />
               </span>
-              <span className="flex min-w-0 flex-col leading-none">
-                <span className="truncate text-[14px] font-semibold tracking-tight text-[var(--ink)]">
+              <span className="min-w-0">
+                <span className="block truncate text-[14px] font-semibold tracking-tight text-[var(--ink)]">
                   Email Desk
                 </span>
-                <span className="mt-1 hidden text-[10px] tabular-nums text-[var(--faint)] sm:block">
+                <span className="mt-0.5 hidden text-[10px] tabular-nums text-[var(--faint)] sm:block">
                   {clock || tzLabel}
                   {updated ? ` · ${updated}` : ""}
                 </span>
               </span>
             </a>
 
-            {/* mobile counters */}
-            <div className="flex items-center gap-1.5 lg:hidden">
-              <StatPill href="#mine" n={stats.mine} label="动" tone="action" />
-              <StatPill href="#wait" n={stats.waiting} label="等" tone="wait" />
-              <StatPill
-                href="#pipeline"
-                n={stats.orders}
-                label="管"
-                tone="pipe"
-              />
+            <div className="flex shrink-0 items-center">
+              <button
+                type="button"
+                onClick={toggle}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--mute)] hover:bg-[var(--surface-2)] hover:text-[var(--ink)]"
+                aria-label={theme === "dark" ? "切换亮色" : "切换暗色"}
+              >
+                {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+              </button>
+              <button
+                type="button"
+                onClick={onShare}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--mute)] hover:bg-[var(--surface-2)] hover:text-[var(--ink)]"
+                aria-label="分享"
+              >
+                <Share2 size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={onPdf}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--mute)] hover:bg-[var(--surface-2)] hover:text-[var(--ink)]"
+                aria-label="导出 PDF"
+              >
+                <Download size={16} />
+              </button>
             </div>
           </div>
 
-          {/* search — click opens palette; type still filters live */}
-          <div className="relative min-w-0 flex-1">
+          {/* Row 2: search */}
+          <div className="relative mt-2 min-w-0">
             <Search
               size={15}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--faint)]"
@@ -154,34 +169,35 @@ export default function AppHeader({
               type="search"
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
-              placeholder="筛选 PO / 客户 / 状态…"
-              className="h-9 w-full rounded-lg border border-[var(--line)] bg-[var(--surface)] py-2 pl-9 pr-20 text-[13px] text-[var(--ink)] placeholder:text-[var(--faint)] outline-none transition-colors focus:border-[var(--primary)]/50 focus:ring-2 focus:ring-[var(--primary)]/20"
+              placeholder="筛选 PO / 客户…"
+              enterKeyHint="search"
+              className="h-10 w-full rounded-lg border border-[var(--line)] bg-[var(--surface)] py-2 pl-9 pr-16 text-[16px] text-[var(--ink)] placeholder:text-[var(--faint)] outline-none focus:border-[var(--primary)]/50 focus:ring-2 focus:ring-[var(--primary)]/20 sm:h-9 sm:text-[13px]"
               aria-label="筛选看板"
             />
-            <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
-              {query && (
+            <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-0.5">
+              {query ? (
                 <button
                   type="button"
                   onClick={() => onQueryChange("")}
-                  className="rounded p-1 text-[var(--faint)] hover:text-[var(--ink)]"
+                  className="rounded-md p-1.5 text-[var(--faint)] hover:text-[var(--ink)]"
                   aria-label="清除搜索"
                 >
-                  <X size={14} />
+                  <X size={16} />
                 </button>
-              )}
+              ) : null}
               <button
                 type="button"
                 onClick={() => onOpenPalette?.()}
-                className="hidden rounded border border-[var(--line)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--faint)] hover:border-[var(--primary)]/40 hover:text-[var(--primary)] sm:inline"
-                title="Command palette (⌘K)"
+                className="rounded-md border border-[var(--line)] px-2 py-1 text-[10px] font-medium text-[var(--faint)] hover:border-[var(--primary)]/40 hover:text-[var(--primary)]"
+                title="Command palette"
               >
                 ⌘K
               </button>
             </div>
           </div>
 
-          {/* desktop counters + actions */}
-          <div className="hidden items-center gap-2 lg:flex">
+          {/* Row 3: counters — horizontal scroll on narrow screens */}
+          <div className="-mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <StatPill href="#mine" n={stats.mine} label="要我动" tone="action" />
             <StatPill href="#wait" n={stats.waiting} label="等待" tone="wait" />
             <StatPill
@@ -190,45 +206,20 @@ export default function AppHeader({
               label="管线"
               tone="pipe"
             />
-          </div>
-
-          <div className="flex shrink-0 items-center gap-0.5 self-end lg:self-auto">
-            <button
-              type="button"
-              onClick={toggle}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--mute)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--ink)]"
-              aria-label={theme === "dark" ? "切换亮色" : "切换暗色"}
-            >
-              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-            <button
-              type="button"
-              onClick={onShare}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--mute)] hover:bg-[var(--surface-2)] hover:text-[var(--ink)] sm:w-auto sm:gap-1.5 sm:px-2.5"
-              aria-label="分享"
-            >
-              <Share2 size={15} />
-              <span className="hidden text-[12px] font-medium sm:inline">
-                分享
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={onPdf}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--mute)] hover:bg-[var(--surface-2)] hover:text-[var(--ink)] sm:w-auto sm:gap-1.5 sm:px-2.5"
-              aria-label="导出 PDF"
-            >
-              <Download size={15} />
-              <span className="hidden text-[12px] font-medium sm:inline">
-                导出
-              </span>
-            </button>
+            {stats.later > 0 && (
+              <StatPill
+                href="#later"
+                n={stats.later}
+                label="稍后"
+                tone="pipe"
+              />
+            )}
           </div>
         </div>
       </header>
 
       {toast && (
-        <div className="print:hidden fixed bottom-6 left-1/2 z-[var(--z-toast)] -translate-x-1/2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-xs font-medium text-[var(--ink)] shadow-[var(--shadow-hover)]">
+        <div className="print:hidden fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-1/2 z-[var(--z-toast)] max-w-[min(90vw,20rem)] -translate-x-1/2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2 text-center text-xs font-medium text-[var(--ink)] shadow-[var(--shadow-hover)]">
           {toast}
         </div>
       )}
@@ -263,7 +254,7 @@ function StatPill({
         document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
         history.replaceState(null, "", href);
       }}
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold tabular-nums transition-opacity hover:opacity-85 ${colors}`}
+      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-semibold tabular-nums ${colors}`}
     >
       <span>{n}</span>
       <span className="font-medium opacity-90">{label}</span>

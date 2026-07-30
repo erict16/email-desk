@@ -266,7 +266,7 @@ export default function DeskApp({ board }: { board: BoardData }) {
 
       <main
         id="email-desk-print"
-        className="mx-auto w-full max-w-[var(--measure)] px-4 pb-16 pt-6 sm:px-6"
+        className="mx-auto w-full max-w-[var(--measure)] px-3 pb-[max(4rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pt-6"
       >
         <motion.header
           initial={{ opacity: 0, y: 6 }}
@@ -352,11 +352,11 @@ export default function DeskApp({ board }: { board: BoardData }) {
           </div>
         )}
 
-        <div className="grid gap-8 lg:grid-cols-12 lg:gap-8">
-          <div className="flex flex-col gap-8 lg:col-span-5">
+        <div className="grid gap-6 sm:gap-8 lg:grid-cols-12 lg:gap-8">
+          <div className="flex flex-col gap-6 sm:gap-8 lg:col-span-5">
             {(zone === "all" || zone === "mine" || zone === "blocked") &&
               mine.length > 0 && (
-                <section id="mine" className="scroll-mt-24">
+                <section id="mine" className="scroll-mt-[var(--header-offset)]">
                   <SectionLabel
                     tone="action"
                     title="要我动"
@@ -388,7 +388,7 @@ export default function DeskApp({ board }: { board: BoardData }) {
               zone === "waiting" ||
               zone === "blocked") &&
               waiting.length > 0 && (
-                <section id="wait" className="scroll-mt-24">
+                <section id="wait" className="scroll-mt-[var(--header-offset)]">
                   <SectionLabel
                     tone="wait"
                     title="等对方"
@@ -416,7 +416,7 @@ export default function DeskApp({ board }: { board: BoardData }) {
               )}
 
             {zone === "all" && later.length > 0 && (
-              <section id="later" className="scroll-mt-24">
+              <section id="later" className="scroll-mt-[var(--header-offset)]">
                 <details className="group">
                   <summary className="mb-3 flex cursor-pointer list-none items-baseline gap-2 marker:content-none [&::-webkit-details-marker]:hidden">
                     <span className="text-[14px] font-semibold text-[var(--ink)]">

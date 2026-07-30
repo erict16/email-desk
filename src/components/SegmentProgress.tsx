@@ -50,7 +50,7 @@ export default function SegmentProgress({
               />
               {/* tooltip — solid surface, light-safe elevation */}
               <div
-                className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--line)] bg-[var(--surface)] px-2 py-1 text-[10px] font-medium text-[var(--ink)] shadow-[var(--shadow-card)] group-hover/seg:block"
+                className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden max-w-[70vw] -translate-x-1/2 whitespace-normal rounded-md border border-[var(--line)] bg-[var(--surface)] px-2 py-1 text-center text-[10px] font-medium leading-snug text-[var(--ink)] shadow-[var(--shadow-card)] sm:max-w-none sm:whitespace-nowrap group-hover/seg:block"
                 role="tooltip"
               >
                 {tip}

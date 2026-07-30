@@ -53,35 +53,35 @@ export default function ActionCard({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: done ? 0.45 : 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.2) }}
-      className={`group rounded-xl border bg-[var(--surface)] p-4 shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--primary)]/25 hover:shadow-[var(--shadow-hover)] ${
+      className={`group rounded-xl border bg-[var(--surface)] p-3.5 shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--primary)]/25 hover:shadow-[var(--shadow-hover)] sm:p-4 ${
         urgent && !done
           ? "border-l-[3px] border-l-[var(--urgent)] border-[var(--line)]"
           : "border-[var(--line)]"
       } ${done ? "opacity-50 grayscale-[30%]" : ""}`}
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2.5 sm:gap-3">
         <div className="flex items-start gap-2">
           {onToggleDone && (
             <button
               type="button"
               onClick={onToggleDone}
-              className="mt-0.5 shrink-0 rounded-md p-0.5 text-[var(--faint)] hover:text-[var(--primary)]"
+              className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-[var(--faint)] hover:text-[var(--primary)] sm:h-auto sm:w-auto sm:p-0.5"
               aria-label={done ? "取消勾选" : "本地勾选完成"}
               title={done ? "取消勾选" : "本地勾选（仅此设备）"}
             >
               {done ? (
-                <Check size={16} className="text-[var(--primary)]" />
+                <Check size={18} className="text-[var(--primary)]" />
               ) : (
-                <Circle size={16} />
+                <Circle size={18} />
               )}
             </button>
           )}
           <div className="min-w-0 flex-1">
-            <div className="flex items-start justify-between gap-2">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-2">
               <button
                 type="button"
                 onClick={onCopyTitle}
-                className="min-w-0 text-left text-[15px] font-semibold leading-snug tracking-tight text-[var(--ink)] underline-offset-2 hover:text-[var(--primary)] hover:underline"
+                className="min-w-0 break-words text-left text-[15px] font-semibold leading-snug tracking-tight text-[var(--ink)] underline-offset-2 hover:text-[var(--primary)] hover:underline"
                 title="点击复制标题 → 邮箱搜索"
               >
                 {item.title}

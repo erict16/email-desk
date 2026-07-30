@@ -50,22 +50,22 @@ export default function OrderCard({
       animate={{ opacity: done ? 0.45 : 1, y: 0 }}
       transition={{ duration: 0.22, delay: Math.min(index * 0.02, 0.15) }}
       className={`group rounded-xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--primary)]/25 hover:shadow-[var(--shadow-hover)] ${
-        compact ? "p-3" : "p-4"
+        compact ? "p-3" : "p-3.5 sm:p-4"
       } ${done ? "opacity-50 grayscale-[30%]" : ""}`}
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2.5 sm:gap-3">
         <div className="flex items-start gap-2">
           {onToggleDone && (
             <button
               type="button"
               onClick={onToggleDone}
-              className="mt-0.5 shrink-0 text-[var(--faint)] hover:text-[var(--primary)]"
+              className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center text-[var(--faint)] hover:text-[var(--primary)] sm:h-auto sm:w-auto"
               aria-label={done ? "取消勾选" : "本地勾选完成"}
             >
               {done ? (
-                <Check size={15} className="text-[var(--primary)]" />
+                <Check size={17} className="text-[var(--primary)]" />
               ) : (
-                <Circle size={15} />
+                <Circle size={17} />
               )}
             </button>
           )}
@@ -73,7 +73,7 @@ export default function OrderCard({
             <button
               type="button"
               onClick={onCopyTitle}
-              className="min-w-0 text-left text-[14px] font-semibold leading-snug tracking-tight text-[var(--ink)] hover:text-[var(--primary)] hover:underline"
+              className="min-w-0 break-words text-left text-[14px] font-semibold leading-snug tracking-tight text-[var(--ink)] hover:text-[var(--primary)] hover:underline"
               title="点击复制标题 → 邮箱搜索"
             >
               {item.title}
