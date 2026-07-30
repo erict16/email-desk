@@ -76,7 +76,7 @@ export default function WorkflowKit() {
             href={HUB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-[var(--signal)] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
+            className="font-medium text-[var(--ink)] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
           >
             Huaming Hub ↗
           </a>
@@ -87,7 +87,7 @@ export default function WorkflowKit() {
             href={SELECTOR_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-[var(--signal)] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
+            className="font-medium text-[var(--ink)] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
           >
             选型器 ↗
           </a>

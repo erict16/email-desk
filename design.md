@@ -20,10 +20,12 @@
 
 ## Aesthetic direction
 
-**Cool instrument desk** — cold stone canvas, teal signal, navy pipeline.  
-Not warm cream paper, not floating-pill chrome, not purple SaaS.
+**Ink neutral** — near-monochrome zinc desk. Almost no color.  
+Only loud hue: **red** for 要我动 / P0. Mark is black tile + red notch.
 
-**Signature:** teal left-edge on「待办 ·」spines + tray-stack mark (three lines + gold notch).
+Rejected: warm cream paper, teal hospital green, navy candy pipeline, floating pills.
+
+**Signature:** black tray-stack mark; red only on urgency counts and P0 rail.
 
 ---
 
@@ -31,23 +33,23 @@ Not warm cream paper, not floating-pill chrome, not purple SaaS.
 
 | Role | Token | Hex | Note |
 |------|-------|-----|------|
-| Page | `--bg` | `#e8eaee` | Cool stone |
+| Page | `--bg` | `#fafafa` | Zinc-50 |
 | Surface | `--surface` | `#ffffff` | Cards / header |
-| Ink | `--ink` | `#0b1220` | Primary text |
-| Mute | `--mute` | `#5c6570` | Secondary |
-| Faint | `--faint` | `#8b939e` | Meta |
-| Line | `--line` | `#d5dae2` | 1px rules |
-| Signal | `--signal` | `#0f6b5c` | Brand teal / PDF btn / mark |
-| Urgent | `--urgent` | `#c81e1e` | P0 rail only |
-| Action bg | `--action-bg` | `#dceee9` | 待办 spine |
-| Action ink | `--action-ink` | `#0a5c4d` | 待办 text |
-| Wait bg | `--wait-bg` | `#eef0f3` | 等待 spine |
-| Wait ink | `--wait-ink` | `#5a616c` | 等待 text |
-| Pipeline | `--pipe` | `#1a3a6b` | Stage / 卡点 |
-| Pipe soft | `--pipe-soft` | `#e6edf6` | Soft stage |
-| Follow | `--follow` | `#8a5a12` | Cross-links |
-| Radius | `--radius` | `10px` | Cards |
-| Measure | `--measure` | `48rem` | Scan width |
+| Ink | `--ink` | `#18181b` | Zinc-900 |
+| Mute | `--mute` | `#52525b` | Secondary |
+| Faint | `--faint` | `#a1a1aa` | Meta |
+| Line | `--line` | `#e4e4e7` | Hairlines |
+| Urgent | `--urgent` | `#dc2626` | **Only** loud color |
+| Action bg | `--action-bg` | `#f4f4f5` | 待办 — gray, not green |
+| Action ink | `--action-ink` | `#18181b` | Black text |
+| Wait bg | `--wait-bg` | `#fafafa` | 等待 |
+| Wait ink | `--wait-ink` | `#71717a` | Quiet |
+| Pipeline | `--pipe` | `#3f3f46` | Charcoal, not navy |
+| Pipe soft | `--pipe-soft` | `#f4f4f5` | Soft stage |
+| Mark | `--mark-bg` | `#18181b` | Black tile |
+| Mark dot | `--mark-dot` | `#dc2626` | Red signal |
+| Radius | `--radius` | `8px` | Cards |
+| Measure | `--measure` | `44rem` | Narrower scan |
 
 ### Migration aliases
 
@@ -57,7 +59,7 @@ Not warm cream paper, not floating-pill chrome, not purple SaaS.
 
 ## Logo / mark
 
-Geometric **tray stack** (three horizontal lines + gold signal dot) on teal tile.
+Geometric **tray stack** (three lines + red signal dot) on black tile.
 
 - Header: SVG `DeskMark` (currentColor-friendly CSS vars)
 - Favicon / PWA: `python scripts/icons/build-mark.py` (or `.venv-icons`)
@@ -69,10 +71,10 @@ Geometric **tray stack** (three horizontal lines + gold signal dot) on teal tile
 
 | Element | Treatment |
 |---------|-----------|
-| **Header** | Full-width sticky surface, hairline bottom, mark + wordmark + 邮件调度, teal PDF |
-| **Footer** | Surface band, mark + short blurb, Tools / Legal columns |
-| **Focus strip** | Four separate chips with top tone bar (not one heavy divided card) |
-| **Cards** | Soft shadow whisper, spine with left edge accent |
+| **Header** | Sticky white bar, black mark, black PDF button |
+| **Footer** | Quiet links, no color noise |
+| **Focus strip** | One grid, ink numbers; only 要我动 count in red |
+| **Cards** | No shadow; gray spines; P0 red left rail only |
 
 ---
 

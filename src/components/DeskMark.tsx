@@ -1,6 +1,6 @@
 /**
- * Email Desk mark — three inbox trays + a signal notch.
- * Geometric, no photo. Works light/dark via currentColor.
+ * Email Desk mark — tray stack + red signal notch.
+ * Ink-black tile; only accent is the urgent dot.
  */
 export default function DeskMark({
   size = 28,
@@ -24,17 +24,14 @@ export default function DeskMark({
       aria-label={title}
     >
       {title ? <title>{title}</title> : null}
-      {/* tile */}
-      <rect width="32" height="32" rx="8" fill="var(--mark-bg, #0f6b5c)" />
-      {/* tray stack */}
+      <rect width="32" height="32" rx="7" fill="var(--mark-bg, #18181b)" />
       <path
         d="M8 11h16M8 16h16M8 21h11"
-        stroke="var(--mark-fg, #f4fbf8)"
+        stroke="var(--mark-fg, #fafafa)"
         strokeWidth="2"
         strokeLinecap="round"
       />
-      {/* signal notch — ball / act */}
-      <circle cx="23" cy="21" r="2.25" fill="var(--mark-dot, #f0c14a)" />
+      <circle cx="23" cy="21" r="2.25" fill="var(--mark-dot, #dc2626)" />
     </svg>
   );
 }

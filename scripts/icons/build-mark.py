@@ -18,11 +18,11 @@ ROOT = Path(__file__).resolve().parents[2]
 SRC = Path(__file__).resolve().parent / "source"
 PUBLIC = ROOT / "public"
 
-# Cool instrument desk palette
-MARK_BG = (15, 107, 92)  # #0f6b5c teal
-MARK_FG = (244, 251, 248)  # #f4fbf8
-MARK_DOT = (240, 193, 74)  # #f0c14a signal
-PAGE_BG = (232, 234, 238)  # #e8eaee
+# Ink neutral palette
+MARK_BG = (24, 24, 27)  # #18181b zinc-900
+MARK_FG = (250, 250, 250)  # #fafafa
+MARK_DOT = (220, 38, 38)  # #dc2626 urgent red
+PAGE_BG = (250, 250, 250)  # #fafafa
 
 
 def draw_mark(size: int, *, rounded: bool = True, pad_ratio: float = 0.0) -> Image.Image:
@@ -146,8 +146,8 @@ def main() -> None:
         "start_url": "./",
         "scope": "./",
         "display": "standalone",
-        "background_color": "#e8eaee",
-        "theme_color": "#0f6b5c",
+        "background_color": "#fafafa",
+        "theme_color": "#18181b",
         "icons": [
             {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
             {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},

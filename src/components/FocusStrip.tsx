@@ -14,19 +14,11 @@ type Chip = {
   label: string;
   value: number;
   href: string;
-  tone: "mine" | "wait" | "orders" | "later";
-};
-
-const TONE: Record<Chip["tone"], { num: string; bar: string }> = {
-  mine: { num: "var(--urgent)", bar: "var(--urgent)" },
-  wait: { num: "var(--wait-ink)", bar: "var(--line-strong)" },
-  orders: { num: "var(--pipe)", bar: "var(--pipe)" },
-  later: { num: "var(--mute)", bar: "var(--line)" },
+  emphasize?: boolean;
 };
 
 /**
- * Focus strip: meetings dock + four jump chips.
- * Open layout on cool desk — not a heavy stats card wall.
+ * Focus: meetings + four counts. Numbers in ink; only 要我动 uses red.
  */
 export default function FocusStrip({
   meetings,
@@ -41,28 +33,25 @@ export default function FocusStrip({
       label: "要我动",
       value: stats.mine,
       href: "#mine",
-      tone: "mine",
+      emphasize: true,
     },
     {
       key: "wait",
       label: "等待",
       value: stats.waiting,
       href: "#wait",
-      tone: "wait",
     },
     {
       key: "pipeline",
       label: "管线",
       value: stats.orders,
       href: "#pipeline",
-      tone: "orders",
     },
     {
       key: "later",
       label: "稍后",
       value: stats.later,
       href: "#later",
-      tone: "later",
     },
   ];
 
@@ -70,14 +59,8 @@ export default function FocusStrip({
     <section className="mb-8 space-y-3" aria-label="焦点">
       {meetings.length > 0 && (
         <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3 sm:px-4">
-          <div className="mb-2 flex items-center gap-2">
-            <span
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--signal)]"
-              aria-hidden
-            />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--faint)]">
-              本周会议
-            </span>
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--faint)]">
+            本周会议
           </div>
           <ul className="flex flex-col gap-1.5 text-[13px] leading-snug text-[var(--ink)]">
             {meetings.map((m, i) => (
@@ -88,7 +71,7 @@ export default function FocusStrip({
       )}
 
       <div
-        className="grid gap-2"
+        className="grid gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)]"
         style={{
           gridTemplateColumns: `repeat(${chips.length}, minmax(0, 1fr))`,
         }}
@@ -102,20 +85,16 @@ export default function FocusStrip({
               scrollToHash(c.href, 280);
               history.replaceState(null, "", c.href);
             }}
-            className="group relative overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3 py-3 transition-[border-color,box-shadow] duration-150 hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-card)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] sm:px-3.5 sm:py-3.5"
+            className="flex flex-col gap-1.5 bg-[var(--card)] px-3 py-3.5 transition-colors hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--focus)] sm:px-4"
           >
             <span
-              className="absolute inset-x-0 top-0 h-0.5"
-              style={{ background: TONE[c.tone].bar }}
-              aria-hidden
-            />
-            <span
-              className="block text-[1.65rem] font-semibold leading-none tracking-tight tabular-nums sm:text-[1.75rem]"
-              style={{ color: TONE[c.tone].num }}
+              className={`text-[1.625rem] font-semibold leading-none tracking-tight tabular-nums ${
+                c.emphasize ? "text-[var(--urgent)]" : "text-[var(--ink)]"
+              }`}
             >
               {c.value}
             </span>
-            <span className="mt-2 block text-[11px] font-medium leading-none text-[var(--mute)]">
+            <span className="text-[11px] font-medium leading-none text-[var(--mute)]">
               {c.label}
             </span>
           </a>

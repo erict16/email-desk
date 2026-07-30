@@ -87,8 +87,8 @@ export default function OrderCard({
         {stage && <StageProgress current={stage} />}
 
         {item.action && (
-          <p className="rounded-[var(--radius-sm)] border-l-[3px] border-l-[var(--pipe)] bg-[var(--pipe-soft)] px-2.5 py-1.5 text-[13px] leading-snug text-[var(--ink)]">
-            <span className="font-semibold text-[var(--pipe)]">卡点 · </span>
+          <p className="rounded-[var(--radius-sm)] border-l-2 border-l-[var(--line-strong)] bg-[var(--pipe-soft)] px-2.5 py-1.5 text-[13px] leading-snug text-[var(--ink)]">
+            <span className="font-semibold">卡点 · </span>
             {item.action}
           </p>
         )}
