@@ -16,19 +16,23 @@ function SectionHead({
   tone,
   title,
   count,
+  hint,
 }: {
-  tone: "urgent" | "orders" | "later";
+  tone: "mine" | "wait" | "orders" | "later";
   title: string;
   count: number;
+  hint?: string;
 }) {
   const color =
-    tone === "urgent"
+    tone === "mine"
       ? "var(--urgent)"
-      : tone === "orders"
-        ? "var(--pipe)"
-        : "var(--mute)";
+      : tone === "wait"
+        ? "var(--wait-ink)"
+        : tone === "orders"
+          ? "var(--pipe)"
+          : "var(--mute)";
   return (
-    <h2 className="mb-4 flex items-baseline gap-2 border-b border-[var(--line)] pb-2.5">
+    <h2 className="mb-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 border-b border-[var(--line)] pb-2.5">
       <span
         className="mt-[0.35em] h-1.5 w-1.5 shrink-0 rounded-full"
         style={{ background: color }}
@@ -40,6 +44,11 @@ function SectionHead({
       <span className="text-[12px] tabular-nums text-[var(--faint)]">
         {count}
       </span>
+      {hint && (
+        <span className="w-full text-[11px] font-normal text-[var(--faint)] sm:ml-1 sm:w-auto">
+          {hint}
+        </span>
+      )}
     </h2>
   );
 }
@@ -48,14 +57,12 @@ function StageLane({
   stageId,
   items,
   startIndex,
-  linkedKeys,
-  hasTodayOrLater,
+  triageHrefFor,
 }: {
   stageId: OrderStageId;
   items: BoardItem[];
   startIndex: number;
-  linkedKeys: Set<string>;
-  hasTodayOrLater: (key: string) => boolean;
+  triageHrefFor: (title: string) => "#mine" | "#wait" | "#later" | undefined;
 }) {
   const def = ORDER_STAGES.find((s) => s.id === stageId)!;
   let idx = startIndex;
@@ -73,14 +80,12 @@ function StageLane({
       <div className="flex flex-col gap-[var(--gap-card)]">
         {items.map((item) => {
           idx += 1;
-          const key = titleKey(item.title);
-          const hasTodayLink = linkedKeys.has(key) && hasTodayOrLater(key);
           return (
             <OrderCard
               key={`order-${item.title}`}
               item={item}
               index={idx}
-              hasTodayLink={hasTodayLink}
+              triageHref={triageHrefFor(item.title)}
             />
           );
         })}
@@ -106,20 +111,24 @@ export default function Board({ board }: { board: BoardData }) {
   const view = buildDeskView(board);
   let globalIndex = 0;
 
-  const todayOrLaterKeys = new Set([
-    ...view.today.map((i) => titleKey(i.title)),
-    ...view.later.map((i) => titleKey(i.title)),
-  ]);
-  const hasTodayOrLater = (key: string) => todayOrLaterKeys.has(key);
+  const triageHrefFor = (
+    title: string,
+  ): "#mine" | "#wait" | "#later" | undefined => {
+    const key = titleKey(title);
+    if (!view.linkedKeys.has(key)) return undefined;
+    const zone = view.triageZoneByKey.get(key);
+    if (zone === "mine") return "#mine";
+    if (zone === "wait") return "#wait";
+    if (zone === "later") return "#later";
+    return undefined;
+  };
 
   const laterCollapsed = view.later.length > 3;
 
-  // Pre-assign display indices so Later doesn't need render-time mutation.
-  const todayStart = 0;
-  const pipelineStart = view.today.length;
-  const laterStart =
-    pipelineStart +
-    view.orders.length;
+  const mineStart = 0;
+  const waitStart = view.mine.length;
+  const pipelineStart = waitStart + view.waiting.length;
+  const laterStart = pipelineStart + view.orders.length;
 
   return (
     <div id="top" className="min-h-full bg-[var(--paper)]">
@@ -129,7 +138,6 @@ export default function Board({ board }: { board: BoardData }) {
         id="email-desk-print"
         className="mx-auto w-full max-w-[var(--measure)] px-4 pb-16 pt-6 sm:px-6"
       >
-        {/* page intro */}
         <header className="mb-6">
           <h1 className="text-[1.5rem] font-semibold leading-[1.2] tracking-[-0.025em] text-[var(--ink)] sm:text-[1.65rem]">
             {board.title}
@@ -145,19 +153,20 @@ export default function Board({ board }: { board: BoardData }) {
         <FocusStrip meetings={view.meetings} stats={view.stats} />
 
         <div className="flex flex-col gap-[var(--gap-section)]">
-          {/* ── 今日行动 ── */}
-          {view.today.length > 0 && (
+          {/* ── 要我动 ── */}
+          {view.mine.length > 0 && (
             <section
-              id="today"
+              id="mine"
               className="scroll-mt-[calc(var(--banner-height)+1rem)]"
             >
               <SectionHead
-                tone="urgent"
-                title="今日行动"
-                count={view.today.length}
+                tone="mine"
+                title="要我动"
+                count={view.mine.length}
+                hint="你现在要回 / 催 / 发"
               />
               <div className="flex flex-col gap-[var(--gap-card)]">
-                {view.today.map((item, i) => {
+                {view.mine.map((item, i) => {
                   const linkedStage = linkedStageLabel(
                     item.title,
                     view.orders,
@@ -165,10 +174,44 @@ export default function Board({ board }: { board: BoardData }) {
                   );
                   return (
                     <ActionCard
-                      key={`today-${item.title}`}
+                      key={`mine-${item.title}`}
                       item={item}
-                      index={todayStart + i + 1}
+                      index={mineStart + i + 1}
                       urgent={item.priority === "P0"}
+                      tone="act"
+                      linkedStage={linkedStage}
+                    />
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* ── 等对方 ── */}
+          {view.waiting.length > 0 && (
+            <section
+              id="wait"
+              className="scroll-mt-[calc(var(--banner-height)+1rem)]"
+            >
+              <SectionHead
+                tone="wait"
+                title="等对方"
+                count={view.waiting.length}
+                hint="球在客户 / 工厂 / 同事"
+              />
+              <div className="flex flex-col gap-[var(--gap-card)]">
+                {view.waiting.map((item, i) => {
+                  const linkedStage = linkedStageLabel(
+                    item.title,
+                    view.orders,
+                    view.linkedKeys,
+                  );
+                  return (
+                    <ActionCard
+                      key={`wait-${item.title}`}
+                      item={item}
+                      index={waitStart + i + 1}
+                      tone="wait"
                       linkedStage={linkedStage}
                     />
                   );
@@ -187,6 +230,7 @@ export default function Board({ board }: { board: BoardData }) {
                 tone="orders"
                 title="订单管线"
                 count={view.orders.length}
+                hint="项目现在在哪一阶段"
               />
 
               <div className="mb-4 flex flex-wrap gap-1.5">
@@ -223,8 +267,7 @@ export default function Board({ board }: { board: BoardData }) {
                       stageId={s.id}
                       items={items}
                       startIndex={start}
-                      linkedKeys={view.linkedKeys}
-                      hasTodayOrLater={hasTodayOrLater}
+                      triageHrefFor={triageHrefFor}
                     />
                   </div>
                 );
@@ -239,19 +282,14 @@ export default function Board({ board }: { board: BoardData }) {
                       未标阶段
                     </h3>
                     <div className="flex flex-col gap-[var(--gap-card)]">
-                      {unstaged.map((item, i) => {
-                        const key = titleKey(item.title);
-                        return (
-                          <OrderCard
-                            key={`order-u-${item.title}`}
-                            item={item}
-                            index={pipelineStart + globalIndex + i + 1}
-                            hasTodayLink={
-                              view.linkedKeys.has(key) && hasTodayOrLater(key)
-                            }
-                          />
-                        );
-                      })}
+                      {unstaged.map((item, i) => (
+                        <OrderCard
+                          key={`order-u-${item.title}`}
+                          item={item}
+                          index={pipelineStart + globalIndex + i + 1}
+                          triageHref={triageHrefFor(item.title)}
+                        />
+                      ))}
                     </div>
                   </div>
                 );

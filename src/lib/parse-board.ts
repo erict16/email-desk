@@ -8,6 +8,9 @@ import {
 
 export type Priority = "P0" | "P1" | "P2" | "OK" | "FYI" | "ORDER";
 
+/** Who holds the ball — Eric acts vs waiting on someone else */
+export type Ball = "me" | "them";
+
 export type BoardItem = {
   title: string;
   priority: Priority;
@@ -20,6 +23,10 @@ export type BoardItem = {
   stage?: OrderStageId;
   /** Customer / project short name for order focus */
   customer?: string;
+  /** Explicit ball-in-court; optional — see isWaitingItem */
+  ball?: Ball;
+  /** Short free text: who/what is blocking when waiting */
+  wait?: string;
 };
 
 export type BoardSection = {
@@ -71,10 +78,12 @@ function parseItems(block: string): BoardItem[] {
     let tags: string[] | undefined;
     let stage: OrderStageId | undefined;
     let customer: string | undefined;
+    let ball: Ball | undefined;
+    let wait: string | undefined;
 
     for (const line of lines.slice(1)) {
       const m = line.match(
-        /^-?\s*(priority|meta|action|date|people|tags|stage|customer|next)\s*:\s*(.+)$/i,
+        /^-?\s*(priority|meta|action|date|people|tags|stage|customer|next|ball|球|wait|等待)\s*:\s*(.+)$/i,
       );
       if (!m) continue;
       const key = m[1].toLowerCase();
@@ -91,7 +100,12 @@ function parseItems(block: string): BoardItem[] {
       else if (key === "people") people = val;
       else if (key === "customer") customer = val;
       else if (key === "stage") stage = parseOrderStage(val);
-      else if (key === "tags")
+      else if (key === "ball" || key === "球") {
+        const b = parseBall(val);
+        if (b) ball = b;
+      } else if (key === "wait" || key === "等待") {
+        if (val) wait = val;
+      } else if (key === "tags")
         tags = val
           .split(/[,|]/)
           .map((t) => t.trim())
@@ -122,9 +136,54 @@ function parseItems(block: string): BoardItem[] {
       tags,
       stage,
       customer,
+      ball,
+      wait,
     });
   }
   return items;
+}
+
+/** Accept me/them and 我/对方 (and common synonyms). */
+export function parseBall(raw: string | undefined): Ball | undefined {
+  if (!raw) return undefined;
+  const k = raw.trim().toLowerCase().replace(/\s+/g, "");
+  if (
+    k === "me" ||
+    k === "i" ||
+    k === "mine" ||
+    k === "我" ||
+    k === "自己" ||
+    k === "eric"
+  ) {
+    return "me";
+  }
+  if (
+    k === "them" ||
+    k === "they" ||
+    k === "other" ||
+    k === "others" ||
+    k === "对方" ||
+    k === "别人" ||
+    k === "客户" ||
+    k === "工厂" ||
+    k === "wait"
+  ) {
+    return "them";
+  }
+  return undefined;
+}
+
+/**
+ * Waiting detection (priority order from ball design):
+ * 1. ball: them → waiting
+ * 2. ball: me → not waiting (even if wait: set)
+ * 3. non-empty wait: → waiting
+ * 4. neither → default not waiting (P0/P1 mine, P2 later)
+ */
+export function isWaitingItem(item: BoardItem): boolean {
+  if (item.ball === "them") return true;
+  if (item.ball === "me") return false;
+  return Boolean(item.wait && item.wait.trim());
 }
 
 /**

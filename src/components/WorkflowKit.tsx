@@ -45,9 +45,27 @@ export default function WorkflowKit() {
         </div>
 
         {/* Writing rule */}
-        <p className="text-[13px] leading-relaxed text-[var(--muted)]">
-          标题可搜邮箱 · Todo=你要动 · Order=项目在哪
-        </p>
+        <div className="space-y-1.5 text-[13px] leading-relaxed text-[var(--muted)]">
+          <p>标题 = 邮箱可搜关键词（PO / QS / 项目号）</p>
+          <p>
+            <span className="font-medium text-[var(--action-ink)]">要我动</span>
+            {" · "}
+            <code className="text-[12px]">ball: me</code>
+            {" + action"}
+          </p>
+          <p>
+            <span className="font-medium text-[var(--wait-ink)]">等对方</span>
+            {" · "}
+            <code className="text-[12px]">ball: them</code>
+            {" + "}
+            <code className="text-[12px]">wait:</code>
+            {" 卡在谁"}
+          </p>
+          <p>
+            <span className="font-medium text-[var(--pipe)]">管线</span>
+            {" · 只答项目在哪一阶段，旁听单不写 todo"}
+          </p>
+        </div>
 
         {/* External tools */}
         <nav

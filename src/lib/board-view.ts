@@ -1,40 +1,74 @@
 import type { BoardData, BoardItem } from "@/lib/parse-board";
-import { isOrderItem } from "@/lib/parse-board";
+import { isOrderItem, isWaitingItem } from "@/lib/parse-board";
 import { compareByStageThenTitle } from "@/lib/order-stages";
 import { titleKey } from "@/lib/title-key";
 
 export type DeskView = {
-  today: BoardItem[]; // P0 then P1
-  later: BoardItem[]; // P2
-  orders: BoardItem[]; // isOrderItem, sorted by stage
+  /** P0/P1 that need Eric to act now */
+  mine: BoardItem[];
+  /** Ball with someone else (any triage priority) */
+  waiting: BoardItem[];
+  /** P2 and not waiting — watch later */
+  later: BoardItem[];
+  /** Order pipeline cards */
+  orders: BoardItem[];
   meetings: string[];
   stats: {
-    urgent: number; // P0
-    today: number; // P0+P1
-    later: number; // P2
+    mine: number;
+    waiting: number;
+    later: number;
     orders: number;
   };
   /** titleKey → true if appears in both a triage item and an order item */
   linkedKeys: Set<string>;
+  /** titleKey → which triage zone holds that title (for order cross-links) */
+  triageZoneByKey: Map<string, "mine" | "wait" | "later">;
 };
 
+function isTriage(item: BoardItem): boolean {
+  return (
+    item.priority === "P0" ||
+    item.priority === "P1" ||
+    item.priority === "P2"
+  );
+}
+
+function sortMine(a: BoardItem, b: BoardItem): number {
+  // P0 before P1
+  if (a.priority !== b.priority) {
+    if (a.priority === "P0") return -1;
+    if (b.priority === "P0") return 1;
+  }
+  return 0;
+}
+
+/**
+ * Partition triage by ball-in-court:
+ * - mine: P0|P1 and not waiting
+ * - waiting: waiting (P0/P1/P2)
+ * - later: P2 and not waiting
+ *
+ * Legacy cards without ball/wait: all P0/P1 → mine, all P2 → later.
+ */
 export function buildDeskView(board: BoardData): DeskView {
   const all = board.sections.flatMap((s) => s.items);
 
-  const p0 = all.filter((i) => i.priority === "P0");
-  const p1 = all.filter((i) => i.priority === "P1");
-  const p2 = all.filter((i) => i.priority === "P2");
+  const triage = all.filter(isTriage);
+  const mine = triage
+    .filter((i) => (i.priority === "P0" || i.priority === "P1") && !isWaitingItem(i))
+    .slice()
+    .sort(sortMine);
+  const waiting = triage.filter((i) => isWaitingItem(i));
+  const later = triage.filter(
+    (i) => i.priority === "P2" && !isWaitingItem(i),
+  );
 
-  const today = [...p0, ...p1];
-  const later = p2;
   const orders = all
     .filter(isOrderItem)
     .slice()
     .sort(compareByStageThenTitle);
 
-  const triageKeys = new Set(
-    [...p0, ...p1, ...p2].map((i) => titleKey(i.title)),
-  );
+  const triageKeys = new Set(triage.map((i) => titleKey(i.title)));
   const orderKeys = new Set(orders.map((i) => titleKey(i.title)));
 
   const linkedKeys = new Set<string>();
@@ -42,17 +76,24 @@ export function buildDeskView(board: BoardData): DeskView {
     if (orderKeys.has(key)) linkedKeys.add(key);
   }
 
+  const triageZoneByKey = new Map<string, "mine" | "wait" | "later">();
+  for (const i of mine) triageZoneByKey.set(titleKey(i.title), "mine");
+  for (const i of waiting) triageZoneByKey.set(titleKey(i.title), "wait");
+  for (const i of later) triageZoneByKey.set(titleKey(i.title), "later");
+
   return {
-    today,
+    mine,
+    waiting,
     later,
     orders,
     meetings: board.meetings,
     stats: {
-      urgent: p0.length,
-      today: today.length,
+      mine: mine.length,
+      waiting: waiting.length,
       later: later.length,
       orders: orders.length,
     },
     linkedKeys,
+    triageZoneByKey,
   };
 }

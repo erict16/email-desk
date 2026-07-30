@@ -31,11 +31,13 @@
   --urgent: #c43c2c;
   --action-bg: #f3ead2;
   --action-ink: #5c4a1f;
+  --wait-bg: #ebe8e2;
+  --wait-ink: #5a5248;
   --pipe: #1f4d7a;
   --pipe-soft: #e8eef4;
   --follow: #b86e00;
   --radius: 6px;
-  --measure: 42rem;
+  --measure: 52rem;
 
   /* aliases — old classnames mid-migration */
   --paper: var(--bg);
@@ -123,6 +125,8 @@ body {
     --urgent: #e06a5c;
     --action-bg: #3a3220;
     --action-ink: #f0e4c0;
+    --wait-bg: #2a2824;
+    --wait-ink: #b8b0a4;
     --pipe: #7aa3c9;
     --pipe-soft: #1e2a36;
     --follow: #d4a04a;

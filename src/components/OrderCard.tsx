@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import type { BoardItem } from "@/lib/parse-board";
+import { isWaitingItem } from "@/lib/parse-board";
 import {
   ORDER_STAGES,
   stageDef,
@@ -49,18 +50,21 @@ function StageProgress({ current }: { current: OrderStageId }) {
 
 /**
  * Pipeline order card — stage dots + 卡点 spine.
- * Cross-link to Today when hasTodayLink.
+ * Optional quiet 等待 line when ball is with others.
  */
 export default function OrderCard({
   item,
   index,
-  hasTodayLink = false,
+  triageHref,
 }: {
   item: BoardItem;
   index: number;
-  hasTodayLink?: boolean;
+  /** When set, card has a matching triage item — link to that zone */
+  triageHref?: "#mine" | "#wait" | "#later";
 }): JSX.Element {
   const stage = item.stage;
+  const showWait = isWaitingItem(item);
+  const waitLine = item.wait?.trim();
 
   return (
     <article className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-[var(--pad-card-x)] py-[var(--pad-card-y)] transition-[border-color,background-color] duration-150 hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)]">
@@ -89,11 +93,19 @@ export default function OrderCard({
         {/* 2. 7 progress dots */}
         {stage && <StageProgress current={stage} />}
 
-        {/* 3. 卡点 spine on pipe-soft */}
+        {/* 3. 卡点 spine */}
         {item.action && (
           <p className="rounded-[var(--radius-sm)] bg-[var(--pipe-soft)] px-2.5 py-1.5 text-[13px] leading-snug text-[var(--ink)]">
             <span className="font-semibold text-[var(--pipe)]">卡点 · </span>
             {item.action}
+          </p>
+        )}
+
+        {/* 3b. Quiet wait line when ball is them */}
+        {showWait && waitLine && (
+          <p className="text-[12px] leading-snug text-[var(--wait-ink)]">
+            <span className="font-medium">等待 · </span>
+            {waitLine}
           </p>
         )}
 
@@ -123,13 +135,13 @@ export default function OrderCard({
           </p>
         )}
 
-        {/* 5. Cross-link to today */}
-        {hasTodayLink && (
+        {/* 5. Cross-link to triage zone */}
+        {triageHref && (
           <a
-            href="#today"
+            href={triageHref}
             className="inline-flex w-fit items-center text-[12px] font-medium leading-none text-[var(--follow)] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
           >
-            今日有待办
+            {triageHref === "#wait" ? "等对方有跟进" : "有待办"}
           </a>
         )}
       </div>

@@ -1,7 +1,7 @@
 # Email Desk — ball-in-court redesign (方案 A)
 
 **Date:** 2026-07-30  
-**Status:** approved by Eric (chat) — awaiting final review of this file before plan  
+**Status:** implemented (ball-in-court IA on main)  
 **Live:** https://erict16.github.io/email-desk/  
 **Repo:** `~/Github/email-desk`  
 
@@ -208,12 +208,12 @@ Unmodified current `board.md`: all P0+P1 land in **要我动**, all P2 in **稍�
 
 ## 8. Success criteria
 
-- [ ] Card with `ball: them` or only `wait:` appears under **等对方**, not **要我动**
-- [ ] Legacy P0/P1 without new fields still under **要我动**
-- [ ] Red bar only on **要我动 ∩ P0**
-- [ ] Title copy, todo↔order cross-link, seven-stage pipeline still work
-- [ ] Single-column mobile scan; no new runtime deps
-- [ ] `npm run build` passes with current `board.md` unchanged
+- [x] Card with `ball: them` or only `wait:` appears under **等对方**, not **要我动**
+- [x] Legacy P0/P1 without new fields still under **要我动**
+- [x] Red bar only on **要我动 ∩ P0**
+- [x] Title copy, todo↔order cross-link, seven-stage pipeline still work
+- [x] Single-column mobile scan; no new runtime deps
+- [x] `npm run build` passes; live board tagged with ball/wait
 
 ---
 

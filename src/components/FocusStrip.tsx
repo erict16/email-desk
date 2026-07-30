@@ -3,8 +3,8 @@
 import { scrollToHash } from "@/lib/smooth-scroll";
 
 export type FocusStats = {
-  urgent: number;
-  today: number;
+  mine: number;
+  waiting: number;
   later: number;
   orders: number;
 };
@@ -14,19 +14,18 @@ type Chip = {
   label: string;
   value: number;
   href: string;
-  tone: "urgent" | "follow" | "orders" | "later";
+  tone: "mine" | "wait" | "orders" | "later";
 };
 
 const TONE: Record<Chip["tone"], string> = {
-  urgent: "var(--urgent)",
-  follow: "var(--follow)",
+  mine: "var(--urgent)",
+  wait: "var(--wait-ink)",
   orders: "var(--pipe)",
   later: "var(--mute)",
 };
 
 /**
- * Focus strip: meetings dock + jump chips for Today / Pipeline / Later.
- * Replaces the old StatsNav triage grid.
+ * Focus strip: meetings + jump chips for 要我动 / 等待 / 管线 / 稍后.
  */
 export default function FocusStrip({
   meetings,
@@ -37,18 +36,18 @@ export default function FocusStrip({
 }) {
   const chips: Chip[] = [
     {
-      key: "urgent",
-      label: "紧急",
-      value: stats.urgent,
-      href: "#today",
-      tone: "urgent",
+      key: "mine",
+      label: "要我动",
+      value: stats.mine,
+      href: "#mine",
+      tone: "mine",
     },
     {
-      key: "today",
-      label: "今日",
-      value: stats.today,
-      href: "#today",
-      tone: "follow",
+      key: "wait",
+      label: "等待",
+      value: stats.waiting,
+      href: "#wait",
+      tone: "wait",
     },
     {
       key: "pipeline",

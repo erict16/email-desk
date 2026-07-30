@@ -4,20 +4,29 @@ import CopyTitle from "@/components/CopyTitle";
 import { tagClass } from "@/lib/tag-class";
 
 /**
- * Today / Later action card — action spine is the visual backbone.
- * P0: left urgent rail (no "P0" chip). Cross-link to pipeline when linkedStage set.
+ * Action card for 要我动 / 等对方 / 稍后.
+ * Mine: warm spine「待办 ·」, P0 left red bar.
+ * Wait: muted spine「等待 ·」; no red bar.
  */
 export default function ActionCard({
   item,
   index,
   urgent = false,
+  tone = "act",
   linkedStage,
 }: {
   item: BoardItem;
   index: number;
+  /** Red left bar — only mine ∩ P0 */
   urgent?: boolean;
+  tone?: "act" | "wait";
   linkedStage?: string;
 }): JSX.Element {
+  const isWait = tone === "wait";
+  const spineText = isWait
+    ? item.wait?.trim() || item.action
+    : item.action;
+
   return (
     <article
       className={`rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-[var(--pad-card-x)] py-[var(--pad-card-y)] transition-[border-color,background-color] duration-150 hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)] ${
@@ -46,15 +55,23 @@ export default function ActionCard({
           )}
         </div>
 
-        {/* 2. Action spine */}
-        {item.action && (
-          <p className="rounded-[var(--radius-sm)] bg-[var(--action-bg)] px-2.5 py-1.5 text-[13px] leading-snug text-[var(--action-ink)]">
-            <span className="font-semibold">待办 · </span>
-            {item.action}
+        {/* 2. Spine — 待办 or 等待 */}
+        {spineText && (
+          <p
+            className={`rounded-[var(--radius-sm)] px-2.5 py-1.5 text-[13px] leading-snug ${
+              isWait
+                ? "bg-[var(--wait-bg)] text-[var(--wait-ink)]"
+                : "bg-[var(--action-bg)] text-[var(--action-ink)]"
+            }`}
+          >
+            <span className="font-semibold">
+              {isWait ? "等待 · " : "待办 · "}
+            </span>
+            {spineText}
           </p>
         )}
 
-        {/* 3. Tags */}
+        {/* 3. Tags — keep short; skip if empty */}
         {item.tags && item.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {item.tags.map((t) => (
@@ -75,7 +92,7 @@ export default function ActionCard({
           </p>
         )}
 
-        {/* 5. Meta ~2 lines */}
+        {/* 5. Meta ≤2 lines */}
         {item.meta && (
           <p className="line-clamp-2 text-[13px] leading-relaxed text-[var(--muted)]">
             {item.meta}

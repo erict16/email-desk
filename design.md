@@ -33,13 +33,15 @@ Warm paper canvas; one urgent red; action strip in warm gold; pipeline in deep b
 | Faint | `--faint` | `#8a8a8a` | Meta / tertiary |
 | Line | `--line` | `#e6e4df` | 1px rules |
 | Urgent | `--urgent` | `#c43c2c` | P0 bar / urgent count |
-| Action bg | `--action-bg` | `#f3ead2` | Todo / action spine |
+| Action bg | `--action-bg` | `#f3ead2` | Mine spine「待办 ·」 |
 | Action ink | `--action-ink` | `#5c4a1f` | Action copy on spine |
+| Wait bg | `--wait-bg` | `#ebe8e2` | Waiting spine「等待 ·」 |
+| Wait ink | `--wait-ink` | `#5a5248` | Waiting spine text |
 | Pipeline | `--pipe` | `#1f4d7a` | Stage / 卡点 |
 | Pipe soft | `--pipe-soft` | `#e8eef4` | Soft stage chips |
-| Follow | `--follow` | `#b86e00` | Today non-P0 stats |
+| Follow | `--follow` | `#b86e00` | Cross-link / secondary |
 | Radius | `--radius` | `6px` | Cards |
-| Measure | `--measure` | `42rem` | Single-column scan width |
+| Measure | `--measure` | `52rem` | Single-column scan width |
 
 ### Migration aliases (legacy classnames)
 
@@ -76,12 +78,22 @@ Keep components that still reference old names from hard-crashing mid-migration:
 
 | Layer | Question | Source |
 |-------|----------|--------|
-| **Today** | What to reply / chase / send now? | todo `priority: P0\|P1` |
-| **Pipeline** | Where is each order (OS→…→ship)? | `orders` + `stage:` |
-| **Later** | Watch optionally | `priority: P2` |
-| **Dock** | Meetings today / this week | frontmatter `meetings:` |
+| **要我动** | What must Eric reply / chase / send **now**? | P0/P1 **and not** waiting |
+| **等对方** | Ball with customer / factory / colleague | `ball: them` or non-empty `wait:` |
+| **订单管线** | Where is each order (OS→…→ship)? | `orders` + `stage:` |
+| **稍后** | Optional watch | P2 **and not** waiting |
+| **会** | Meetings this week | frontmatter `meetings:` |
 
-Hard rules: title = mailbox search string; todo = you move; order = project position; `action` is the card’s main sentence.
+Hard rules: title = mailbox search string; mine = you act; wait = someone else holds the ball; order = project stage; spine (`待办` / `等待` / `卡点`) is the card’s main sentence.
+
+### Waiting detection
+
+1. `ball: them` / `球: 对方` → 等对方  
+2. `ball: me` / `球: 我` → 要我动 (even if `wait:` set)  
+3. Non-empty `wait:` / `等待:` → 等对方  
+4. Neither → P0/P1 要我动, P2 稍后  
+
+Red left bar: **要我动 ∩ P0 only** (never on waiting cards).
 
 ---
 
@@ -102,5 +114,5 @@ Hard rules: title = mailbox search string; todo = you move; order = project posi
 
 - [x] Tokens locked in `design.md` + `:root`  
 - [x] Legacy aliases present (`--paper`, `--card`, `--muted`, `--orders`, …)  
-- [ ] Full IA / card redesign (later tasks)  
-- [ ] `board.md` zero-change build still correct after component work  
+- [x] Ball-in-court IA: 要我动 / 等对方 / 管线 / 稍后  
+- [x] Optional `ball` / `wait` fields; legacy cards still render  
