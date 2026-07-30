@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import SiteFooter from "@/components/SiteFooter";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { ToastProvider } from "@/components/ToastProvider";
 import {
   ASSET_V,
   SITE_DESCRIPTION,
@@ -72,8 +73,10 @@ export default function RootLayout({
     <html lang="zh-CN" className={`dark h-full antialiased ${inter.variable}`}>
       <body className="flex min-h-full flex-col font-sans">
         <ThemeProvider>
-          <div className="flex-1">{children}</div>
-          <SiteFooter />
+          <ToastProvider>
+            <div className="flex-1">{children}</div>
+            <SiteFooter />
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>

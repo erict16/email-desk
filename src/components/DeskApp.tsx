@@ -1,16 +1,33 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import type { BoardData } from "@/lib/board-types";
+import type { BoardData, BoardItem } from "@/lib/board-types";
 import { buildDeskView } from "@/lib/board-view";
 import { filterItems } from "@/lib/filter-board";
 import { titleKey } from "@/lib/title-key";
 import { stageDef } from "@/lib/order-stages";
+import {
+  type BlockerCategory,
+  type ZoneFilter,
+  isBlockedItem,
+  matchesBlockerCategory,
+  matchesZone,
+} from "@/lib/blocker-classify";
+import {
+  itemDoneKey,
+  loadLocalDone,
+  saveLocalDone,
+} from "@/lib/local-done";
 import AppHeader from "@/components/AppHeader";
 import ActionCard from "@/components/ActionCard";
 import PipelineBoard from "@/components/PipelineBoard";
 import WorkflowKit from "@/components/WorkflowKit";
+import FilterBar from "@/components/FilterBar";
+import CommandPalette, {
+  type PaletteEntry,
+} from "@/components/CommandPalette";
+import { useToast, copyText } from "@/components/ToastProvider";
 import { Calendar, Inbox } from "lucide-react";
 
 function linkedStageLabel(
@@ -25,39 +42,200 @@ function linkedStageLabel(
   return stageDef(order.stage as never).label;
 }
 
+function applyFilters(
+  items: BoardItem[],
+  zone: ZoneFilter,
+  zoneOf: "mine" | "waiting" | "later" | "order",
+  cats: Set<BlockerCategory>,
+  query: string,
+  done: Set<string>,
+  hideDone: boolean,
+): BoardItem[] {
+  return filterItems(items, query).filter((item) => {
+    if (hideDone && done.has(itemDoneKey(item.title))) return false;
+    if (!matchesZone(item, zone, zoneOf)) return false;
+    if (cats.size > 0 && !matchesBlockerCategory(item, cats)) return false;
+    // category filter only meaningful when blocked or all with cats
+    if (cats.size > 0 && zone === "mine" && !isBlockedItem(item)) {
+      // allow mine without being blocked if no category? user selected category → require match
+      return matchesBlockerCategory(item, cats);
+    }
+    return true;
+  });
+}
+
 export default function DeskApp({ board }: { board: BoardData }) {
+  const { toast } = useToast();
   const [query, setQuery] = useState("");
+  const [zone, setZone] = useState<ZoneFilter>("all");
+  const [categories, setCategories] = useState<Set<BlockerCategory>>(
+    () => new Set(),
+  );
+  const [done, setDone] = useState<Set<string>>(() => new Set());
+  const [hideDone, setHideDone] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+
   const view = useMemo(() => buildDeskView(board), [board]);
 
+  useEffect(() => {
+    setDone(loadLocalDone());
+  }, []);
+
+  const toggleDone = useCallback((title: string) => {
+    setDone((prev) => {
+      const next = new Set(prev);
+      const k = itemDoneKey(title);
+      if (next.has(k)) next.delete(k);
+      else next.add(k);
+      saveLocalDone(next);
+      return next;
+    });
+  }, []);
+
+  const toggleCategory = useCallback((c: BlockerCategory) => {
+    setCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(c)) next.delete(c);
+      else next.add(c);
+      return next;
+    });
+  }, []);
+
+  // Cmd/Ctrl+K
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setPaletteOpen((o) => !o);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const allTriage = useMemo(
+    () => [...view.mine, ...view.waiting, ...view.later],
+    [view.mine, view.waiting, view.later],
+  );
+
+  const counts = useMemo(() => {
+    const q = query;
+    const base = {
+      all: filterItems([...allTriage, ...view.orders], q).length,
+      blocked: filterItems(
+        [...allTriage, ...view.orders].filter(isBlockedItem),
+        q,
+      ).length,
+      mine: filterItems(view.mine, q).length,
+      waiting: filterItems(view.waiting, q).length,
+    };
+    return base;
+  }, [allTriage, view.mine, view.waiting, view.orders, query]);
+
   const mine = useMemo(
-    () => filterItems(view.mine, query),
-    [view.mine, query],
+    () =>
+      applyFilters(
+        view.mine,
+        zone,
+        "mine",
+        categories,
+        query,
+        done,
+        hideDone,
+      ),
+    [view.mine, zone, categories, query, done, hideDone],
   );
   const waiting = useMemo(
-    () => filterItems(view.waiting, query),
-    [view.waiting, query],
+    () =>
+      applyFilters(
+        view.waiting,
+        zone,
+        "waiting",
+        categories,
+        query,
+        done,
+        hideDone,
+      ),
+    [view.waiting, zone, categories, query, done, hideDone],
   );
   const later = useMemo(
-    () => filterItems(view.later, query),
-    [view.later, query],
+    () =>
+      applyFilters(
+        view.later,
+        zone,
+        "later",
+        categories,
+        query,
+        done,
+        hideDone,
+      ),
+    [view.later, zone, categories, query, done, hideDone],
   );
   const orders = useMemo(
-    () => filterItems(view.orders, query),
-    [view.orders, query],
+    () =>
+      applyFilters(
+        view.orders,
+        zone === "mine" || zone === "waiting" ? "all" : zone,
+        "order",
+        categories,
+        query,
+        done,
+        hideDone,
+      ),
+    [view.orders, zone, categories, query, done, hideDone],
   );
+
+  // When zone is mine/waiting, still show pipeline lightly filtered by query only
+  const pipelineOrders = useMemo(() => {
+    if (zone === "mine" || zone === "waiting") {
+      return filterItems(view.orders, query).filter(
+        (i) => !(hideDone && done.has(itemDoneKey(i.title))),
+      );
+    }
+    return orders;
+  }, [zone, view.orders, query, hideDone, done, orders]);
 
   const triageHrefFor = (title: string) => {
     const key = titleKey(title);
     if (!view.linkedKeys.has(key)) return undefined;
-    const zone = view.triageZoneByKey.get(key);
-    if (zone === "mine") return "#mine" as const;
-    if (zone === "wait") return "#wait" as const;
-    if (zone === "later") return "#later" as const;
+    const z = view.triageZoneByKey.get(key);
+    if (z === "mine") return "#mine" as const;
+    if (z === "wait") return "#wait" as const;
+    if (z === "later") return "#later" as const;
     return undefined;
   };
 
+  const paletteEntries: PaletteEntry[] = useMemo(() => {
+    const out: PaletteEntry[] = [];
+    for (const item of view.mine)
+      out.push({ item, zone: "mine", zoneLabel: "要我动" });
+    for (const item of view.waiting)
+      out.push({ item, zone: "waiting", zoneLabel: "等对方" });
+    for (const item of view.later)
+      out.push({ item, zone: "later", zoneLabel: "稍后" });
+    for (const item of view.orders)
+      out.push({ item, zone: "order", zoneLabel: "管线" });
+    return out;
+  }, [view]);
+
+  const onPaletteSelect = (e: PaletteEntry) => {
+    const href =
+      e.zone === "mine"
+        ? "#mine"
+        : e.zone === "waiting"
+          ? "#wait"
+          : e.zone === "later"
+            ? "#later"
+            : "#pipeline";
+    document.getElementById(href.slice(1))?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+    history.replaceState(null, "", href);
+  };
+
   const empty =
-    mine.length + waiting.length + later.length + orders.length === 0;
+    mine.length + waiting.length + later.length + pipelineOrders.length === 0;
 
   return (
     <div id="top" className="min-h-full">
@@ -72,17 +250,28 @@ export default function DeskApp({ board }: { board: BoardData }) {
         }}
         query={query}
         onQueryChange={setQuery}
+        onOpenPalette={() => setPaletteOpen(true)}
+      />
+
+      <CommandPalette
+        open={paletteOpen}
+        onClose={() => setPaletteOpen(false)}
+        entries={paletteEntries}
+        onSelect={onPaletteSelect}
+        onCopy={async (t) => {
+          const ok = await copyText(t);
+          toast(ok ? "Copied for email search!" : "复制失败");
+        }}
       />
 
       <main
         id="email-desk-print"
         className="mx-auto w-full max-w-[var(--measure)] px-4 pb-16 pt-6 sm:px-6"
       >
-        {/* page intro */}
         <motion.header
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6"
+          className="mb-5"
         >
           <h1 className="text-[1.5rem] font-semibold tracking-tight text-[var(--ink)] sm:text-[1.65rem]">
             {board.title}
@@ -100,13 +289,12 @@ export default function DeskApp({ board }: { board: BoardData }) {
           )}
         </motion.header>
 
-        {/* meetings spotlight */}
         {view.meetings.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="mb-8 overflow-hidden rounded-xl border border-[var(--line)] bg-gradient-to-r from-[var(--primary-soft)] via-[var(--surface)] to-[var(--wait-soft)] p-4 shadow-[var(--shadow-card)] sm:p-5"
+            className="mb-5 overflow-hidden rounded-xl border border-[var(--line)] bg-gradient-to-r from-[var(--primary-soft)] via-[var(--surface)] to-[var(--wait-soft)] p-4 shadow-[var(--shadow-card)] sm:p-5"
             aria-label="本周会议"
           >
             <div className="mb-2 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--primary)]">
@@ -126,7 +314,18 @@ export default function DeskApp({ board }: { board: BoardData }) {
           </motion.section>
         )}
 
-        {empty && query && (
+        <FilterBar
+          zone={zone}
+          onZone={setZone}
+          categories={categories}
+          onToggleCategory={toggleCategory}
+          counts={counts}
+          hideDone={hideDone}
+          onHideDone={setHideDone}
+          doneCount={done.size}
+        />
+
+        {empty && (
           <div className="mb-8 rounded-xl border border-dashed border-[var(--line)] px-6 py-12 text-center">
             <Inbox
               className="mx-auto mb-3 text-[var(--faint)]"
@@ -137,76 +336,86 @@ export default function DeskApp({ board }: { board: BoardData }) {
               无匹配结果
             </p>
             <p className="mt-1 text-[13px] text-[var(--faint)]">
-              试试 PO 号、客户名或状态关键词
+              调整筛选或按 ⌘K 搜索
             </p>
             <button
               type="button"
-              onClick={() => setQuery("")}
+              onClick={() => {
+                setQuery("");
+                setZone("all");
+                setCategories(new Set());
+              }}
               className="mt-4 text-[13px] font-medium text-[var(--primary)] hover:underline"
             >
-              清除搜索
+              重置筛选
             </button>
           </div>
         )}
 
-        {/* two-column: priority | pipeline */}
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-8">
-          {/* left: actions */}
           <div className="flex flex-col gap-8 lg:col-span-5">
-            {mine.length > 0 && (
-              <section id="mine" className="scroll-mt-24">
-                <SectionLabel
-                  tone="action"
-                  title="要我动"
-                  count={mine.length}
-                  hint="现在要回 / 催 / 发"
-                />
-                <div className="flex flex-col gap-3">
-                  {mine.map((item, i) => (
-                    <ActionCard
-                      key={item.title}
-                      item={item}
-                      index={i + 1}
-                      urgent={item.priority === "P0"}
-                      tone="act"
-                      linkedStage={linkedStageLabel(
-                        item.title,
-                        orders,
-                        view.linkedKeys,
-                      )}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
+            {(zone === "all" || zone === "mine" || zone === "blocked") &&
+              mine.length > 0 && (
+                <section id="mine" className="scroll-mt-24">
+                  <SectionLabel
+                    tone="action"
+                    title="要我动"
+                    count={mine.length}
+                    hint="现在要回 / 催 / 发"
+                  />
+                  <div className="flex flex-col gap-3">
+                    {mine.map((item, i) => (
+                      <ActionCard
+                        key={item.title}
+                        item={item}
+                        index={i + 1}
+                        urgent={item.priority === "P0"}
+                        tone="act"
+                        linkedStage={linkedStageLabel(
+                          item.title,
+                          view.orders,
+                          view.linkedKeys,
+                        )}
+                        done={done.has(itemDoneKey(item.title))}
+                        onToggleDone={() => toggleDone(item.title)}
+                      />
+                    ))}
+                  </div>
+                </section>
+              )}
 
-            {waiting.length > 0 && (
-              <section id="wait" className="scroll-mt-24">
-                <SectionLabel
-                  tone="wait"
-                  title="等对方"
-                  count={waiting.length}
-                  hint="球在客户 / 工厂 / 同事"
-                />
-                <div className="flex flex-col gap-3">
-                  {waiting.map((item, i) => (
-                    <ActionCard
-                      key={item.title}
-                      item={item}
-                      index={i + 1}
-                      tone="wait"
-                      linkedStage={linkedStageLabel(
-                        item.title,
-                        orders,
-                        view.linkedKeys,
-                      )}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
+            {(zone === "all" ||
+              zone === "waiting" ||
+              zone === "blocked") &&
+              waiting.length > 0 && (
+                <section id="wait" className="scroll-mt-24">
+                  <SectionLabel
+                    tone="wait"
+                    title="等对方"
+                    count={waiting.length}
+                    hint="球在客户 / 工厂 / 同事"
+                  />
+                  <div className="flex flex-col gap-3">
+                    {waiting.map((item, i) => (
+                      <ActionCard
+                        key={item.title}
+                        item={item}
+                        index={i + 1}
+                        tone="wait"
+                        linkedStage={linkedStageLabel(
+                          item.title,
+                          view.orders,
+                          view.linkedKeys,
+                        )}
+                        done={done.has(itemDoneKey(item.title))}
+                        onToggleDone={() => toggleDone(item.title)}
+                      />
+                    ))}
+                  </div>
+                </section>
+              )}
 
-            {later.length > 0 && (
+            {zone === "all" && later.length > 0 && (
               <section id="later" className="scroll-mt-24">
                 <details className="group">
                   <summary className="mb-3 flex cursor-pointer list-none items-baseline gap-2 marker:content-none [&::-webkit-details-marker]:hidden">
@@ -228,36 +437,27 @@ export default function DeskApp({ board }: { board: BoardData }) {
                         index={i + 1}
                         linkedStage={linkedStageLabel(
                           item.title,
-                          orders,
+                          view.orders,
                           view.linkedKeys,
                         )}
+                        done={done.has(itemDoneKey(item.title))}
+                        onToggleDone={() => toggleDone(item.title)}
                       />
                     ))}
                   </div>
                 </details>
               </section>
             )}
-
-            {!mine.length && !waiting.length && !query && (
-              <p className="rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-8 text-center text-[13px] text-[var(--faint)]">
-                暂无待办或等待项
-              </p>
-            )}
           </div>
 
-          {/* right: pipeline */}
           <div className="lg:col-span-7">
-            {orders.length > 0 ? (
+            {pipelineOrders.length > 0 && (
               <PipelineBoard
-                orders={orders}
+                orders={pipelineOrders}
                 triageHrefFor={triageHrefFor}
+                done={done}
+                onToggleDone={toggleDone}
               />
-            ) : (
-              !query && (
-                <p className="rounded-xl border border-[var(--line)] bg-[var(--surface)] px-4 py-8 text-center text-[13px] text-[var(--faint)]">
-                  暂无管线订单
-                </p>
-              )
             )}
           </div>
         </div>

@@ -10,16 +10,25 @@ import {
 import OrderCard from "@/components/OrderCard";
 import { LayoutGrid, Rows3 } from "lucide-react";
 
+import { itemDoneKey } from "@/lib/local-done";
+
 type Props = {
   orders: BoardItem[];
   triageHrefFor: (title: string) => "#mine" | "#wait" | "#later" | undefined;
+  done?: Set<string>;
+  onToggleDone?: (title: string) => void;
 };
 
 /**
  * Desktop: horizontal Kanban columns.
  * Mobile / accordion mode: stage tabs + list.
  */
-export default function PipelineBoard({ orders, triageHrefFor }: Props) {
+export default function PipelineBoard({
+  orders,
+  triageHrefFor,
+  done,
+  onToggleDone,
+}: Props) {
   const [mode, setMode] = useState<"kanban" | "tabs">("kanban");
   const [active, setActive] = useState<OrderStageId | "all">("all");
 
@@ -162,6 +171,12 @@ export default function PipelineBoard({ orders, triageHrefFor }: Props) {
                           index={i + 1}
                           triageHref={triageHrefFor(item.title)}
                           compact
+                          done={done?.has(itemDoneKey(item.title))}
+                          onToggleDone={
+                            onToggleDone
+                              ? () => onToggleDone(item.title)
+                              : undefined
+                          }
                         />
                       ))}
                     </div>
@@ -184,6 +199,10 @@ export default function PipelineBoard({ orders, triageHrefFor }: Props) {
                 item={item}
                 index={i + 1}
                 triageHref={triageHrefFor(item.title)}
+                done={done?.has(itemDoneKey(item.title))}
+                onToggleDone={
+                  onToggleDone ? () => onToggleDone(item.title) : undefined
+                }
               />
             ))}
             {listOrders.length === 0 && (

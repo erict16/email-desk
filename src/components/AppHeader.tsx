@@ -27,6 +27,7 @@ type Props = {
   stats: HeaderStats;
   query: string;
   onQueryChange: (q: string) => void;
+  onOpenPalette?: () => void;
 };
 
 export default function AppHeader({
@@ -36,6 +37,7 @@ export default function AppHeader({
   stats,
   query,
   onQueryChange,
+  onOpenPalette,
 }: Props) {
   const { theme, toggle } = useTheme();
   const [toast, setToast] = useState<string | null>(null);
@@ -141,7 +143,7 @@ export default function AppHeader({
             </div>
           </div>
 
-          {/* search */}
+          {/* search — click opens palette; type still filters live */}
           <div className="relative min-w-0 flex-1">
             <Search
               size={15}
@@ -152,20 +154,30 @@ export default function AppHeader({
               type="search"
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
-              placeholder="搜索 PO / 客户 / 状态…"
-              className="h-9 w-full rounded-lg border border-[var(--line)] bg-[var(--surface)] py-2 pl-9 pr-9 text-[13px] text-[var(--ink)] placeholder:text-[var(--faint)] outline-none transition-colors focus:border-[var(--primary)]/50 focus:ring-2 focus:ring-[var(--primary)]/20"
-              aria-label="搜索看板"
+              placeholder="筛选 PO / 客户 / 状态…"
+              className="h-9 w-full rounded-lg border border-[var(--line)] bg-[var(--surface)] py-2 pl-9 pr-20 text-[13px] text-[var(--ink)] placeholder:text-[var(--faint)] outline-none transition-colors focus:border-[var(--primary)]/50 focus:ring-2 focus:ring-[var(--primary)]/20"
+              aria-label="筛选看板"
             />
-            {query && (
+            <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => onQueryChange("")}
+                  className="rounded p-1 text-[var(--faint)] hover:text-[var(--ink)]"
+                  aria-label="清除搜索"
+                >
+                  <X size={14} />
+                </button>
+              )}
               <button
                 type="button"
-                onClick={() => onQueryChange("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-[var(--faint)] hover:text-[var(--ink)]"
-                aria-label="清除搜索"
+                onClick={() => onOpenPalette?.()}
+                className="hidden rounded border border-[var(--line)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--faint)] hover:border-[var(--primary)]/40 hover:text-[var(--primary)] sm:inline"
+                title="Command palette (⌘K)"
               >
-                <X size={14} />
+                ⌘K
               </button>
-            )}
+            </div>
           </div>
 
           {/* desktop counters + actions */}
