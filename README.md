@@ -179,9 +179,9 @@ tz: Asia/Shanghai             # 现在北京；出差新加坡改为 Asia/Singap
 - Focus strip：四枚独立 chip（顶部分色条）+ 会议卡
 - P0 红条 **仅**在「要我动」区；等对方不打红条；`action`/`wait` 是卡的主句
 - 页底：双列工具/法律 footer + 可折叠工作流图例
-- Logo / 图标（几何托盘 mark，非人像）：
-  - Header：SVG `DeskMark`；`public/logo.png` 备用
-  - Favicon / PWA：`python scripts/icons/build-mark.py`（或 `.venv-icons/bin/python …`）
+- Logo / 图标（**lucide-react**，禁止手绘）：
+  - Header：`Inbox`；按钮 `Share2` / `Download`
+  - Favicon / PWA：`node scripts/icons/build-mark.mjs`（路径抄 lucide Inbox）
   - 改图后 bump `ASSET_V`（`src/lib/brand.ts`）
 
 ---

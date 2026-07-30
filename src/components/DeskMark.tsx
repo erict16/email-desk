@@ -1,34 +1,30 @@
-/** Tray stack + red notch — ink tile (GitHub-dark logo language). */
+import { Inbox } from "lucide-react";
+
+/**
+ * Brand mark = lucide-react Inbox (not hand-drawn).
+ * Matches GitHub/Linear-style app chrome: known icon set, currentColor.
+ */
 export default function DeskMark({
-  size = 24,
+  size = 20,
   className = "",
-  title,
+  title = "Email Desk",
 }: {
   size?: number;
   className?: string;
   title?: string;
 }) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      role={title ? "img" : "presentation"}
+    <span
+      className={`inline-flex shrink-0 items-center justify-center text-[var(--ink)] ${className}`}
+      title={title}
       aria-hidden={title ? undefined : true}
-      aria-label={title}
     >
-      {title ? <title>{title}</title> : null}
-      <rect width="32" height="32" rx="6" fill="var(--mark-bg, #1f2328)" />
-      <path
-        d="M8 11h16M8 16h16M8 21h11"
-        stroke="var(--mark-fg, #ffffff)"
-        strokeWidth="2"
-        strokeLinecap="round"
+      <Inbox
+        size={size}
+        strokeWidth={2}
+        absoluteStrokeWidth={false}
+        aria-hidden
       />
-      <circle cx="23" cy="21" r="2.25" fill="var(--mark-dot, #cf222e)" />
-    </svg>
+    </span>
   );
 }

@@ -1,14 +1,15 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { Download, Share2 } from "lucide-react";
 import DeskMark from "@/components/DeskMark";
 import { smoothScrollTo } from "@/lib/smooth-scroll";
 
 type Props = { title: string };
 
 /**
- * Linear / GitHub-style sticky bar: mark + wordmark, ghost actions.
- * No solid black CTA bar.
+ * Linear / GitHub-style sticky bar.
+ * Icons from lucide-react only.
  */
 export default function AppHeader({ title }: Props) {
   const [toast, setToast] = useState<string | null>(null);
@@ -63,7 +64,7 @@ export default function AppHeader({ title }: Props) {
             className="flex min-w-0 items-center gap-2 rounded-[var(--radius-sm)] outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
             aria-label="回到顶部"
           >
-            <DeskMark size={24} />
+            <DeskMark size={20} />
             <span className="truncate text-[14px] font-semibold tracking-tight text-[var(--ink)]">
               Email Desk
             </span>
@@ -75,7 +76,7 @@ export default function AppHeader({ title }: Props) {
               onClick={onShare}
               className="inline-flex h-8 items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-2.5 text-[12px] font-medium text-[var(--ink)] transition-colors hover:bg-[var(--paper-2)]"
             >
-              <ShareIcon />
+              <Share2 size={14} strokeWidth={2} aria-hidden />
               <span className="hidden sm:inline">分享</span>
             </button>
             <button
@@ -83,7 +84,7 @@ export default function AppHeader({ title }: Props) {
               onClick={onPdf}
               className="inline-flex h-8 items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-2.5 text-[12px] font-medium text-[var(--ink)] transition-colors hover:bg-[var(--paper-2)]"
             >
-              <DownloadIcon />
+              <Download size={14} strokeWidth={2} aria-hidden />
               <span className="hidden sm:inline">导出</span>
             </button>
           </div>
@@ -96,33 +97,5 @@ export default function AppHeader({ title }: Props) {
         </div>
       )}
     </>
-  );
-}
-
-function ShareIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7M16 6l-4-4-4 4M12 2v14"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function DownloadIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M12 3v12m0 0l-4-4m4 4l4-4M5 19h14"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }

@@ -32,6 +32,7 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false },
   icons: {
     icon: [
+      { url: `${base}/favicon.svg?v=${v}`, type: "image/svg+xml" },
       { url: `${base}/favicon.ico?v=${v}`, sizes: "any" },
       icon("favicon-32.png", "32x32"),
       icon("favicon-48.png", "48x48"),

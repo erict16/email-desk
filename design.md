@@ -57,9 +57,11 @@ Not a marketing site. Not a mail client.
 
 ## Chrome
 
-**Header:** white sticky, hairline bottom, mark + wordmark left; right = text/ghost buttons (分享 · 导出) — **no** solid black CTA bar.
+**Header:** white sticky, hairline bottom; **lucide `Inbox`** + wordmark; ghost 分享/导出 (`Share2` / `Download`).
 
 **Footer:** same canvas as page, single row of small links + © — **no** logo + blurb block.
+
+**Mark:** only `lucide-react` icons — never hand-draw. Favicon: `node scripts/icons/build-mark.mjs`.
 
 **Stage lane head:** title row + count; hint on **second line** (fixes glued「QS 报价报价·改价」).
 
