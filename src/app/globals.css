@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 /*
- * Email Desk — Hub family (cold paper + cobalt)
- * Spacing: 8px grid. See design.md
+ * Email Desk — Status slip (export-desk vernacular)
+ * Cold stone · forest structure · stamp red urgency
+ * See design.md
  */
 
 :root {
@@ -12,44 +13,42 @@
   --z-sticky-nav: 300;
   --z-toast: 500;
 
-  /* Hub-aligned cold paper */
-  --bg: #f5f7fa;
+  --bg: #e9ebef;
   --surface: #ffffff;
-  --paper-2: #eef2f6;
-  --ink: #0f2438;
-  --mute: #4a5d70;
-  --faint: #738496;
-  --line: #dce3eb;
-  --line-strong: #c5d0dc;
+  --paper-2: #e0e3e9;
+  --ink: #12141a;
+  --mute: #5a6170;
+  --faint: #8b919c;
+  --line: #d2d6de;
+  --line-strong: #b8bdc8;
 
-  --pipe: #0a4a82;
-  --pipe-soft: #e8f0f7;
-  --action-bg: #e8f0f7;
-  --action-ink: #0a4a82;
-  --wait-bg: #eef2f6;
-  --wait-ink: #4a5d70;
+  --pipe: #1e4d3a;
+  --pipe-soft: #e6f0eb;
+  --action-bg: #e6f0eb;
+  --action-ink: #1e4d3a;
+  --wait-bg: #eef0f3;
+  --wait-ink: #5a6170;
 
-  --urgent: #b42318;
-  --urgent-soft: #fef3f2;
-  --urgent-border: #fecdca;
+  --urgent: #c0392b;
+  --urgent-soft: #fdecea;
+  --urgent-border: #f5c4be;
 
-  --follow: #4a5d70;
-  --follow-soft: #eef2f6;
-  --follow-border: #dce3eb;
-  --orders-border: #b8cfe3;
+  --follow: #5a6170;
+  --follow-soft: #eef0f3;
+  --follow-border: #d2d6de;
+  --orders-border: #a8c4b6;
 
-  --signal: #0f2438;
-  --signal-soft: #eef2f6;
-  --mark-bg: #0f2438;
+  --signal: #12141a;
+  --signal-soft: #e0e3e9;
+  --mark-bg: #1e4d3a;
   --mark-fg: #ffffff;
-  --mark-dot: #b42318;
+  --mark-dot: #c0392b;
 
-  --radius: 6px;
-  --radius-sm: 4px;
-  --measure: 40rem;
+  --radius: 8px;
+  --radius-sm: 5px;
+  --measure: 38rem;
   --banner-height: 3rem;
 
-  /* aliases */
   --paper: var(--bg);
   --card: var(--surface);
   --muted: var(--mute);
@@ -66,16 +65,15 @@
 
   --shadow-whisper: none;
   --shadow-header: none;
-  --shadow-card: none;
+  --shadow-card: 0 1px 2px rgb(18 20 26 / 0.04);
 
-  /* vertical rhythm — 8px grid */
-  --gap-stack: 0.5rem; /* 8 */
-  --gap-block: 0.75rem; /* 12 */
-  --gap-card: 0.625rem; /* 10 */
-  --gap-lane: 1.75rem; /* 28 */
-  --gap-section: 2.25rem; /* 36 */
-  --pad-card-x: 1rem; /* 16 */
-  --pad-card-y: 0.875rem; /* 14 */
+  --gap-stack: 0.5rem;
+  --gap-block: 0.75rem;
+  --gap-card: 0.75rem;
+  --gap-lane: 2rem;
+  --gap-section: 2.5rem;
+  --pad-card-x: 1rem;
+  --pad-card-y: 0.875rem;
 }
 
 @theme inline {
@@ -117,36 +115,36 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0c1219;
-    --surface: #151c26;
-    --paper-2: #1c2533;
-    --ink: #e8eef4;
-    --mute: #9aabbc;
-    --faint: #6b7c8f;
-    --line: #2a3544;
-    --line-strong: #3a4758;
+    --bg: #0e1114;
+    --surface: #171b20;
+    --paper-2: #22282f;
+    --ink: #eceef1;
+    --mute: #a0a7b2;
+    --faint: #6f7783;
+    --line: #2c333c;
+    --line-strong: #3d4652;
 
-    --pipe: #6ba3d6;
-    --pipe-soft: rgb(10 74 130 / 0.28);
-    --action-bg: rgb(10 74 130 / 0.28);
-    --action-ink: #9ec5e8;
-    --wait-bg: #1c2533;
-    --wait-ink: #9aabbc;
+    --pipe: #6fad8f;
+    --pipe-soft: rgb(30 77 58 / 0.35);
+    --action-bg: rgb(30 77 58 / 0.35);
+    --action-ink: #a8d4bc;
+    --wait-bg: #22282f;
+    --wait-ink: #a0a7b2;
 
-    --urgent: #f97066;
-    --urgent-soft: rgb(180 35 24 / 0.2);
-    --urgent-border: rgb(180 35 24 / 0.4);
+    --urgent: #e57368;
+    --urgent-soft: rgb(192 57 43 / 0.2);
+    --urgent-border: rgb(192 57 43 / 0.4);
 
-    --follow: #9aabbc;
-    --follow-soft: #1c2533;
-    --follow-border: #2a3544;
-    --orders-border: #3a5a78;
+    --follow: #a0a7b2;
+    --follow-soft: #22282f;
+    --follow-border: #2c333c;
+    --orders-border: #3d5c4a;
 
-    --signal: #e8eef4;
-    --signal-soft: #1c2533;
-    --mark-bg: #e8eef4;
-    --mark-fg: #0c1219;
-    --mark-dot: #f97066;
+    --signal: #eceef1;
+    --signal-soft: #22282f;
+    --mark-bg: #6fad8f;
+    --mark-fg: #0e1114;
+    --mark-dot: #e57368;
 
     --paper: var(--bg);
     --card: var(--surface);
@@ -156,11 +154,13 @@ body {
     --fg: var(--ink);
     --accent: var(--pipe);
     --accent-soft: var(--pipe-soft);
-    --accent-ink: #0c1219;
+    --accent-ink: #0e1114;
     --focus: var(--pipe);
     --done: var(--pipe);
     --done-soft: var(--pipe-soft);
     --done-border: var(--orders-border);
+
+    --shadow-card: none;
   }
 }
 

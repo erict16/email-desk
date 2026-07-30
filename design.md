@@ -1,79 +1,103 @@
 # Email Desk — design system
 
-**Family with Huaming Hub** (same cold paper + cobalt).  
-**Job:** scan 要我动 / 等对方 / 管线 without chrome noise.
+**Date:** 2026-07-30 · frontend-design pass  
+**Subject:** Eric’s mail dispatch for Huaming overseas OLTC export  
+**Audience:** Eric (phone + desktop); shareable status for colleagues  
+**Job:** In ~3s: what I must do · what’s waiting · where each order sits  
 
 ---
 
-## Tokens (Hub-aligned)
+## Identity
+
+**Status slip** — export-desk vernacular (CI/PL/Form E world), not SaaS dashboard, not Hub clone, not GitHub Issues skin.
+
+| Axis | Choice | Why |
+|------|--------|-----|
+| Canvas | Cold stone `#e9ebef` | Not cream AI-default, not Hub `#f5f7fa` twin |
+| Structure | Forest `#1e4d3a` | Port/export, not cobalt Hub / teal hospital / GH blue |
+| Urgency | Stamp red `#c0392b` | Only loud color — 要我动 / P0 |
+| Surface | White slip + 1px line | Document stack |
+| Mark | lucide `Inbox` | Dependency, never hand-draw |
+
+**Signature (one bold thing):** left **stamp rail** on cards + filled spine「待办 / 等待 / 卡点」— the card answers “next step” first.
+
+**Rejected (tried):** warm cream+gold · teal instrument · zinc mono · GH blue · Hub cobalt twin · floating pill · heavy footer · hand-drawn mark.
+
+---
+
+## Tokens
 
 | Role | Token | Hex |
 |------|-------|-----|
-| Page | `--bg` / `--paper` | `#f5f7fa` |
-| Surface | `--surface` / `--card` | `#ffffff` |
-| Soft | `--paper-2` | `#eef2f6` |
-| Ink | `--ink` | `#0f2438` |
-| Mute | `--mute` | `#4a5d70` |
-| Faint | `--faint` | `#738496` |
-| Line | `--line` | `#dce3eb` |
-| Accent | `--pipe` / `--accent` | `#0a4a82` |
-| Accent soft | `--action-bg` / `--pipe-soft` | `#e8f0f7` |
-| Action text | `--action-ink` | `#0a4a82` |
-| Urgent | `--urgent` | `#b42318` |
-| Urgent soft | `--urgent-soft` | `#fef3f2` |
-| Wait bg | `--wait-bg` | `#eef2f6` |
-| Wait ink | `--wait-ink` | `#4a5d70` |
-| Radius | `--radius` | `6px` |
-| Measure | `--measure` | `40rem` |
-
-Accent ≤ 5% of UI. Surfaces = white + 1px line + 6px radius only. No heavy shadows.
+| Page | `--bg` | `#e9ebef` |
+| Slip | `--surface` | `#ffffff` |
+| Soft | `--paper-2` | `#e0e3e9` |
+| Ink | `--ink` | `#12141a` |
+| Mute | `--mute` | `#5a6170` |
+| Faint | `--faint` | `#8b919c` |
+| Line | `--line` | `#d2d6de` |
+| Forest | `--pipe` / `--action-ink` | `#1e4d3a` |
+| Forest soft | `--action-bg` / `--pipe-soft` | `#e6f0eb` |
+| Stamp | `--urgent` | `#c0392b` |
+| Stamp soft | `--urgent-soft` | `#fdecea` |
+| Wait bg | `--wait-bg` | `#eef0f3` |
+| Wait ink | `--wait-ink` | `#5a6170` |
+| Radius | `--radius` | `8px` |
+| Measure | `--measure` | `38rem` |
 
 ---
 
-## Spacing (8px grid — locked)
+## Spacing (locked)
 
-| Token | Value | Use |
-|-------|-------|-----|
-| `--gap-stack` | `8px` | Inside card, related lines |
-| `--gap-block` | `12px` | Title block → spine |
-| `--gap-card` | `10px` | Between cards in a list |
-| `--gap-lane` | `28px` | Between order stage groups |
-| `--gap-section` | `36px` | Between major board sections |
-| `--pad-card-x` | `16px` | Card horizontal |
-| `--pad-card-y` | `14px` | Card vertical |
-| Main top | `24px` | Below header |
-| Section head → list | `16px` | After heading |
+| Token | px | Use |
+|-------|-----|-----|
+| `--gap-stack` | 8 | Related lines in card |
+| `--gap-block` | 12 | Title → spine |
+| `--gap-card` | 12 | Between cards |
+| `--gap-lane` | 32 | Between stages (+ top rule) |
+| `--gap-section` | 40 | 要我动 / 等对方 / 管线 |
+| `--pad-card-x/y` | 16 / 14 | Card padding |
+| Focus → content | 32 | After counter strip |
 
 ---
 
 ## Type
 
-System UI stack (CJK-safe). No display Google fonts.
+System UI stack (CJK). Mono only for counts / dates.
 
 | Role | Size | Weight |
 |------|------|--------|
-| Page title | 20px | 600 |
-| Section | 15px | 600 |
-| Stage label | 13px | 600 |
+| Page title | 22px | 600 |
+| Section | 14px | 600 |
+| Stage | 13px | 600 |
 | Card title | 15px | 600 |
-| Spine / body | 13px | 400–500 |
-| Meta / people | 12px | 400 |
-| Tag | 11px | 500 |
-| Focus count | 22px | 600 |
+| Spine | 13px | 500 |
+| Meta | 12–13px | 400 |
+| Counter | 20px | 600 |
 
 ---
 
-## Chrome
+## Layout
 
-- **Header:** sticky white, hairline, lucide Inbox + Email Desk; ghost 分享/导出
-- **Footer:** one line on page canvas
-- **Focus:** compact counter row (not tall dashboard tiles)
-- **Stage head:** one line — `label · hint` with real gap + count right
-- **Cards:** spine is hero line; meta ≤ 1–2 lines
+```
+sticky header (Inbox · Email Desk | 分享 导出)
+page title + meta
+meetings (if any)
+status strip: 4 counts in one row
+── 要我动 ──
+  stamp-rail cards
+── 等对方 ──
+── 订单管线 ──
+  stage chips
+  stage · hint ………… n
+  order cards
+── 稍后 ──
+collapsed workflow
+one-line footer
+```
 
 ---
 
-## IA
+## IA (unchanged)
 
-要我动 · 等对方 · 管线 · 稍后 · 会  
-`ball` / `wait` · searchable titles · FYI off board  
+要我动 · 等对方 · 管线 · 稍后 · 会 · ball/wait · searchable titles · no FYI  

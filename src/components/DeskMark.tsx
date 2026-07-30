@@ -15,7 +15,7 @@ export default function DeskMark({
 }) {
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center text-[var(--ink)] ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center text-[var(--pipe)] ${className}`}
       title={title}
       aria-hidden={title ? undefined : true}
     >

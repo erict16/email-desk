@@ -26,7 +26,7 @@ function SectionHead({
   return (
     <div className="mb-4">
       <div className="flex items-baseline gap-2.5">
-        <h2 className="text-[15px] font-semibold tracking-tight text-[var(--ink)]">
+        <h2 className="text-[14px] font-semibold tracking-tight text-[var(--ink)]">
           {title}
         </h2>
         <span
@@ -38,7 +38,7 @@ function SectionHead({
         </span>
       </div>
       {hint && (
-        <p className="mt-1 text-[12px] leading-snug text-[var(--faint)]">
+        <p className="mt-1.5 text-[12px] leading-snug text-[var(--faint)]">
           {hint}
         </p>
       )}
@@ -69,14 +69,13 @@ function StageLane({
           : "mt-[var(--gap-lane)] border-t border-[var(--line)] pt-[var(--gap-lane)]"
       }
     >
-      {/* One line: label · hint …… count — real gaps, no glue */}
-      <div className="mb-3.5 flex items-baseline gap-x-2">
+      <div className="mb-3.5 flex items-baseline gap-x-2.5">
         <h3 className="shrink-0 text-[13px] font-semibold tracking-tight text-[var(--ink)]">
           {def.label}
         </h3>
         {def.hint && (
           <>
-            <span className="text-[var(--line-strong)]" aria-hidden>
+            <span className="select-none text-[var(--line-strong)]" aria-hidden>
               ·
             </span>
             <span className="min-w-0 text-[12px] text-[var(--faint)]">
@@ -134,7 +133,6 @@ export default function Board({ board }: { board: BoardData }) {
   };
 
   const laterCollapsed = view.later.length > 3;
-
   const mineStart = 0;
   const waitStart = view.mine.length;
   const pipelineStart = waitStart + view.waiting.length;
@@ -150,14 +148,14 @@ export default function Board({ board }: { board: BoardData }) {
 
       <main
         id="email-desk-print"
-        className="mx-auto w-full max-w-[var(--measure)] px-4 pb-14 pt-6 sm:px-5"
+        className="mx-auto w-full max-w-[var(--measure)] px-4 pb-16 pt-7 sm:px-5"
       >
-        <header className="mb-6">
-          <h1 className="text-[1.25rem] font-semibold leading-snug tracking-tight text-[var(--ink)]">
+        <header className="mb-7">
+          <h1 className="text-[1.375rem] font-semibold leading-snug tracking-tight text-[var(--ink)]">
             {board.title}
           </h1>
           {board.subtitle && (
-            <p className="mt-1.5 text-[13px] leading-normal text-[var(--mute)]">
+            <p className="mt-2 text-[13px] leading-normal text-[var(--mute)]">
               {board.subtitle}
               {board.updated ? (
                 <span className="text-[var(--faint)]">
@@ -243,7 +241,7 @@ export default function Board({ board }: { board: BoardData }) {
                 hint="项目现在在哪一阶段"
               />
 
-              <div className="mb-5 flex flex-wrap gap-2">
+              <div className="mb-6 flex flex-wrap gap-2">
                 {ORDER_STAGES.map((s) => {
                   const n = view.orders.filter((i) => i.stage === s.id).length;
                   if (n === 0) return null;
@@ -251,7 +249,7 @@ export default function Board({ board }: { board: BoardData }) {
                     <a
                       key={s.id}
                       href={`#order-stage-${s.id}`}
-                      className="inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--card)] px-2.5 py-1 text-[12px] font-medium leading-none text-[var(--ink)] hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)]"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--card)] px-3 py-1 text-[12px] font-medium leading-none text-[var(--ink)] shadow-[var(--shadow-card)] transition-colors hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)]"
                     >
                       {s.short}
                       <span className="tabular-nums text-[var(--faint)]">
@@ -321,7 +319,7 @@ export default function Board({ board }: { board: BoardData }) {
               {laterCollapsed ? (
                 <details className="group">
                   <summary className="mb-4 flex cursor-pointer list-none items-baseline gap-2.5 marker:content-none [&::-webkit-details-marker]:hidden">
-                    <span className="text-[15px] font-semibold tracking-tight text-[var(--ink)]">
+                    <span className="text-[14px] font-semibold tracking-tight text-[var(--ink)]">
                       稍后
                     </span>
                     <span className="text-[13px] font-semibold tabular-nums text-[var(--faint)]">

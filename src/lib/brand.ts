@@ -11,7 +11,7 @@ export const REPO_BASE = "/email-desk";
  * Cache-bust query for static icons/logo. Bump when any file under public/
  * icons or logo.png changes (e.g. girl11 → girl12).
  */
-export const ASSET_V = "lucide-inbox2";
+export const ASSET_V = "status-slip1";
 
 export function isProd(): boolean {
   return process.env.NODE_ENV === "production";
