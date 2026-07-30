@@ -1,90 +1,142 @@
 @import "tailwindcss";
 
 /*
- * Email Desk — Status slip (export-desk vernacular)
- * Cold stone · forest structure · stamp red urgency
- * See design.md
+ * Email Desk — executive SaaS (Linear / Vercel inspired)
+ * Dark default #0F172A · cards #1E293B · indigo #6366F1
  */
 
 :root {
-  --z-base: 1;
-  --z-raised: 10;
-  --z-sticky: 200;
-  --z-sticky-nav: 300;
+  --z-sticky: 300;
   --z-toast: 500;
+  --banner-height: 3.5rem;
+  --measure: 80rem;
 
-  --bg: #e9ebef;
+  /* light */
+  --bg: #f1f5f9;
+  --bg-elevated: #ffffff;
   --surface: #ffffff;
-  --paper-2: #e0e3e9;
-  --ink: #12141a;
-  --mute: #5a6170;
-  --faint: #8b919c;
-  --line: #d2d6de;
-  --line-strong: #b8bdc8;
+  --surface-2: #f8fafc;
+  --ink: #0f172a;
+  --mute: #475569;
+  --faint: #94a3b8;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
 
-  --pipe: #1e4d3a;
-  --pipe-soft: #e6f0eb;
-  --action-bg: #e6f0eb;
-  --action-ink: #1e4d3a;
-  --wait-bg: #eef0f3;
-  --wait-ink: #5a6170;
+  --primary: #6366f1;
+  --primary-soft: rgb(99 102 241 / 0.12);
+  --primary-ink: #4f46e5;
 
-  --urgent: #c0392b;
-  --urgent-soft: #fdecea;
-  --urgent-border: #f5c4be;
+  --action: #f59e0b;
+  --action-soft: rgb(245 158 11 / 0.14);
+  --action-ink: #b45309;
+  --urgent: #ef4444;
+  --urgent-soft: rgb(239 68 68 / 0.12);
 
-  --follow: #5a6170;
-  --follow-soft: #eef0f3;
-  --follow-border: #d2d6de;
-  --orders-border: #a8c4b6;
+  --wait: #06b6d4;
+  --wait-soft: rgb(6 182 212 / 0.12);
+  --wait-ink: #0e7490;
 
-  --signal: #12141a;
-  --signal-soft: #e0e3e9;
-  --mark-bg: #1e4d3a;
-  --mark-fg: #ffffff;
-  --mark-dot: #c0392b;
+  --pipe: #6366f1;
+  --pipe-soft: rgb(99 102 241 / 0.12);
 
-  --radius: 8px;
-  --radius-sm: 5px;
-  --measure: 38rem;
-  --banner-height: 3rem;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 4px 16px rgb(15 23 42 / 0.04);
+  --shadow-hover: 0 8px 28px rgb(15 23 42 / 0.1);
+  --glass: rgb(255 255 255 / 0.72);
+  --glass-border: rgb(226 232 240 / 0.8);
 
+  /* aliases for existing helpers */
   --paper: var(--bg);
   --card: var(--surface);
+  --paper-2: var(--surface-2);
   --muted: var(--mute);
   --orders: var(--pipe);
   --orders-soft: var(--pipe-soft);
-  --fg: var(--ink);
-  --accent: var(--pipe);
-  --accent-soft: var(--pipe-soft);
-  --accent-ink: #ffffff;
-  --focus: var(--pipe);
+  --action-bg: var(--action-soft);
+  --action-ink: var(--action-ink);
+  --wait-bg: var(--wait-soft);
+  --wait-ink: var(--wait-ink);
+  --accent: var(--primary);
+  --accent-soft: var(--primary-soft);
+  --focus: var(--primary);
+  --follow: var(--mute);
+  --follow-soft: var(--surface-2);
+  --urgent-border: rgb(239 68 68 / 0.35);
+  --orders-border: rgb(99 102 241 / 0.35);
   --done: var(--pipe);
   --done-soft: var(--pipe-soft);
   --done-border: var(--orders-border);
+  --line-strong: #cbd5e1;
+  --fg: var(--ink);
+  --signal: var(--primary);
+}
 
-  --shadow-whisper: none;
-  --shadow-header: none;
-  --shadow-card: 0 1px 2px rgb(18 20 26 / 0.04);
+html.dark {
+  --bg: #0f172a;
+  --bg-elevated: #1e293b;
+  --surface: #1e293b;
+  --surface-2: #273549;
+  --ink: #f1f5f9;
+  --mute: #94a3b8;
+  --faint: #64748b;
+  --line: #334155;
+  --line-strong: #475569;
 
-  --gap-stack: 0.5rem;
-  --gap-block: 0.75rem;
-  --gap-card: 0.75rem;
-  --gap-lane: 2rem;
-  --gap-section: 2.5rem;
-  --pad-card-x: 1rem;
-  --pad-card-y: 0.875rem;
+  --primary: #818cf8;
+  --primary-soft: rgb(99 102 241 / 0.18);
+  --primary-ink: #a5b4fc;
+
+  --action: #fbbf24;
+  --action-soft: rgb(245 158 11 / 0.16);
+  --action-ink: #fcd34d;
+  --urgent: #f87171;
+  --urgent-soft: rgb(239 68 68 / 0.16);
+
+  --wait: #22d3ee;
+  --wait-soft: rgb(6 182 212 / 0.14);
+  --wait-ink: #67e8f9;
+
+  --pipe: #818cf8;
+  --pipe-soft: rgb(99 102 241 / 0.16);
+
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04), 0 8px 24px rgb(0 0 0 / 0.35);
+  --shadow-hover: 0 12px 32px rgb(0 0 0 / 0.45);
+  --glass: rgb(15 23 42 / 0.78);
+  --glass-border: rgb(51 65 85 / 0.7);
+
+  --paper: var(--bg);
+  --card: var(--surface);
+  --paper-2: var(--surface-2);
+  --muted: var(--mute);
+  --orders: var(--pipe);
+  --orders-soft: var(--pipe-soft);
+  --action-bg: var(--action-soft);
+  --wait-bg: var(--wait-soft);
+  --accent: var(--primary);
+  --accent-soft: var(--primary-soft);
+  --focus: var(--primary);
+  --follow: var(--mute);
+  --follow-soft: var(--surface-2);
+  --fg: var(--ink);
+  --signal: var(--primary);
+  --line-strong: #475569;
 }
 
 @theme inline {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", ui-sans-serif,
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif,
     system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
 }
 
 html {
   overflow-x: clip;
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 html,
@@ -103,65 +155,42 @@ body {
   line-height: 1.5;
 }
 
+/* subtle grid atmosphere on dark */
+html.dark body {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgb(99 102 241 / 0.15), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgb(6 182 212 / 0.06), transparent);
+  background-attachment: fixed;
+}
+
 ::selection {
-  background: var(--action-bg);
-  color: var(--action-ink);
+  background: var(--primary-soft);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0e1114;
-    --surface: #171b20;
-    --paper-2: #22282f;
-    --ink: #eceef1;
-    --mute: #a0a7b2;
-    --faint: #6f7783;
-    --line: #2c333c;
-    --line-strong: #3d4652;
+/* stage badge accents */
+.stage-badge-os { --sb: #64748b; }
+.stage-badge-tech { --sb: #64748b; }
+.stage-badge-qs { --sb: #6366f1; }
+.stage-badge-po { --sb: #8b5cf6; }
+.stage-badge-erp { --sb: #10b981; }
+.stage-badge-docs { --sb: #06b6d4; }
+.stage-badge-ship { --sb: #34d399; }
 
-    --pipe: #6fad8f;
-    --pipe-soft: rgb(30 77 58 / 0.35);
-    --action-bg: rgb(30 77 58 / 0.35);
-    --action-ink: #a8d4bc;
-    --wait-bg: #22282f;
-    --wait-ink: #a0a7b2;
+.stage-badge {
+  background: color-mix(in srgb, var(--sb) 16%, transparent);
+  color: var(--sb);
+  border: 1px solid color-mix(in srgb, var(--sb) 28%, transparent);
+}
 
-    --urgent: #e57368;
-    --urgent-soft: rgb(192 57 43 / 0.2);
-    --urgent-border: rgb(192 57 43 / 0.4);
-
-    --follow: #a0a7b2;
-    --follow-soft: #22282f;
-    --follow-border: #2c333c;
-    --orders-border: #3d5c4a;
-
-    --signal: #eceef1;
-    --signal-soft: #22282f;
-    --mark-bg: #6fad8f;
-    --mark-fg: #0e1114;
-    --mark-dot: #e57368;
-
-    --paper: var(--bg);
-    --card: var(--surface);
-    --muted: var(--mute);
-    --orders: var(--pipe);
-    --orders-soft: var(--pipe-soft);
-    --fg: var(--ink);
-    --accent: var(--pipe);
-    --accent-soft: var(--pipe-soft);
-    --accent-ink: #0e1114;
-    --focus: var(--pipe);
-    --done: var(--pipe);
-    --done-soft: var(--pipe-soft);
-    --done-border: var(--orders-border);
-
-    --shadow-card: none;
-  }
+html.dark .stage-badge {
+  background: color-mix(in srgb, var(--sb) 22%, transparent);
+  border-color: color-mix(in srgb, var(--sb) 35%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -176,11 +205,13 @@ body {
 }
 
 @media print {
+  html.dark body,
   body {
     background: #fff !important;
     color: #000 !important;
   }
-  article {
-    break-inside: avoid;
+  header,
+  footer {
+    display: none !important;
   }
 }

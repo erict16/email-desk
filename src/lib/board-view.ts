@@ -1,5 +1,5 @@
-import type { BoardData, BoardItem } from "@/lib/parse-board";
-import { isOrderItem, isWaitingItem } from "@/lib/parse-board";
+import type { BoardData, BoardItem } from "@/lib/board-types";
+import { isOrderItem, isWaitingItem } from "@/lib/board-types";
 import { compareByStageThenTitle } from "@/lib/order-stages";
 import { titleKey } from "@/lib/title-key";
 

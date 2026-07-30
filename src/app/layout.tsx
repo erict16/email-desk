@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
 import SiteFooter from "@/components/SiteFooter";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import {
   ASSET_V,
   SITE_DESCRIPTION,
@@ -9,6 +11,12 @@ import {
   siteOrigin,
 } from "@/lib/brand";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 const base = siteBase();
 const v = ASSET_V;
@@ -27,7 +35,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: SITE_NAME,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
   },
   formatDetection: { telephone: false },
   icons: {
@@ -52,8 +60,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#e9ebef" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e1114" },
+    { media: "(prefers-color-scheme: light)", color: "#f1f5f9" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
   ],
 };
 
@@ -61,10 +69,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-CN" className="h-full antialiased">
-      <body className="flex min-h-full flex-col">
-        <div className="flex-1">{children}</div>
-        <SiteFooter />
+    <html lang="zh-CN" className={`dark h-full antialiased ${inter.variable}`}>
+      <body className="flex min-h-full flex-col font-sans">
+        <ThemeProvider>
+          <div className="flex-1">{children}</div>
+          <SiteFooter />
+        </ThemeProvider>
       </body>
     </html>
   );

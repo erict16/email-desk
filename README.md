@@ -172,17 +172,14 @@ tz: Asia/Shanghai             # 现在北京；出差新加坡改为 Asia/Singap
 - CQ / Test Report = Eric；CO = 沈丽玲
 - 公开站勿贴未脱敏金额/完整机密附件内容
 
-### 9. 其他 UI 锁
+### 9. UI（executive SaaS · 2026-07）
 
-- 宽度约 `52rem`（`--measure`）；暖纸调度台（非 Hub 冷灰目录）
-- Sticky 头：全宽表面 + 几何 DeskMark + Email Desk；青绿色 PDF 按钮
-- Focus strip：四枚独立 chip（顶部分色条）+ 会议卡
-- P0 红条 **仅**在「要我动」区；等对方不打红条；`action`/`wait` 是卡的主句
-- 页底：双列工具/法律 footer + 可折叠工作流图例
-- Logo / 图标（**lucide-react**，禁止手绘）：
-  - Header：`Inbox`；按钮 `Share2` / `Download`
-  - Favicon / PWA：`node scripts/icons/build-mark.mjs`（路径抄 lucide Inbox）
-  - 改图后 bump `ASSET_V`（`src/lib/brand.ts`）
+- **暗色默认** `#0F172A` / 卡片 `#1E293B`；亮色可切换（localStorage）
+- 强调色 Indigo `#6366F1`；要我动 Amber；等待 Cyan
+- Sticky glass header：搜索 · BJ/SST 时钟 · 计数 · 主题/分享/导出
+- **双栏**：左 要我动+等对方 · 右管线看板（Kanban / 列表）
+- 标题 hover 显示 Lucide 复制；Framer Motion 入场
+- 依赖：`lucide-react` · `framer-motion` · Inter（next/font）
 
 ---
 

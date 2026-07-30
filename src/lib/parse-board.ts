@@ -5,54 +5,27 @@ import {
   type OrderStageId,
   parseOrderStage,
 } from "@/lib/order-stages";
+import {
+  type Ball,
+  type BoardData,
+  type BoardItem,
+  type BoardSection,
+  type Priority,
+  isOrderItem,
+  isWaitingItem,
+  parseBall,
+} from "@/lib/board-types";
 
-export type Priority = "P0" | "P1" | "P2" | "OK" | "FYI" | "ORDER";
-
-/** Who holds the ball — Eric acts vs waiting on someone else */
-export type Ball = "me" | "them";
-
-export type BoardItem = {
-  title: string;
-  priority: Priority;
-  meta?: string;
-  action?: string;
-  date?: string;
-  tags?: string[];
-  people?: string;
-  /** Current order pipeline stage — present on project order cards */
-  stage?: OrderStageId;
-  /** Customer / project short name for order focus */
-  customer?: string;
-  /** Explicit ball-in-court; optional — see isWaitingItem */
-  ball?: Ball;
-  /** Short free text: who/what is blocking when waiting */
-  wait?: string;
-};
-
-export type BoardSection = {
-  id: string;
-  title: string;
-  items: BoardItem[];
-};
-
-export type BoardData = {
-  title: string;
-  subtitle: string;
-  updated: string;
-  /** Meetings Eric needs to attend */
-  meetings: string[];
-  sections: BoardSection[];
-  stats: {
-    urgent: number;
-    follow: number;
-    orders: number;
-    info: number;
-  };
-};
+export type {
+  Ball,
+  BoardData,
+  BoardItem,
+  BoardSection,
+  Priority,
+} from "@/lib/board-types";
+export { isOrderItem, isWaitingItem, parseBall } from "@/lib/board-types";
 
 const PRI = new Set(["P0", "P1", "P2", "OK", "FYI", "ORDER"]);
-
-/** Display tz: Beijing now; switch frontmatter tz → Asia/Singapore when abroad */
 const DEFAULT_TZ = "Asia/Shanghai";
 
 function stripBold(s: string): string {
@@ -112,7 +85,6 @@ function parseItems(block: string): BoardItem[] {
           .filter(Boolean);
     }
 
-    // Cards with stage: become ORDER unless explicitly P0/P1/P2 (rare dual use)
     if (stage && !prioritySet) {
       priority = "ORDER";
     } else if (
@@ -143,54 +115,6 @@ function parseItems(block: string): BoardItem[] {
   return items;
 }
 
-/** Accept me/them and 我/对方 (and common synonyms). */
-export function parseBall(raw: string | undefined): Ball | undefined {
-  if (!raw) return undefined;
-  const k = raw.trim().toLowerCase().replace(/\s+/g, "");
-  if (
-    k === "me" ||
-    k === "i" ||
-    k === "mine" ||
-    k === "我" ||
-    k === "自己" ||
-    k === "eric"
-  ) {
-    return "me";
-  }
-  if (
-    k === "them" ||
-    k === "they" ||
-    k === "other" ||
-    k === "others" ||
-    k === "对方" ||
-    k === "别人" ||
-    k === "客户" ||
-    k === "工厂" ||
-    k === "wait"
-  ) {
-    return "them";
-  }
-  return undefined;
-}
-
-/**
- * Waiting detection (priority order from ball design):
- * 1. ball: them → waiting
- * 2. ball: me → not waiting (even if wait: set)
- * 3. non-empty wait: → waiting
- * 4. neither → default not waiting (P0/P1 mine, P2 later)
- */
-export function isWaitingItem(item: BoardItem): boolean {
-  if (item.ball === "them") return true;
-  if (item.ball === "me") return false;
-  return Boolean(item.wait && item.wait.trim());
-}
-
-/**
- * Short updated stamp for the subtitle line.
- * With time → `北京时间 10:20 am` / `新加坡时间 3:05 pm` (no GMT dump).
- * Date-only → `7月22日`
- */
 function tzLabel(tz: string): string {
   if (/Shanghai|Beijing|Chongqing|Hong_Kong/i.test(tz)) return "北京时间";
   if (/Singapore/i.test(tz)) return "新加坡时间";
@@ -236,6 +160,7 @@ function formatUpdated(raw: unknown, tz: string): string {
   return s;
 }
 
+/** Server-only: reads content/board.md */
 export function loadBoard(): BoardData {
   const file = path.join(process.cwd(), "content", "board.md");
   const raw = fs.readFileSync(file, "utf8");
@@ -261,12 +186,6 @@ export function loadBoard(): BoardData {
 
   const all = sections.flatMap((s) => s.items);
 
-  // Order cards: have stage, or live in orders section, or priority ORDER
-  // Exclude pure P0/P1/P2 triage items even if they also carry stage (rare dual)
-  const isOrder = (i: BoardItem) =>
-    Boolean(i.stage) || i.priority === "ORDER" || i.priority === "OK";
-
-  // Triage blocks only count non-order priorities
   const isTriage = (i: BoardItem) =>
     i.priority === "P0" || i.priority === "P1" || i.priority === "P2";
 
@@ -274,7 +193,7 @@ export function loadBoard(): BoardData {
     urgent: all.filter((i) => i.priority === "P0").length,
     follow: all.filter((i) => i.priority === "P1" || i.priority === "P2")
       .length,
-    orders: all.filter((i) => isOrder(i) && !isTriage(i)).length,
+    orders: all.filter((i) => isOrderItem(i) && !isTriage(i)).length,
     info: all.filter((i) => i.priority === "FYI").length,
   };
 
@@ -291,12 +210,4 @@ export function loadBoard(): BoardData {
     sections,
     stats,
   };
-}
-
-/** Helpers used by Board */
-export function isOrderItem(item: BoardItem): boolean {
-  if (item.priority === "P0" || item.priority === "P1" || item.priority === "P2")
-    return false;
-  if (item.priority === "FYI") return false;
-  return Boolean(item.stage) || item.priority === "ORDER" || item.priority === "OK";
 }
