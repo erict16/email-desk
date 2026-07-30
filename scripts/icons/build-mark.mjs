@@ -20,9 +20,9 @@ const LUCIDE_INBOX = `
   <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
 `;
 
-const FG = "#1f2328";
+const FG = "#0f2438";
 const BG = "#ffffff";
-const PAGE = "#f6f8fa";
+const PAGE = "#f5f7fa";
 
 function svgIcon(size, { padded = true, bg = null } = {}) {
   const pad = padded ? size * 0.18 : size * 0.12;

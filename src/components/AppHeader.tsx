@@ -7,10 +7,6 @@ import { smoothScrollTo } from "@/lib/smooth-scroll";
 
 type Props = { title: string };
 
-/**
- * Linear / GitHub-style sticky bar.
- * Icons from lucide-react only.
- */
 export default function AppHeader({ title }: Props) {
   const [toast, setToast] = useState<string | null>(null);
 
@@ -57,34 +53,34 @@ export default function AppHeader({ title }: Props) {
   return (
     <>
       <header className="print:hidden sticky top-0 z-[var(--z-sticky-nav)] border-b border-[var(--line)] bg-[var(--surface)]">
-        <div className="mx-auto flex h-[var(--banner-height)] max-w-[var(--measure)] items-center justify-between gap-4 px-4 sm:px-5">
+        <div className="mx-auto flex h-[var(--banner-height)] max-w-[var(--measure)] items-center justify-between gap-3 px-4 sm:px-5">
           <a
             href="#top"
             onClick={onLogo}
-            className="flex min-w-0 items-center gap-2 rounded-[var(--radius-sm)] outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
+            className="flex min-w-0 items-center gap-2 rounded-[var(--radius-sm)] outline-none hover:opacity-75 focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
             aria-label="回到顶部"
           >
-            <DeskMark size={20} />
-            <span className="truncate text-[14px] font-semibold tracking-tight text-[var(--ink)]">
+            <DeskMark size={18} />
+            <span className="truncate text-[13px] font-semibold tracking-tight text-[var(--ink)]">
               Email Desk
             </span>
           </a>
 
-          <div className="flex shrink-0 items-center gap-1.5">
+          <div className="flex shrink-0 items-center gap-1">
             <button
               type="button"
               onClick={onShare}
-              className="inline-flex h-8 items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-2.5 text-[12px] font-medium text-[var(--ink)] transition-colors hover:bg-[var(--paper-2)]"
+              className="inline-flex h-7 items-center gap-1.5 rounded-[var(--radius-sm)] px-2 text-[12px] font-medium text-[var(--mute)] hover:bg-[var(--paper-2)] hover:text-[var(--ink)]"
             >
-              <Share2 size={14} strokeWidth={2} aria-hidden />
+              <Share2 size={14} strokeWidth={1.75} aria-hidden />
               <span className="hidden sm:inline">分享</span>
             </button>
             <button
               type="button"
               onClick={onPdf}
-              className="inline-flex h-8 items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-2.5 text-[12px] font-medium text-[var(--ink)] transition-colors hover:bg-[var(--paper-2)]"
+              className="inline-flex h-7 items-center gap-1.5 rounded-[var(--radius-sm)] px-2 text-[12px] font-medium text-[var(--mute)] hover:bg-[var(--paper-2)] hover:text-[var(--ink)]"
             >
-              <Download size={14} strokeWidth={2} aria-hidden />
+              <Download size={14} strokeWidth={1.75} aria-hidden />
               <span className="hidden sm:inline">导出</span>
             </button>
           </div>
@@ -92,7 +88,7 @@ export default function AppHeader({ title }: Props) {
       </header>
 
       {toast && (
-        <div className="print:hidden fixed bottom-5 left-1/2 z-[var(--z-toast)] -translate-x-1/2 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--ink)] px-3.5 py-1.5 text-xs text-[var(--surface)]">
+        <div className="print:hidden fixed bottom-5 left-1/2 z-[var(--z-toast)] -translate-x-1/2 rounded-[var(--radius)] bg-[var(--ink)] px-3.5 py-1.5 text-xs text-[var(--surface)]">
           {toast}
         </div>
       )}

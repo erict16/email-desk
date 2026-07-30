@@ -24,23 +24,21 @@ function SectionHead({
   hint?: string;
 }) {
   return (
-    <div className="mb-3 border-b border-[var(--line)] pb-3">
-      <h2 className="flex items-center gap-2">
-        <span className="text-[15px] font-semibold tracking-tight text-[var(--ink)]">
+    <div className="mb-4">
+      <div className="flex items-baseline gap-2.5">
+        <h2 className="text-[15px] font-semibold tracking-tight text-[var(--ink)]">
           {title}
-        </span>
+        </h2>
         <span
-          className={`inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-[11px] font-semibold tabular-nums leading-none ${
-            tone === "mine"
-              ? "bg-[var(--urgent-soft)] text-[var(--urgent)]"
-              : "bg-[var(--paper-2)] text-[var(--mute)]"
+          className={`text-[13px] font-semibold tabular-nums ${
+            tone === "mine" ? "text-[var(--urgent)]" : "text-[var(--faint)]"
           }`}
         >
           {count}
         </span>
-      </h2>
+      </div>
       {hint && (
-        <p className="mt-1.5 text-[12px] leading-snug text-[var(--faint)]">
+        <p className="mt-1 text-[12px] leading-snug text-[var(--faint)]">
           {hint}
         </p>
       )}
@@ -53,31 +51,42 @@ function StageLane({
   items,
   startIndex,
   triageHrefFor,
+  isFirst,
 }: {
   stageId: OrderStageId;
   items: BoardItem[];
   startIndex: number;
   triageHrefFor: (title: string) => "#mine" | "#wait" | "#later" | undefined;
+  isFirst: boolean;
 }) {
   const def = ORDER_STAGES.find((s) => s.id === stageId)!;
   let idx = startIndex;
   return (
-    <div className="mb-[var(--gap-lane)] last:mb-0">
-      {/* Title + count on row 1; hint alone on row 2 — avoids glued「QS 报价报价·改价」 */}
-      <div className="mb-3">
-        <div className="flex items-center gap-2">
-          <h3 className="text-[13px] font-semibold tracking-tight text-[var(--ink)]">
-            {def.label}
-          </h3>
-          <span className="inline-flex min-w-[1.125rem] items-center justify-center rounded-full bg-[var(--paper-2)] px-1.5 py-0.5 text-[11px] font-medium tabular-nums leading-none text-[var(--mute)]">
-            {items.length}
-          </span>
-        </div>
+    <div
+      className={
+        isFirst
+          ? ""
+          : "mt-[var(--gap-lane)] border-t border-[var(--line)] pt-[var(--gap-lane)]"
+      }
+    >
+      {/* One line: label · hint …… count — real gaps, no glue */}
+      <div className="mb-3.5 flex items-baseline gap-x-2">
+        <h3 className="shrink-0 text-[13px] font-semibold tracking-tight text-[var(--ink)]">
+          {def.label}
+        </h3>
         {def.hint && (
-          <p className="mt-1 text-[12px] leading-snug text-[var(--faint)]">
-            {def.hint}
-          </p>
+          <>
+            <span className="text-[var(--line-strong)]" aria-hidden>
+              ·
+            </span>
+            <span className="min-w-0 text-[12px] text-[var(--faint)]">
+              {def.hint}
+            </span>
+          </>
         )}
+        <span className="ml-auto shrink-0 text-[12px] tabular-nums text-[var(--faint)]">
+          {items.length}
+        </span>
       </div>
       <div className="flex flex-col gap-[var(--gap-card)]">
         {items.map((item) => {
@@ -96,7 +105,6 @@ function StageLane({
   );
 }
 
-/** Resolve pipeline stage label for a triage title, if linked. */
 function linkedStageLabel(
   title: string,
   orders: BoardItem[],
@@ -132,20 +140,24 @@ export default function Board({ board }: { board: BoardData }) {
   const pipelineStart = waitStart + view.waiting.length;
   const laterStart = pipelineStart + view.orders.length;
 
+  const activeStages = ORDER_STAGES.filter((s) =>
+    view.orders.some((i) => i.stage === s.id),
+  );
+
   return (
     <div id="top" className="min-h-full bg-[var(--paper)]">
       <AppHeader title={board.title} />
 
       <main
         id="email-desk-print"
-        className="mx-auto w-full max-w-[var(--measure)] px-4 pb-16 pt-6 sm:px-6"
+        className="mx-auto w-full max-w-[var(--measure)] px-4 pb-14 pt-6 sm:px-5"
       >
-        <header className="mb-5">
-          <h1 className="text-[1.25rem] font-semibold leading-tight tracking-tight text-[var(--ink)] sm:text-[1.375rem]">
+        <header className="mb-6">
+          <h1 className="text-[1.25rem] font-semibold leading-snug tracking-tight text-[var(--ink)]">
             {board.title}
           </h1>
           {board.subtitle && (
-            <p className="mt-1 text-[13px] text-[var(--mute)]">
+            <p className="mt-1.5 text-[13px] leading-normal text-[var(--mute)]">
               {board.subtitle}
               {board.updated ? (
                 <span className="text-[var(--faint)]">
@@ -160,7 +172,6 @@ export default function Board({ board }: { board: BoardData }) {
         <FocusStrip meetings={view.meetings} stats={view.stats} />
 
         <div className="flex flex-col gap-[var(--gap-section)]">
-          {/* ── 要我动 ── */}
           {view.mine.length > 0 && (
             <section
               id="mine"
@@ -173,28 +184,24 @@ export default function Board({ board }: { board: BoardData }) {
                 hint="你现在要回 / 催 / 发"
               />
               <div className="flex flex-col gap-[var(--gap-card)]">
-                {view.mine.map((item, i) => {
-                  const linkedStage = linkedStageLabel(
-                    item.title,
-                    view.orders,
-                    view.linkedKeys,
-                  );
-                  return (
-                    <ActionCard
-                      key={`mine-${item.title}`}
-                      item={item}
-                      index={mineStart + i + 1}
-                      urgent={item.priority === "P0"}
-                      tone="act"
-                      linkedStage={linkedStage}
-                    />
-                  );
-                })}
+                {view.mine.map((item, i) => (
+                  <ActionCard
+                    key={`mine-${item.title}`}
+                    item={item}
+                    index={mineStart + i + 1}
+                    urgent={item.priority === "P0"}
+                    tone="act"
+                    linkedStage={linkedStageLabel(
+                      item.title,
+                      view.orders,
+                      view.linkedKeys,
+                    )}
+                  />
+                ))}
               </div>
             </section>
           )}
 
-          {/* ── 等对方 ── */}
           {view.waiting.length > 0 && (
             <section
               id="wait"
@@ -207,27 +214,23 @@ export default function Board({ board }: { board: BoardData }) {
                 hint="球在客户 / 工厂 / 同事"
               />
               <div className="flex flex-col gap-[var(--gap-card)]">
-                {view.waiting.map((item, i) => {
-                  const linkedStage = linkedStageLabel(
-                    item.title,
-                    view.orders,
-                    view.linkedKeys,
-                  );
-                  return (
-                    <ActionCard
-                      key={`wait-${item.title}`}
-                      item={item}
-                      index={waitStart + i + 1}
-                      tone="wait"
-                      linkedStage={linkedStage}
-                    />
-                  );
-                })}
+                {view.waiting.map((item, i) => (
+                  <ActionCard
+                    key={`wait-${item.title}`}
+                    item={item}
+                    index={waitStart + i + 1}
+                    tone="wait"
+                    linkedStage={linkedStageLabel(
+                      item.title,
+                      view.orders,
+                      view.linkedKeys,
+                    )}
+                  />
+                ))}
               </div>
             </section>
           )}
 
-          {/* ── 订单管线 ── */}
           {view.orders.length > 0 && (
             <section
               id="pipeline"
@@ -240,7 +243,7 @@ export default function Board({ board }: { board: BoardData }) {
                 hint="项目现在在哪一阶段"
               />
 
-              <div className="mb-4 flex flex-wrap gap-1.5">
+              <div className="mb-5 flex flex-wrap gap-2">
                 {ORDER_STAGES.map((s) => {
                   const n = view.orders.filter((i) => i.stage === s.id).length;
                   if (n === 0) return null;
@@ -248,7 +251,7 @@ export default function Board({ board }: { board: BoardData }) {
                     <a
                       key={s.id}
                       href={`#order-stage-${s.id}`}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--card)] px-2.5 py-1 text-[11px] font-medium leading-none text-[var(--ink)] transition-colors duration-150 hover:bg-[var(--paper-2)]"
+                      className="inline-flex items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--card)] px-2.5 py-1 text-[12px] font-medium leading-none text-[var(--ink)] hover:border-[var(--line-strong)] hover:bg-[var(--paper-2)]"
                     >
                       {s.short}
                       <span className="tabular-nums text-[var(--faint)]">
@@ -259,9 +262,8 @@ export default function Board({ board }: { board: BoardData }) {
                 })}
               </div>
 
-              {ORDER_STAGES.map((s) => {
+              {activeStages.map((s, si) => {
                 const items = view.orders.filter((i) => i.stage === s.id);
-                if (items.length === 0) return null;
                 const start = pipelineStart + globalIndex;
                 globalIndex += items.length;
                 return (
@@ -275,6 +277,7 @@ export default function Board({ board }: { board: BoardData }) {
                       items={items}
                       startIndex={start}
                       triageHrefFor={triageHrefFor}
+                      isFirst={si === 0}
                     />
                   </div>
                 );
@@ -284,8 +287,14 @@ export default function Board({ board }: { board: BoardData }) {
                 const unstaged = view.orders.filter((i) => !i.stage);
                 if (unstaged.length === 0) return null;
                 return (
-                  <div>
-                    <h3 className="mb-2.5 text-[12px] font-semibold text-[var(--muted)]">
+                  <div
+                    className={
+                      activeStages.length > 0
+                        ? "mt-[var(--gap-lane)] border-t border-[var(--line)] pt-[var(--gap-lane)]"
+                        : ""
+                    }
+                  >
+                    <h3 className="mb-3.5 text-[13px] font-semibold text-[var(--mute)]">
                       未标阶段
                     </h3>
                     <div className="flex flex-col gap-[var(--gap-card)]">
@@ -304,7 +313,6 @@ export default function Board({ board }: { board: BoardData }) {
             </section>
           )}
 
-          {/* ── 稍后 ── */}
           {view.later.length > 0 && (
             <section
               id="later"
@@ -312,36 +320,33 @@ export default function Board({ board }: { board: BoardData }) {
             >
               {laterCollapsed ? (
                 <details className="group">
-                  <summary className="mb-3 flex cursor-pointer list-none items-center gap-2 border-b border-[var(--line)] pb-3 marker:content-none [&::-webkit-details-marker]:hidden">
+                  <summary className="mb-4 flex cursor-pointer list-none items-baseline gap-2.5 marker:content-none [&::-webkit-details-marker]:hidden">
                     <span className="text-[15px] font-semibold tracking-tight text-[var(--ink)]">
                       稍后
                     </span>
-                    <span className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-[var(--paper-2)] px-1.5 py-0.5 text-[11px] font-semibold tabular-nums leading-none text-[var(--mute)]">
+                    <span className="text-[13px] font-semibold tabular-nums text-[var(--faint)]">
                       {view.later.length}
                     </span>
-                    <span className="ml-auto text-[11px] font-medium text-[var(--faint)] group-open:hidden">
+                    <span className="ml-auto text-[12px] text-[var(--faint)] group-open:hidden">
                       展开
                     </span>
-                    <span className="ml-auto hidden text-[11px] font-medium text-[var(--faint)] group-open:inline">
+                    <span className="ml-auto hidden text-[12px] text-[var(--faint)] group-open:inline">
                       收起
                     </span>
                   </summary>
-                  <div className="flex flex-col gap-[var(--gap-card)] opacity-90">
-                    {view.later.map((item, i) => {
-                      const linkedStage = linkedStageLabel(
-                        item.title,
-                        view.orders,
-                        view.linkedKeys,
-                      );
-                      return (
-                        <ActionCard
-                          key={`later-${item.title}`}
-                          item={item}
-                          index={laterStart + i + 1}
-                          linkedStage={linkedStage}
-                        />
-                      );
-                    })}
+                  <div className="flex flex-col gap-[var(--gap-card)]">
+                    {view.later.map((item, i) => (
+                      <ActionCard
+                        key={`later-${item.title}`}
+                        item={item}
+                        index={laterStart + i + 1}
+                        linkedStage={linkedStageLabel(
+                          item.title,
+                          view.orders,
+                          view.linkedKeys,
+                        )}
+                      />
+                    ))}
                   </div>
                 </details>
               ) : (
@@ -351,22 +356,19 @@ export default function Board({ board }: { board: BoardData }) {
                     title="稍后"
                     count={view.later.length}
                   />
-                  <div className="flex flex-col gap-[var(--gap-card)] opacity-90">
-                    {view.later.map((item, i) => {
-                      const linkedStage = linkedStageLabel(
-                        item.title,
-                        view.orders,
-                        view.linkedKeys,
-                      );
-                      return (
-                        <ActionCard
-                          key={`later-${item.title}`}
-                          item={item}
-                          index={laterStart + i + 1}
-                          linkedStage={linkedStage}
-                        />
-                      );
-                    })}
+                  <div className="flex flex-col gap-[var(--gap-card)]">
+                    {view.later.map((item, i) => (
+                      <ActionCard
+                        key={`later-${item.title}`}
+                        item={item}
+                        index={laterStart + i + 1}
+                        linkedStage={linkedStageLabel(
+                          item.title,
+                          view.orders,
+                          view.linkedKeys,
+                        )}
+                      />
+                    ))}
                   </div>
                 </>
               )}

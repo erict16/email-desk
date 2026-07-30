@@ -1,79 +1,79 @@
 # Email Desk — design system
 
-**Product:** Email Desk (personal dispatch board)  
-**Audience:** Eric · overseas sales  
-**Date:** 2026-07-30  
-**Direction:** **GitHub Issues / Linear list shell** (proven task UI, not inventing candy colors)
+**Family with Huaming Hub** (same cold paper + cobalt).  
+**Job:** scan 要我动 / 等对方 / 管线 without chrome noise.
 
 ---
 
-## Subject
-
-Mail-driven sales dispatch. Open → know **要我动** vs **等对方** vs order stage.  
-Not a marketing site. Not a mail client.
-
----
-
-## Visual plan (steal structure, not logo)
-
-| Borrow | From |
-|--------|------|
-| Canvas `#f6f8fa` + white cards + `#d0d7de` borders | GitHub |
-| Quiet sticky header, ghost actions | Linear |
-| One-line footer, no logo dump | Docs sites |
-| Red only for urgency | Both |
-
-**Signature:** left-rail spine on cards (待办 / 等待 / 卡点) — functional, not decorative chrome.
-
-**Rejected (tried, failed):** warm cream paper · teal hospital · pure zinc black-white monochrome · floating pill header · heavy dual-column footer with logo essay.
-
----
-
-## Tokens
+## Tokens (Hub-aligned)
 
 | Role | Token | Hex |
 |------|-------|-----|
-| Canvas | `--bg` | `#f6f8fa` |
-| Card / header | `--surface` | `#ffffff` |
-| Ink | `--ink` | `#1f2328` |
-| Mute | `--mute` | `#656d76` |
-| Faint | `--faint` | `#8c959f` |
-| Line | `--line` | `#d0d7de` |
-| Line strong | `--line-strong` | `#afb8c1` |
-| Urgent | `--urgent` | `#cf222e` |
-| Action wash | `--action-bg` | `#ddf4ff` |
-| Action text | `--action-ink` | `#0550ae` |
-| Wait wash | `--wait-bg` | `#f6f8fa` |
-| Wait text | `--wait-ink` | `#656d76` |
-| Pipe | `--pipe` | `#0969da` |
-| Pipe soft | `--pipe-soft` | `#ddf4ff` |
-| Mark tile | `--mark-bg` | `#1f2328` |
-| Mark lines | `--mark-fg` | `#ffffff` |
-| Mark dot | `--mark-dot` | `#cf222e` |
+| Page | `--bg` / `--paper` | `#f5f7fa` |
+| Surface | `--surface` / `--card` | `#ffffff` |
+| Soft | `--paper-2` | `#eef2f6` |
+| Ink | `--ink` | `#0f2438` |
+| Mute | `--mute` | `#4a5d70` |
+| Faint | `--faint` | `#738496` |
+| Line | `--line` | `#dce3eb` |
+| Accent | `--pipe` / `--accent` | `#0a4a82` |
+| Accent soft | `--action-bg` / `--pipe-soft` | `#e8f0f7` |
+| Action text | `--action-ink` | `#0a4a82` |
+| Urgent | `--urgent` | `#b42318` |
+| Urgent soft | `--urgent-soft` | `#fef3f2` |
+| Wait bg | `--wait-bg` | `#eef2f6` |
+| Wait ink | `--wait-ink` | `#4a5d70` |
 | Radius | `--radius` | `6px` |
-| Measure | `--measure` | `42rem` |
+| Measure | `--measure` | `40rem` |
+
+Accent ≤ 5% of UI. Surfaces = white + 1px line + 6px radius only. No heavy shadows.
+
+---
+
+## Spacing (8px grid — locked)
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--gap-stack` | `8px` | Inside card, related lines |
+| `--gap-block` | `12px` | Title block → spine |
+| `--gap-card` | `10px` | Between cards in a list |
+| `--gap-lane` | `28px` | Between order stage groups |
+| `--gap-section` | `36px` | Between major board sections |
+| `--pad-card-x` | `16px` | Card horizontal |
+| `--pad-card-y` | `14px` | Card vertical |
+| Main top | `24px` | Below header |
+| Section head → list | `16px` | After heading |
+
+---
+
+## Type
+
+System UI stack (CJK-safe). No display Google fonts.
+
+| Role | Size | Weight |
+|------|------|--------|
+| Page title | 20px | 600 |
+| Section | 15px | 600 |
+| Stage label | 13px | 600 |
+| Card title | 15px | 600 |
+| Spine / body | 13px | 400–500 |
+| Meta / people | 12px | 400 |
+| Tag | 11px | 500 |
+| Focus count | 22px | 600 |
 
 ---
 
 ## Chrome
 
-**Header:** white sticky, hairline bottom; **lucide `Inbox`** + wordmark; ghost 分享/导出 (`Share2` / `Download`).
-
-**Footer:** same canvas as page, single row of small links + © — **no** logo + blurb block.
-
-**Mark:** only `lucide-react` icons — never hand-draw. Favicon: `node scripts/icons/build-mark.mjs`.
-
-**Stage lane head:** title row + count; hint on **second line** (fixes glued「QS 报价报价·改价」).
+- **Header:** sticky white, hairline, lucide Inbox + Email Desk; ghost 分享/导出
+- **Footer:** one line on page canvas
+- **Focus:** compact counter row (not tall dashboard tiles)
+- **Stage head:** one line — `label · hint` with real gap + count right
+- **Cards:** spine is hero line; meta ≤ 1–2 lines
 
 ---
 
-## IA (unchanged)
+## IA
 
-要我动 · 等对方 · 订单管线 · 稍后 · 会  
-`ball` / `wait` · searchable titles · no FYI on board  
-
----
-
-## Non-goals
-
-No mail API · no purple gradient SaaS · no 7-col Kanban primary  
+要我动 · 等对方 · 管线 · 稍后 · 会  
+`ball` / `wait` · searchable titles · FYI off board  

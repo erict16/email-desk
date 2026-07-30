@@ -17,7 +17,7 @@ type Chip = {
   emphasize?: boolean;
 };
 
-/** GitHub-style counter strip: one bordered grid, red only on 要我动. */
+/** Compact counter row — Hub-calm, not tall dashboard tiles. */
 export default function FocusStrip({
   meetings,
   stats,
@@ -44,13 +44,13 @@ export default function FocusStrip({
   ];
 
   return (
-    <section className="mb-7 space-y-3" aria-label="焦点">
+    <section className="mb-8 space-y-4" aria-label="焦点">
       {meetings.length > 0 && (
-        <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3">
-          <div className="mb-2 text-[11px] font-semibold text-[var(--faint)]">
+        <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-4 py-3.5">
+          <div className="mb-2 text-[11px] font-medium tracking-wide text-[var(--faint)]">
             本周会议
           </div>
-          <ul className="flex flex-col gap-1.5 text-[13px] leading-snug text-[var(--ink)]">
+          <ul className="flex flex-col gap-2 text-[13px] leading-relaxed text-[var(--ink)]">
             {meetings.map((m, i) => (
               <li key={i}>{m}</li>
             ))}
@@ -73,12 +73,12 @@ export default function FocusStrip({
               scrollToHash(c.href, 280);
               history.replaceState(null, "", c.href);
             }}
-            className={`flex flex-col gap-1 px-3 py-3 transition-colors hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--focus)] sm:px-3.5 sm:py-3.5 ${
+            className={`flex flex-col gap-1.5 px-3 py-3.5 hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--focus)] sm:px-4 ${
               i > 0 ? "border-l border-[var(--line)]" : ""
             }`}
           >
             <span
-              className={`text-[1.5rem] font-semibold leading-none tabular-nums tracking-tight ${
+              className={`text-[1.375rem] font-semibold leading-none tabular-nums tracking-tight ${
                 c.emphasize ? "text-[var(--urgent)]" : "text-[var(--ink)]"
               }`}
             >

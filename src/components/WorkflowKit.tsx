@@ -8,22 +8,22 @@ const SELECTOR_URL = "https://erict16.github.io/oltc-selector/";
  */
 export default function WorkflowKit() {
   return (
-    <details className="mt-[var(--gap-section)] rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] shadow-[var(--shadow-card)]">
+    <details className="mt-10 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)]">
       <summary className="cursor-pointer list-none px-4 py-3.5 text-[13px] font-semibold text-[var(--ink)] marker:content-none [&::-webkit-details-marker]:hidden">
         <span className="flex items-center justify-between gap-2">
           <span>工作流图例</span>
-          <span className="text-[11px] font-medium text-[var(--faint)]">
+          <span className="text-[12px] font-medium text-[var(--faint)]">
             阶段 · 写法 · 工具
           </span>
         </span>
       </summary>
 
-      <div className="space-y-5 border-t border-[var(--line)] px-4 py-4">
+      <div className="space-y-5 border-t border-[var(--line)] px-4 py-5">
         <div>
-          <div className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--faint)]">
+          <div className="mb-3 text-[11px] font-medium text-[var(--faint)]">
             订单阶段
           </div>
-          <ol className="flex flex-col gap-1.5">
+          <ol className="flex flex-col gap-2">
             {ORDER_STAGES.map((s, i) => (
               <li
                 key={s.id}
