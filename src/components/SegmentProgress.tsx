@@ -41,16 +41,16 @@ export default function SegmentProgress({
               <div
                 className={`h-1.5 w-full rounded-full transition-all duration-300 ${
                   active
-                    ? `${STAGE_GLOW[s.id]} opacity-100 shadow-[0_0_12px_currentColor]`
+                    ? `seg-active ${STAGE_GLOW[s.id]}`
                     : done
-                      ? "bg-[var(--primary)]/55"
+                      ? "bg-[var(--primary)]/45"
                       : "bg-[var(--line)]"
                 }`}
                 title={tip}
               />
-              {/* tooltip */}
+              {/* tooltip — solid surface, light-safe elevation */}
               <div
-                className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--line)] bg-[var(--surface)] px-2 py-1 text-[10px] font-medium text-[var(--ink)] shadow-[var(--shadow-hover)] group-hover/seg:block"
+                className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--line)] bg-[var(--surface)] px-2 py-1 text-[10px] font-medium text-[var(--ink)] shadow-[var(--shadow-card)] group-hover/seg:block"
                 role="tooltip"
               >
                 {tip}

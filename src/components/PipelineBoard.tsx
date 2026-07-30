@@ -146,9 +146,9 @@ export default function PipelineBoard({
                   <div
                     key={s.id}
                     id={`order-stage-${s.id}`}
-                    className="flex w-[280px] shrink-0 flex-col rounded-xl border border-[var(--line)] bg-[var(--bg)]/50"
+                    className="kanban-col flex w-[280px] shrink-0 flex-col overflow-hidden rounded-xl"
                   >
-                    <div className="flex items-center justify-between border-b border-[var(--line)] px-3 py-2.5">
+                    <div className="kanban-col-header flex items-center justify-between border-b border-[var(--line)] px-3 py-2.5">
                       <div className="flex items-center gap-2">
                         <span
                           className={`stage-badge stage-badge-${s.id} rounded-md px-1.5 py-0.5 text-[11px] font-semibold`}

@@ -53,7 +53,7 @@ export default function ActionCard({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: done ? 0.45 : 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.2) }}
-      className={`group rounded-xl border bg-[var(--surface)] p-4 shadow-[var(--shadow-card)] transition-all duration-200 hover:shadow-[var(--shadow-hover)] hover:border-[var(--primary)]/30 ${
+      className={`group rounded-xl border bg-[var(--surface)] p-4 shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--primary)]/25 hover:shadow-[var(--shadow-hover)] ${
         urgent && !done
           ? "border-l-[3px] border-l-[var(--urgent)] border-[var(--line)]"
           : "border-[var(--line)]"

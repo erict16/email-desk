@@ -49,7 +49,7 @@ export default function OrderCard({
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: done ? 0.45 : 1, y: 0 }}
       transition={{ duration: 0.22, delay: Math.min(index * 0.02, 0.15) }}
-      className={`group rounded-xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-card)] transition-all duration-200 hover:border-[var(--primary)]/30 hover:shadow-[var(--shadow-hover)] ${
+      className={`group rounded-xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--primary)]/25 hover:shadow-[var(--shadow-hover)] ${
         compact ? "p-3" : "p-4"
       } ${done ? "opacity-50 grayscale-[30%]" : ""}`}
     >
