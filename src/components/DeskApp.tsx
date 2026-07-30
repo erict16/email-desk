@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
 import type { BoardData, BoardItem } from "@/lib/board-types";
 import { buildDeskView } from "@/lib/board-view";
 import { filterItems } from "@/lib/filter-board";
@@ -239,6 +238,10 @@ export default function DeskApp({ board }: { board: BoardData }) {
 
   return (
     <div id="top" className="min-h-full">
+      <a href="#main" className="skip-link">
+        跳到内容
+      </a>
+
       <AppHeader
         title={board.title}
         updated={board.updated}
@@ -260,48 +263,43 @@ export default function DeskApp({ board }: { board: BoardData }) {
         onSelect={onPaletteSelect}
         onCopy={async (t) => {
           const ok = await copyText(t);
-          toast(ok ? "Copied for email search!" : "复制失败");
+          toast(ok ? "已复制标题 · 可贴到邮箱搜索" : "复制失败");
         }}
       />
 
       <main
-        id="email-desk-print"
-        className="mx-auto w-full max-w-[var(--measure)] px-3 pb-[max(4rem,env(safe-area-inset-bottom))] pt-4 sm:px-6 sm:pt-6"
+        id="main"
+        tabIndex={-1}
+        className="mx-auto w-full max-w-[var(--measure)] px-3 pb-[max(4rem,env(safe-area-inset-bottom))] pt-3 outline-none sm:px-6 sm:pt-5"
       >
-        <motion.header
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-5"
-        >
-          <h1 className="text-[1.5rem] font-semibold tracking-tight text-[var(--ink)] sm:text-[1.65rem]">
+        {/* Quiet context line — sticky header already brands; full H1 for a11y/print */}
+        <header className="mb-3 sm:mb-4">
+          <h1 className="desk-page-title text-[15px] font-semibold tracking-tight text-[var(--ink)] sm:text-[16px]">
             {board.title}
           </h1>
-          {board.subtitle && (
-            <p className="mt-1.5 text-[13px] text-[var(--mute)]">
+          {(board.subtitle || board.updated) && (
+            <p className="mt-0.5 text-[12px] leading-snug text-[var(--faint)] sm:text-[13px]">
               {board.subtitle}
-              {board.updated ? (
-                <span className="text-[var(--faint)]">
-                  {" · "}
-                  {board.updated}
-                </span>
-              ) : null}
+              {board.subtitle && board.updated ? " · " : null}
+              {board.updated ? `更新 ${board.updated}` : null}
             </p>
           )}
-        </motion.header>
+        </header>
 
         {view.meetings.length > 0 && (
-          <motion.section
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.05 }}
-            className="mb-5 overflow-hidden rounded-xl border border-[var(--line)] bg-gradient-to-r from-[var(--primary-soft)] via-[var(--surface)] to-[var(--wait-soft)] p-4 shadow-[var(--shadow-card)] sm:p-5"
+          <section
+            className="mb-4 rounded-xl border border-[var(--line)] bg-[var(--surface)] p-3.5 shadow-[var(--shadow-card)] sm:mb-5 sm:p-4"
             aria-label="本周会议"
           >
-            <div className="mb-2 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--primary)]">
-              <Calendar size={14} aria-hidden />
+            <div className="mb-2 flex items-center gap-2 text-[12px] font-semibold text-[var(--ink)]">
+              <Calendar
+                size={14}
+                className="text-[var(--primary)]"
+                aria-hidden
+              />
               本周会议
             </div>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-1.5">
               {view.meetings.map((m, i) => (
                 <li
                   key={i}
@@ -311,7 +309,7 @@ export default function DeskApp({ board }: { board: BoardData }) {
                 </li>
               ))}
             </ul>
-          </motion.section>
+          </section>
         )}
 
         <FilterBar

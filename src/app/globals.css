@@ -258,11 +258,30 @@ html:not(.dark) .seg-active {
   box-shadow: none;
 }
 
-/* card lift — reduce motion respects global rule */
-@media (hover: hover) and (pointer: fine) {
-  article.group:hover {
-    /* complements Tailwind hover:-translate-y-0.5 */
-  }
+/* page title stays quiet under sticky brand */
+.desk-page-title {
+  letter-spacing: -0.01em;
+}
+
+/* keyboard skip — reliable without not-sr-only plugin quirks */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 800;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-hover);
+}
+.skip-link:focus {
+  left: 0.75rem;
+  top: 0.75rem;
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

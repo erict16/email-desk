@@ -32,22 +32,22 @@ export default function OrderCard({
 
   const onCopyTitle = async () => {
     const ok = await copyText(item.title);
-    toast(ok ? "Copied for email search!" : "复制失败");
+    toast(ok ? "已复制标题 · 可贴到邮箱搜索" : "复制失败");
   };
 
   const onShareBrief = async () => {
     const brief = formatShareBrief(item, showWait ? "wait" : "order");
     const ok = await copyText(brief);
-    toast(ok ? "Brief copied for Slack/Teams" : "复制失败");
+    toast(ok ? "已复制简报" : "复制失败");
   };
 
   return (
     <motion.article
       layout
-      initial={{ opacity: 0, y: 6 }}
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: done ? 0.45 : 1, y: 0 }}
-      transition={{ duration: 0.22, delay: Math.min(index * 0.02, 0.15) }}
-      className={`group rounded-xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-card)] transition-all duration-200 will-change-transform hover:-translate-y-0.5 hover:border-[var(--primary)]/25 hover:shadow-md ${
+      transition={{ duration: 0.18, delay: Math.min(index * 0.015, 0.1) }}
+      className={`group rounded-xl border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-150 hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-hover)] ${
         compact ? "p-3" : "p-3.5 sm:p-4"
       } ${done ? "opacity-50 grayscale-[30%]" : ""}`}
     >
@@ -143,7 +143,7 @@ export default function OrderCard({
               className="inline-flex min-h-[36px] items-center gap-1.5 rounded-md px-2 text-[12px] font-medium text-[var(--mute)] hover:bg-[var(--surface-2)] hover:text-[var(--primary)]"
             >
               <Share2 size={14} />
-              Share Brief
+              复制简报
             </button>
           </div>
         </div>

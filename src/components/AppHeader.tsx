@@ -203,8 +203,11 @@ export default function AppHeader({
             </div>
           </div>
 
-          {/* Row 3: counters — horizontal scroll on narrow screens */}
-          <div className="-mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {/* Row 3: jump chips (scroll to section — not the same as FilterBar) */}
+          <nav
+            className="-mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            aria-label="跳转到分区"
+          >
             <StatPill href="#mine" n={stats.mine} label="要我动" tone="action" />
             <StatPill href="#wait" n={stats.waiting} label="等待" tone="wait" />
             <StatPill
@@ -218,10 +221,10 @@ export default function AppHeader({
                 href="#later"
                 n={stats.later}
                 label="稍后"
-                tone="pipe"
+                tone="muted"
               />
             )}
-          </div>
+          </nav>
         </div>
       </header>
 
@@ -243,14 +246,16 @@ function StatPill({
   href: string;
   n: number;
   label: string;
-  tone: "action" | "wait" | "pipe";
+  tone: "action" | "wait" | "pipe" | "muted";
 }) {
   const colors =
     tone === "action"
       ? "bg-[var(--action-soft)] text-[var(--action-ink)]"
       : tone === "wait"
         ? "bg-[var(--wait-soft)] text-[var(--wait-ink)]"
-        : "bg-[var(--primary-soft)] text-[var(--primary)]";
+        : tone === "muted"
+          ? "bg-[var(--surface-2)] text-[var(--mute)]"
+          : "bg-[var(--primary-soft)] text-[var(--primary)]";
 
   return (
     <a
@@ -261,7 +266,7 @@ function StatPill({
         document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
         history.replaceState(null, "", href);
       }}
-      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-semibold tabular-nums ${colors}`}
+      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-semibold tabular-nums transition-opacity hover:opacity-90 ${colors}`}
     >
       <span>{n}</span>
       <span className="font-medium opacity-90">{label}</span>

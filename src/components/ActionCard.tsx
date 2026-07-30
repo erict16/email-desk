@@ -34,26 +34,28 @@ export default function ActionCard({
 
   const onCopyTitle = async () => {
     const ok = await copyText(item.title);
-    toast(ok ? "Copied for email search!" : "复制失败");
+    toast(ok ? "已复制标题 · 可贴到邮箱搜索" : "复制失败");
   };
 
   const onShareBrief = async () => {
     const brief = formatShareBrief(item, isWait ? "wait" : "act");
     const ok = await copyText(brief);
-    toast(ok ? "Brief copied for Slack/Teams" : "复制失败");
+    toast(ok ? "已复制简报" : "复制失败");
   };
 
   return (
     <motion.article
       layout
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: done ? 0.45 : 1, y: 0 }}
-      transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.2) }}
-      className={`group rounded-xl border bg-[var(--surface)] p-3.5 shadow-[var(--shadow-card)] transition-all duration-200 will-change-transform hover:-translate-y-0.5 hover:border-[var(--primary)]/25 hover:shadow-md sm:p-4 ${
+      transition={{ duration: 0.2, delay: Math.min(index * 0.02, 0.12) }}
+      className={`group rounded-xl border bg-[var(--surface)] p-3.5 shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-150 sm:p-4 ${
         urgent && !done
           ? "border-l-[3px] border-l-[var(--urgent)] border-[var(--line)]"
           : "border-[var(--line)]"
-      } ${done ? "opacity-50 grayscale-[30%]" : ""}`}
+      } hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-hover)] ${
+        done ? "opacity-50 grayscale-[30%]" : ""
+      }`}
     >
       <div className="flex flex-col gap-2.5 sm:gap-3">
         <div className="flex items-start gap-2">
@@ -137,7 +139,7 @@ export default function ActionCard({
               className="inline-flex min-h-[36px] items-center gap-1.5 rounded-md px-2 text-[12px] font-medium text-[var(--mute)] hover:bg-[var(--surface-2)] hover:text-[var(--primary)]"
             >
               <Share2 size={14} aria-hidden />
-              Share Brief
+              复制简报
             </button>
           </div>
         </div>

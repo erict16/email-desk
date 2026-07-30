@@ -14,23 +14,21 @@ type Props = {
   doneCount: number;
 };
 
-const ZONES: { id: ZoneFilter; label: string; short: string; emoji?: string }[] =
-  [
-    { id: "all", label: "All", short: "全部" },
-    { id: "blocked", label: "仅看卡点", short: "卡点", emoji: "🔥" },
-    { id: "mine", label: "要我动", short: "要我动", emoji: "⚡" },
-    { id: "waiting", label: "等对方", short: "等待", emoji: "⏳" },
-  ];
+const ZONES: { id: ZoneFilter; label: string }[] = [
+  { id: "all", label: "全部" },
+  { id: "blocked", label: "仅卡点" },
+  { id: "mine", label: "要我动" },
+  { id: "waiting", label: "等对方" },
+];
 
 const CATS: {
   id: BlockerCategory;
   label: string;
-  short: string;
   icon: typeof Users;
 }[] = [
-  { id: "customer", label: "Customer", short: "客户", icon: Users },
-  { id: "factory", label: "Factory / Eng", short: "工厂", icon: Factory },
-  { id: "docs", label: "Documentation", short: "单证", icon: FileText },
+  { id: "customer", label: "客户", icon: Users },
+  { id: "factory", label: "工厂/工程", icon: Factory },
+  { id: "docs", label: "单证", icon: FileText },
 ];
 
 export default function FilterBar({
@@ -53,10 +51,12 @@ export default function FilterBar({
   return (
     <div
       id="block-info"
-      className="mb-5 space-y-2.5 rounded-xl border border-[var(--line)] bg-[var(--surface)] p-3 shadow-[var(--shadow-card)] sm:mb-6 sm:space-y-3 sm:p-4"
+      className="mb-4 space-y-2 sm:mb-5 sm:space-y-2.5"
+      role="search"
+      aria-label="筛选看板"
     >
-      {/* Zone chips — horizontal scroll on mobile */}
-      <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {/* Zone chips — filter mode (header pills = jump to section) */}
+      <div className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {ZONES.map((z) => {
           const active = zone === z.id;
           return (
@@ -64,26 +64,24 @@ export default function FilterBar({
               key={z.id}
               type="button"
               onClick={() => onZone(z.id)}
-              className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1.5 text-[12px] font-semibold transition-colors sm:gap-1.5 sm:px-3 ${
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[12px] font-medium transition-colors ${
                 active
-                  ? "bg-[var(--primary-soft)] text-[var(--primary)] ring-1 ring-[var(--primary)]/30"
-                  : "bg-[var(--surface-2)] text-[var(--mute)]"
+                  ? "bg-[var(--primary-soft)] text-[var(--primary)] ring-1 ring-[var(--primary)]/25"
+                  : "text-[var(--mute)] hover:bg-[var(--surface-2)] hover:text-[var(--ink)]"
               }`}
             >
-              {z.emoji && <span aria-hidden>{z.emoji}</span>}
-              <span className="sm:hidden">{z.short}</span>
-              <span className="hidden sm:inline">{z.label}</span>
-              <span className="tabular-nums opacity-70">{countFor(z.id)}</span>
+              <span>{z.label}</span>
+              <span className="tabular-nums opacity-65">{countFor(z.id)}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Category + done toggle */}
-      <div className="flex flex-col gap-2 border-t border-[var(--line)] pt-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-1.5 sm:pt-3">
-        <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
-          <span className="hidden shrink-0 self-center text-[11px] font-medium uppercase tracking-wide text-[var(--faint)] sm:mr-1 sm:inline">
-            卡点类型
+      {/* Category + done — secondary row, no card chrome */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-1.5">
+        <div className="-mx-1 flex gap-1 overflow-x-auto px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+          <span className="hidden shrink-0 self-center text-[11px] text-[var(--faint)] sm:mr-1 sm:inline">
+            卡点
           </span>
           {CATS.map((c) => {
             const on = categories.has(c.id);
@@ -93,15 +91,14 @@ export default function FilterBar({
                 key={c.id}
                 type="button"
                 onClick={() => onToggleCategory(c.id)}
-                className={`inline-flex shrink-0 items-center gap-1 rounded-lg border px-2 py-1 text-[12px] font-medium transition-colors sm:gap-1.5 sm:px-2.5 ${
+                className={`inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-[12px] font-medium transition-colors ${
                   on
-                    ? "border-[var(--primary)]/40 bg-[var(--primary-soft)] text-[var(--primary)]"
-                    : "border-[var(--line)] text-[var(--mute)]"
+                    ? "bg-[var(--primary-soft)] text-[var(--primary)]"
+                    : "text-[var(--mute)] hover:bg-[var(--surface-2)]"
                 }`}
               >
                 <Icon size={13} aria-hidden />
-                <span className="sm:hidden">{c.short}</span>
-                <span className="hidden sm:inline">{c.label}</span>
+                <span>{c.label}</span>
               </button>
             );
           })}
@@ -111,7 +108,7 @@ export default function FilterBar({
               onClick={() => {
                 for (const c of [...categories]) onToggleCategory(c);
               }}
-              className="shrink-0 self-center text-[11px] text-[var(--faint)]"
+              className="shrink-0 self-center px-1.5 text-[11px] text-[var(--faint)] hover:text-[var(--mute)]"
             >
               清除
             </button>
@@ -122,7 +119,7 @@ export default function FilterBar({
           <button
             type="button"
             onClick={() => onHideDone(!hideDone)}
-            className={`w-full rounded-lg px-2.5 py-1.5 text-left text-[12px] font-medium sm:ml-auto sm:w-auto sm:text-center ${
+            className={`w-full rounded-md px-2 py-1.5 text-left text-[12px] font-medium sm:ml-auto sm:w-auto sm:text-center ${
               hideDone
                 ? "bg-[var(--surface-2)] text-[var(--faint)]"
                 : "text-[var(--mute)] hover:bg-[var(--surface-2)]"

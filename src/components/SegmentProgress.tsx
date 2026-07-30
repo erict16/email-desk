@@ -42,7 +42,7 @@ export default function SegmentProgress({
               <div className="relative flex h-3 w-full items-center justify-center">
                 {active && (
                   <span
-                    className={`absolute h-3 w-3 animate-ping rounded-full ${STAGE_GLOW[s.id]} opacity-40`}
+                    className={`absolute h-3 w-3 rounded-full ${STAGE_GLOW[s.id]} opacity-40 motion-safe:animate-ping`}
                     aria-hidden
                   />
                 )}
