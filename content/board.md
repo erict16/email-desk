@@ -1,7 +1,7 @@
 ---
 title: 邮件跟进清单
 subtitle: Eric Tan · Inbox + Sent
-updated: "2026-07-29 08:15"
+updated: "2026-07-30 08:10"
 tz: Asia/Shanghai
 meetings:
   - 周五 7/31 09:30–10:30 SST Teams — HMSG Trading Process（John/Anthony 已约；你 7/27 已确认参加；玲玲本周休假）
@@ -9,42 +9,34 @@ meetings:
 
 ## todo | 你要处理
 
-### PO 155798
-- priority: P0
-- date: 7/24
-- meta: 王工 7/24 确认「需要电位电阻」。Cameron 同日再催：相量图/接线图也无 tie-in，请再确认；若需要则补全套图+3D。你 7/23 已回「外置故外形图不显示」，但王工确认后 Sent 未见正式回 Cameron，也未见补发全套图。近两日无新往来。
-- tags: 需尽快, 王工已确认要电位电阻, 待回 Cameron 并补全套图+3D
-- people: Cameron (WTC) / 王俊杰 / 沈旭 / 周晓冬
-- action: 按王工结论正式回 Cameron（确认要 tie-in）；同步要齐含相量/接线的全套图+3D 后补发
-
 ### BSHV-HUAMING/2605/02
 - priority: P0
 - date: 7/28
-- meta: 玲玲 7/28 已回改稿并「请确认」；你同日回「好的收到」并把旧帖 FYI 给 Trung。Trung 7/28 仍回「Please fix as my noted」并附图标红。单证未闭环。
+- meta: 玲玲 7/28 已出改稿请确认；你同日只回「好的收到」并把旧帖 FYI 给 Trung。Trung 7/28 仍回「Please fix as my noted」并附图标红。Sent 未见按标注正式重发 CI/PL/Form E。近两日无新往来。
 - tags: 需尽快, Trung 仍要按标注再改, 改完立刻重发
 - people: 沈丽玲 / 李倩 / Trung (Sanaky)
 - action: 对照玲玲改稿与 Trung 标红，改完 CI/PL/Form E 后正式重发 Trung（勿只 FYI 旧帖）
 
+### PO 155798
+- priority: P0
+- date: 7/24
+- meta: 王工 7/24 确认「需要电位电阻」。Cameron 同日再催：相量图/接线图也无 tie-in，请再确认；若需要则补全套图+3D。你 7/23 已回「外置故外形图不显示」，但王工确认后 Sent 未见正式回 Cameron，也未见补发全套图。近几日无新往来。
+- tags: 需尽快, 王工已确认要电位电阻, 待回 Cameron 并补全套图+3D
+- people: Cameron (WTC) / 王俊杰 / 沈旭 / 周晓冬
+- action: 按王工结论正式回 Cameron（确认要 tie-in）；同步要齐含相量/接线的全套图+3D 后补发
+
 ### Ian Trafoix 工厂访问收尾
 - priority: P0
 - date: 7/28
-- meta: Ian 7/27 再催 6 问 + David presentation；你已回「马上收集」。7/28 已 Fw Kimmy 要：供应商绩效、设计计算流程、设计放行签字、研发占比、设计团队人数（+ David 讲义）。Sent 未见正式答卷回 Ian。
+- meta: Ian 7/27 再催 6 问 + David presentation；你已回「马上收集」。7/28 已 Fw Kimmy 要：供应商绩效、设计计算流程、设计放行签字、研发占比、设计团队人数（+ David 讲义）。Sent 未见正式答卷回 Ian，也未见 Kimmy 回材料。
 - tags: 需尽快, 已 Fw Kimmy 要材料, 待收齐后回 Ian
 - people: Ian McConnachie (Trafoix) / 李倩
 - action: 催 Kimmy 收齐 5–6 点材料后正式回 Ian（含 David 讲义）
 
-### Q30122_01A-OLTC quote
-- priority: P0
-- date: 7/29
-- meta: 晓东 7/29 晨 Fw：WTC Prasad 要报 SHZVGIII-1500Y/72.5-10193W + tie-in resistors（天然酯、70MVA 33/11kV YNd11、±10% 16×1.25%、中性点）。请你协助报价。
-- tags: 需尽快, 待你出报价
-- people: 周晓冬 / Prasad (WTC)
-- action: 按规格出 QS 报价回晓东（或直接回 WTC，抄晓东）
-
 ### QTC overseas profile
 - priority: P1
 - date: 7/28
-- meta: Gerrick 催下单前更新 HM overseas profile（Google Form，或需 VPN）。你问 Citibank passbook 后，Gerrick 7/28 明确：此更新是 Huaming Overseas，beneficiary bank 不应是 SG——不必再等 SG passbook。
+- meta: Gerrick 催下单前更新 HM overseas profile（Google Form，或需 VPN）。你问 Citibank passbook 后，Gerrick 7/28 明确：此更新是 Huaming Overseas，beneficiary bank 不应是 SG——不必再等 SG passbook。Sent 未见填表完成回告。
 - tags: 客户等 profile, 非 SG 账户, 待尽快填表
 - people: Gerrick / Aye Chan / Suntichai (TMI)
 - action: 按 Overseas 主体尽快填 QTC 表；卡点找 Gerrick/Aye Chan
@@ -52,7 +44,7 @@ meetings:
 ### United Energy HWV
 - priority: P1
 - date: 7/25
-- meta: 客户已确认带油枕；Qu-ET260012 已发。沈工 7/25 回 7/24 非标图「是不带油枕的」——图纸包需对齐。近几日未见客户回报价。
+- meta: 客户已确认带油枕；Qu-ET260012 已发。沈工 7/25 回 7/24 非标图「是不带油枕的」——图纸包需对齐。近几日未见客户回报价，也未见沈工新图。
 - tags: 报价已发待客户, 待沈工出带油枕图纸
 - people: Cameron Finlayson / 沈旭 / 周晓冬 / Colin
 - action: 跟沈工要带油枕版外形/接线；报价盯 Cameron 反馈
@@ -68,21 +60,39 @@ meetings:
 ### Catch up moving to SG
 - priority: P2
 - date: 7/28
-- meta: Gerrick 7/28 发「Catch up on your progress for moving to SG」（抄 Grace）。个人/人事跟进，非订单。
+- meta: Gerrick 7/28 发「Catch up on your progress for moving to SG」（抄 Grace）。正文为空/简短，个人/人事跟进，非订单。Sent 未见回复。
 - tags: 待你回进展
 - people: Gerrick / Grace Low
 - action: 简短回一下搬迁/签证等进展
+
+## done | 已推进
+
+### Q30122_01A-OLTC quote
+- priority: OK
+- date: 7/29
+- meta: 晓东转 Wilson 询价 SHZVGIII-1500Y + tie-in。你 7/29 已发 Qu-ET260013（AUD，FOB Shanghai）；Kimmy 确认 1.3 系数 OK；晓东晚间「感谢两位，辛苦了」。
+- tags: 报价已发, 晓东已收
+- people: 周晓冬 / 李倩 / Prasad (WTC)
+- action: 等客户/晓东下一步
+
+### PX-360 PO 26005587
+- priority: OK
+- date: 7/29
+- meta: Yoeli 7/29 确认 SC 批准，请 go ahead for production。Kimmy 主谈投产。
+- tags: 客户已批 SC, 可投产
+- people: Yoeli / 李倩
+- action: 旁听 Kimmy 投产落地
 
 ## orders | 订单跟踪
 
 ### CLOUGH KWINANA QS260719-R0
 - stage: tech
-- customer: CLOUGH / Anthony 主谈
-- date: 7/28
-- meta: OS 绝缘提到 D；Kimmy 告王工客户图 OK。王工问是否 12120 + 12 档闭锁。主谈 Anthony/Kimmy。
-- tags: 图纸参数确认中
-- people: Anthony / Kimmy / 王工
-- action: 旁听即可
+- customer: CLOUGH / GE Vernova
+- date: 7/29
+- meta: 绝缘提到 D；Kimmy 已发图。Agam/Hendhy 要报价对齐批准接线 12110，Anthony 7/29 已发更新报价；Hendhy 另催 3D。主谈 Anthony/Kimmy。
+- tags: 报价已按 12110 更新, 3D 跟进中
+- people: Anthony / Kimmy / Agam / Hendhy
+- action: 旁听 3D 与客户确认
 
 ### HAVEC SV 15MVA Cambodia QS2607201
 - stage: tech
@@ -111,14 +121,14 @@ meetings:
 - people: Cameron / 沈旭 / Colin
 - action: 图纸对齐后跟反馈
 
-### Q30122_01A-OLTC quote
+### Q30122_01A Wilson
 - stage: qs
 - customer: WTC / Prasad
 - date: 7/29
-- meta: 新询价 SHZVGIII-1500Y + tie-in / 天然酯 70MVA。晓东转你报价。
-- tags: 待出报价
+- meta: Qu-ET260013 已发晓东；等客户反馈。
+- tags: 报价已发
 - people: 周晓冬 / Prasad
-- action: 出 QS
+- action: 盯客户反馈
 
 ### QS2606173R2 EVN UZF
 - stage: qs
@@ -133,19 +143,19 @@ meetings:
 - stage: po
 - customer: Sanaky / Trung / Khanh
 - date: 7/28
-- meta: 价已接受。Khanh 7/28 微调管连接（不影响价期），要改图 + 3D + QJ4-25/YSF 3D；并请 Trung 推进采购。主谈 Anthony/Kimmy。
+- meta: 价已接受。Khanh 7/28 微调管连接（不影响价期），要改图 + 3D + QJ4-25/YSF 3D；Trung 推进采购。主谈 Anthony/Kimmy。
 - tags: 等改图确认, 采购推进中
 - people: Trung / Khanh / Anthony / Kimmy
 - action: Anthony/Kimmy 主谈，旁听
 
 ### PX-360 PO 26005587
-- stage: po
+- stage: erp
 - customer: Bambang Djaja / Yoeli
-- date: 7/28
-- meta: 外形/3D 已更新；corrected SC 已发。Kimmy 7/28 再催 Yoeli 确认后方可投产。
-- tags: 待客户确认后投产, 有SC
+- date: 7/29
+- meta: Yoeli 已批 SC，请投产。外形/3D/corrected SC 此前已齐。
+- tags: 客户已批 SC, 投产中
 - people: Yoeli / Kimmy
-- action: 旁听 Yoeli 确认
+- action: 旁听投产落地
 
 ### QS2607196R1 HAVEC
 - stage: erp
@@ -168,11 +178,11 @@ meetings:
 ### ZEUS DATA CENTER PO 4201994143
 - stage: docs
 - customer: GE Vernova / UNINDO
-- date: 7/28
-- meta: 正式 PO OLTC 2×50MVA。客户要 Form E + SHM-K HS CODE。Kimmy 转玲玲；玲玲 7/28 晚：出口 HS 有，进口 Form E 需客户提供，并附 BAMBANG Form E 供参考。主谈 Kimmy/Gerrick/玲玲。
-- tags: Form E/HS 沟通中
+- date: 7/29
+- meta: 正式 PO OLTC 2×50MVA。Kimmy 转玲玲开 Form E + SHM-K HS。玲玲：出口 HS 有，进口 Form E 需客户提供并附参考。Kimmy 7/29：客户 OK，按 8535.90 直接出。主谈 Kimmy/玲玲。
+- tags: Form E 按客户 OK 出, HS 8535.90
 - people: Puguh / Kimmy / 沈丽玲 / Gerrick
-- action: 旁听单证，客户要你 interfacing 再插手
+- action: 旁听单证落地
 
 ### BSHV-HUAMING/2605/02
 - stage: docs
@@ -192,6 +202,15 @@ meetings:
 - people: Hà Lâm Phú / 沈丽玲
 - action: 正本出后确认客户收妥
 
+### PX-342 PO 26003931
+- stage: docs
+- customer: Bambang / Jesslyn / Yoeli
+- date: 7/29
+- meta: Jesslyn 7/29 要按 PDF 备注改单证 + Form E draft 等。主谈 Kimmy。
+- tags: 客户要改单证+Form E
+- people: Jesslyn / Yoeli / 李倩
+- action: 旁听 Kimmy/玲玲
+
 ### PTE P00054
 - stage: ship
 - customer: PTE / Shunn
@@ -203,19 +222,26 @@ meetings:
 
 ## fyi | 知会
 
+### Fenny 2XSV III 500 D 询价
+- priority: FYI
+- date: 7/29
+- meta: Anthony 已发预算价 QS2607207；Kimmy 要旧 OS/图纸核。主谈 Anthony/Kimmy。
+- tags: 询价主谈 Anthony/Kimmy
+- people: Fenny / Kimmy / Anthony
+
+### HLG MBT QS2607208
+- priority: FYI
+- date: 7/29
+- meta: Hoa 想按旧合同价；Anthony 无法 validate 旧价，已发新报价 QS2607208。
+- tags: 新报价已发
+- people: Anthony / Hoa
+
 ### PX-373
 - priority: FYI
 - date: 7/28
 - meta: Yoeli 称仅 off-load 运行，认为电流范围应不是问题；Kimmy 主谈是否可接受。
 - tags: Kimmy 主谈
 - people: Yoeli / 李倩
-
-### Fenny 2XSV III 500 D 询价
-- priority: FYI
-- date: 7/28
-- meta: Bambang Fenny 询旧型号重复单最新价交期。主谈 Kimmy/Anthony。
-- tags: 询价主谈 Kimmy
-- people: Fenny / Kimmy / Anthony
 
 ### PT Huaming Indonesia Audit
 - priority: FYI
@@ -230,27 +256,6 @@ meetings:
 - meta: Gerrick 经 UP 交 compliance 给 SESB。Gerrick/Kimmy 主跟。
 - tags: Gerrick/Kimmy 主跟
 - people: Gerrick Ong / 李倩
-
-### HLG MBT QS2607199 / CV 12.5MVA
-- priority: FYI
-- date: 7/27
-- meta: Hoa 询 CVIII-350D 按旧合同价；MBT Anthony 主谈。
-- tags: 询价主谈 Anthony
-- people: Anthony / Hoa
-
-### 越南客户购开关
-- priority: FYI
-- date: 7/27
-- meta: Kimmy 已回赵珺：越南有销售代理，一般不走国内贸易商。可关。
-- tags: 可关
-- people: 赵珺 / 李倩
-
-### WTC Updated Technical Data
-- priority: FYI
-- date: 7/27
-- meta: 已回标准图说明；晓东对接客户。
-- tags: 已回
-- people: 周晓冬 / 李倩
 
 ### HMSG Trading Process
 - priority: FYI
