@@ -18,11 +18,11 @@ ROOT = Path(__file__).resolve().parents[2]
 SRC = Path(__file__).resolve().parent / "source"
 PUBLIC = ROOT / "public"
 
-# Ink neutral palette
-MARK_BG = (24, 24, 27)  # #18181b zinc-900
-MARK_FG = (250, 250, 250)  # #fafafa
-MARK_DOT = (220, 38, 38)  # #dc2626 urgent red
-PAGE_BG = (250, 250, 250)  # #fafafa
+# GitHub Issues shell palette
+MARK_BG = (31, 35, 40)  # #1f2328
+MARK_FG = (255, 255, 255)
+MARK_DOT = (207, 34, 46)  # #cf222e
+PAGE_BG = (246, 248, 250)  # #f6f8fa
 
 
 def draw_mark(size: int, *, rounded: bool = True, pad_ratio: float = 0.0) -> Image.Image:
@@ -146,8 +146,8 @@ def main() -> None:
         "start_url": "./",
         "scope": "./",
         "display": "standalone",
-        "background_color": "#fafafa",
-        "theme_color": "#18181b",
+        "background_color": "#f6f8fa",
+        "theme_color": "#1f2328",
         "icons": [
             {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
             {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},

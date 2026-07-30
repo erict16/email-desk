@@ -24,23 +24,27 @@ function SectionHead({
   hint?: string;
 }) {
   return (
-    <h2 className="mb-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 border-b border-[var(--line)] pb-2.5">
-      <span className="text-[14px] font-semibold tracking-tight text-[var(--ink)]">
-        {title}
-      </span>
-      <span
-        className={`font-mono text-[12px] tabular-nums ${
-          tone === "mine" ? "text-[var(--urgent)]" : "text-[var(--faint)]"
-        }`}
-      >
-        {count}
-      </span>
-      {hint && (
-        <span className="w-full text-[11px] font-normal text-[var(--faint)] sm:w-auto">
-          {hint}
+    <div className="mb-3 border-b border-[var(--line)] pb-3">
+      <h2 className="flex items-center gap-2">
+        <span className="text-[15px] font-semibold tracking-tight text-[var(--ink)]">
+          {title}
         </span>
+        <span
+          className={`inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-0.5 text-[11px] font-semibold tabular-nums leading-none ${
+            tone === "mine"
+              ? "bg-[var(--urgent-soft)] text-[var(--urgent)]"
+              : "bg-[var(--paper-2)] text-[var(--mute)]"
+          }`}
+        >
+          {count}
+        </span>
+      </h2>
+      {hint && (
+        <p className="mt-1.5 text-[12px] leading-snug text-[var(--faint)]">
+          {hint}
+        </p>
       )}
-    </h2>
+    </div>
   );
 }
 
@@ -59,14 +63,21 @@ function StageLane({
   let idx = startIndex;
   return (
     <div className="mb-[var(--gap-lane)] last:mb-0">
-      <div className="mb-2.5 flex items-baseline gap-2">
-        <h3 className="text-[12px] font-semibold text-[var(--ink)]">
-          {def.label}
-        </h3>
-        <span className="text-[11px] text-[var(--faint)]">{def.hint}</span>
-        <span className="ml-auto text-[11px] tabular-nums text-[var(--faint)]">
-          {items.length}
-        </span>
+      {/* Title + count on row 1; hint alone on row 2 — avoids glued「QS 报价报价·改价」 */}
+      <div className="mb-3">
+        <div className="flex items-center gap-2">
+          <h3 className="text-[13px] font-semibold tracking-tight text-[var(--ink)]">
+            {def.label}
+          </h3>
+          <span className="inline-flex min-w-[1.125rem] items-center justify-center rounded-full bg-[var(--paper-2)] px-1.5 py-0.5 text-[11px] font-medium tabular-nums leading-none text-[var(--mute)]">
+            {items.length}
+          </span>
+        </div>
+        {def.hint && (
+          <p className="mt-1 text-[12px] leading-snug text-[var(--faint)]">
+            {def.hint}
+          </p>
+        )}
       </div>
       <div className="flex flex-col gap-[var(--gap-card)]">
         {items.map((item) => {
@@ -129,12 +140,12 @@ export default function Board({ board }: { board: BoardData }) {
         id="email-desk-print"
         className="mx-auto w-full max-w-[var(--measure)] px-4 pb-16 pt-6 sm:px-6"
       >
-        <header className="mb-6">
-          <h1 className="text-[1.375rem] font-semibold leading-tight tracking-tight text-[var(--ink)] sm:text-[1.5rem]">
+        <header className="mb-5">
+          <h1 className="text-[1.25rem] font-semibold leading-tight tracking-tight text-[var(--ink)] sm:text-[1.375rem]">
             {board.title}
           </h1>
           {board.subtitle && (
-            <p className="mt-1.5 text-[13px] text-[var(--mute)]">
+            <p className="mt-1 text-[13px] text-[var(--mute)]">
               {board.subtitle}
               {board.updated ? (
                 <span className="text-[var(--faint)]">
@@ -301,15 +312,11 @@ export default function Board({ board }: { board: BoardData }) {
             >
               {laterCollapsed ? (
                 <details className="group">
-                  <summary className="mb-4 flex cursor-pointer list-none items-baseline gap-2 border-b border-[var(--line)] pb-2.5 marker:content-none [&::-webkit-details-marker]:hidden">
-                    <span
-                      className="mt-[0.35em] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--mute)]"
-                      aria-hidden
-                    />
-                    <span className="text-[14px] font-semibold tracking-tight text-[var(--ink)]">
+                  <summary className="mb-3 flex cursor-pointer list-none items-center gap-2 border-b border-[var(--line)] pb-3 marker:content-none [&::-webkit-details-marker]:hidden">
+                    <span className="text-[15px] font-semibold tracking-tight text-[var(--ink)]">
                       稍后
                     </span>
-                    <span className="text-[12px] tabular-nums text-[var(--faint)]">
+                    <span className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-[var(--paper-2)] px-1.5 py-0.5 text-[11px] font-semibold tabular-nums leading-none text-[var(--mute)]">
                       {view.later.length}
                     </span>
                     <span className="ml-auto text-[11px] font-medium text-[var(--faint)] group-open:hidden">

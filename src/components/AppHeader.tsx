@@ -6,6 +6,10 @@ import { smoothScrollTo } from "@/lib/smooth-scroll";
 
 type Props = { title: string };
 
+/**
+ * Linear / GitHub-style sticky bar: mark + wordmark, ghost actions.
+ * No solid black CTA bar.
+ */
 export default function AppHeader({ title }: Props) {
   const [toast, setToast] = useState<string | null>(null);
 
@@ -51,25 +55,25 @@ export default function AppHeader({ title }: Props) {
 
   return (
     <>
-      <header className="print:hidden sticky top-0 z-[var(--z-sticky-nav)] border-b border-[var(--line)] bg-[var(--surface)]/90 backdrop-blur-md">
-        <div className="mx-auto flex h-[var(--banner-height)] max-w-[var(--measure)] items-center justify-between gap-3 px-4 sm:px-5">
+      <header className="print:hidden sticky top-0 z-[var(--z-sticky-nav)] border-b border-[var(--line)] bg-[var(--surface)]">
+        <div className="mx-auto flex h-[var(--banner-height)] max-w-[var(--measure)] items-center justify-between gap-4 px-4 sm:px-5">
           <a
             href="#top"
             onClick={onLogo}
-            className="flex min-w-0 items-center gap-2.5 rounded outline-none transition-opacity hover:opacity-70 focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
+            className="flex min-w-0 items-center gap-2 rounded-[var(--radius-sm)] outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
             aria-label="回到顶部"
           >
-            <DeskMark size={26} />
-            <span className="truncate text-[13px] font-semibold tracking-tight text-[var(--ink)]">
+            <DeskMark size={24} />
+            <span className="truncate text-[14px] font-semibold tracking-tight text-[var(--ink)]">
               Email Desk
             </span>
           </a>
 
-          <div className="flex shrink-0 items-center gap-1">
+          <div className="flex shrink-0 items-center gap-1.5">
             <button
               type="button"
               onClick={onShare}
-              className="inline-flex h-8 items-center gap-1.5 rounded px-2.5 text-[12px] font-medium text-[var(--mute)] transition-colors hover:bg-[var(--paper-2)] hover:text-[var(--ink)]"
+              className="inline-flex h-8 items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-2.5 text-[12px] font-medium text-[var(--ink)] transition-colors hover:bg-[var(--paper-2)]"
             >
               <ShareIcon />
               <span className="hidden sm:inline">分享</span>
@@ -77,17 +81,17 @@ export default function AppHeader({ title }: Props) {
             <button
               type="button"
               onClick={onPdf}
-              className="inline-flex h-8 items-center gap-1.5 rounded bg-[var(--ink)] px-3 text-[12px] font-medium text-[var(--surface)] transition-opacity hover:opacity-85"
+              className="inline-flex h-8 items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--line)] bg-[var(--surface)] px-2.5 text-[12px] font-medium text-[var(--ink)] transition-colors hover:bg-[var(--paper-2)]"
             >
               <DownloadIcon />
-              PDF
+              <span className="hidden sm:inline">导出</span>
             </button>
           </div>
         </div>
       </header>
 
       {toast && (
-        <div className="print:hidden fixed bottom-5 left-1/2 z-[var(--z-toast)] -translate-x-1/2 rounded-full bg-[var(--ink)] px-3.5 py-1.5 text-xs text-[var(--surface)]">
+        <div className="print:hidden fixed bottom-5 left-1/2 z-[var(--z-toast)] -translate-x-1/2 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--ink)] px-3.5 py-1.5 text-xs text-[var(--surface)]">
           {toast}
         </div>
       )}

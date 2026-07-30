@@ -54,13 +54,13 @@ export default function ActionCard({
 
         {spineText && (
           <p
-            className={`rounded-[var(--radius-sm)] border-l-2 px-2.5 py-1.5 text-[13px] leading-snug ${
+            className={`rounded-[var(--radius-sm)] px-2.5 py-1.5 text-[13px] leading-snug ${
               isWait
-                ? "border-l-[var(--line-strong)] bg-[var(--wait-bg)] text-[var(--wait-ink)]"
-                : "border-l-[var(--ink)] bg-[var(--action-bg)] text-[var(--action-ink)]"
+                ? "border border-[var(--line)] bg-[var(--wait-bg)] text-[var(--wait-ink)]"
+                : "bg-[var(--action-bg)] text-[var(--action-ink)]"
             }`}
           >
-            <span className="font-semibold text-[var(--ink)]">
+            <span className="font-semibold">
               {isWait ? "等待 · " : "待办 · "}
             </span>
             {spineText}

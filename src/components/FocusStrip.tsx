@@ -17,9 +17,7 @@ type Chip = {
   emphasize?: boolean;
 };
 
-/**
- * Focus: meetings + four counts. Numbers in ink; only 要我动 uses red.
- */
+/** GitHub-style counter strip: one bordered grid, red only on 要我动. */
 export default function FocusStrip({
   meetings,
   stats,
@@ -35,31 +33,21 @@ export default function FocusStrip({
       href: "#mine",
       emphasize: true,
     },
-    {
-      key: "wait",
-      label: "等待",
-      value: stats.waiting,
-      href: "#wait",
-    },
+    { key: "wait", label: "等待", value: stats.waiting, href: "#wait" },
     {
       key: "pipeline",
       label: "管线",
       value: stats.orders,
       href: "#pipeline",
     },
-    {
-      key: "later",
-      label: "稍后",
-      value: stats.later,
-      href: "#later",
-    },
+    { key: "later", label: "稍后", value: stats.later, href: "#later" },
   ];
 
   return (
-    <section className="mb-8 space-y-3" aria-label="焦点">
+    <section className="mb-7 space-y-3" aria-label="焦点">
       {meetings.length > 0 && (
-        <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3 sm:px-4">
-          <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--faint)]">
+        <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)] px-3.5 py-3">
+          <div className="mb-2 text-[11px] font-semibold text-[var(--faint)]">
             本周会议
           </div>
           <ul className="flex flex-col gap-1.5 text-[13px] leading-snug text-[var(--ink)]">
@@ -71,12 +59,12 @@ export default function FocusStrip({
       )}
 
       <div
-        className="grid gap-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)]"
+        className="grid overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--card)]"
         style={{
           gridTemplateColumns: `repeat(${chips.length}, minmax(0, 1fr))`,
         }}
       >
-        {chips.map((c) => (
+        {chips.map((c, i) => (
           <a
             key={c.key}
             href={c.href}
@@ -85,10 +73,12 @@ export default function FocusStrip({
               scrollToHash(c.href, 280);
               history.replaceState(null, "", c.href);
             }}
-            className="flex flex-col gap-1.5 bg-[var(--card)] px-3 py-3.5 transition-colors hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--focus)] sm:px-4"
+            className={`flex flex-col gap-1 px-3 py-3 transition-colors hover:bg-[var(--paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--focus)] sm:px-3.5 sm:py-3.5 ${
+              i > 0 ? "border-l border-[var(--line)]" : ""
+            }`}
           >
             <span
-              className={`text-[1.625rem] font-semibold leading-none tracking-tight tabular-nums ${
+              className={`text-[1.5rem] font-semibold leading-none tabular-nums tracking-tight ${
                 c.emphasize ? "text-[var(--urgent)]" : "text-[var(--ink)]"
               }`}
             >

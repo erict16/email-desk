@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /*
- * Email Desk — ink neutral
- * Near-monochrome desk. Color only for urgency + structure.
+ * Email Desk — GitHub Issues / Linear list shell
+ * Canvas #f6f8fa, blue action wash, red urgency only.
  * See design.md
  */
 
@@ -22,59 +22,53 @@
   --z-sticky-nav: 300;
   --z-toast: 500;
 
-  /* ink neutral — zinc scale */
-  --bg: #fafafa;
+  /* GitHub-like canvas */
+  --bg: #f6f8fa;
   --surface: #ffffff;
-  --ink: #18181b;
-  --mute: #52525b;
-  --faint: #a1a1aa;
-  --line: #e4e4e7;
-  --line-strong: #d4d4d8;
-  --paper-2: #f4f4f5;
+  --ink: #1f2328;
+  --mute: #656d76;
+  --faint: #8c959f;
+  --line: #d0d7de;
+  --line-strong: #afb8c1;
+  --paper-2: #eef1f4;
 
-  /* only loud color */
-  --urgent: #dc2626;
-  --urgent-soft: #fef2f2;
-  --urgent-border: #fecaca;
+  --urgent: #cf222e;
+  --urgent-soft: #ffebe9;
+  --urgent-border: #ffcecb;
 
-  /* spines — gray, not candy */
-  --action-bg: #f4f4f5;
-  --action-ink: #18181b;
-  --wait-bg: #fafafa;
-  --wait-ink: #71717a;
+  --action-bg: #ddf4ff;
+  --action-ink: #0550ae;
+  --wait-bg: #f6f8fa;
+  --wait-ink: #656d76;
 
-  /* pipeline — charcoal, not navy/teal */
-  --pipe: #3f3f46;
-  --pipe-soft: #f4f4f5;
-  --orders-border: #d4d4d8;
+  --pipe: #0969da;
+  --pipe-soft: #ddf4ff;
+  --orders-border: #54aeff;
 
-  /* secondary links */
-  --follow: #52525b;
-  --follow-soft: #f4f4f5;
-  --follow-border: #d4d4d8;
+  --follow: #656d76;
+  --follow-soft: #eef1f4;
+  --follow-border: #d0d7de;
 
-  /* chrome / brand = ink black */
-  --signal: #18181b;
-  --signal-soft: #f4f4f5;
-  --mark-bg: #18181b;
-  --mark-fg: #fafafa;
-  --mark-dot: #dc2626;
+  --signal: #1f2328;
+  --signal-soft: #eef1f4;
+  --mark-bg: #1f2328;
+  --mark-fg: #ffffff;
+  --mark-dot: #cf222e;
 
-  --radius: 8px;
+  --radius: 6px;
   --radius-sm: 4px;
-  --measure: 44rem;
+  --measure: 42rem;
 
-  /* aliases */
   --paper: var(--bg);
   --card: var(--surface);
   --muted: var(--mute);
   --orders: var(--pipe);
   --orders-soft: var(--pipe-soft);
   --fg: var(--ink);
-  --accent: var(--ink);
-  --accent-soft: var(--paper-2);
-  --accent-ink: #fafafa;
-  --focus: var(--ink);
+  --accent: var(--pipe);
+  --accent-soft: var(--pipe-soft);
+  --accent-ink: #ffffff;
+  --focus: var(--pipe);
   --done: var(--pipe);
   --done-soft: var(--pipe-soft);
   --done-border: var(--orders-border);
@@ -82,20 +76,21 @@
   --shadow-whisper: none;
   --shadow-header: none;
   --shadow-card: none;
-  --banner-height: 3rem;
+  --banner-height: 3.25rem;
 
-  --gap-card: 0.625rem;
+  --gap-card: 0.5rem;
   --gap-stack: 0.5rem;
   --gap-block: 0.75rem;
-  --gap-lane: 1.5rem;
-  --gap-section: 2.25rem;
-  --pad-card-x: 1rem;
-  --pad-card-y: 0.875rem;
+  --gap-lane: 1.75rem;
+  --gap-section: 2rem;
+  --pad-card-x: 0.875rem;
+  --pad-card-y: 0.75rem;
 }
 
 @theme inline {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-    "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif,
+    system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
 }
 
@@ -119,48 +114,48 @@ body {
 }
 
 ::selection {
-  background: var(--ink);
-  color: #fafafa;
+  background: var(--action-bg);
+  color: var(--action-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #09090b;
-    --surface: #18181b;
-    --ink: #fafafa;
-    --mute: #a1a1aa;
-    --faint: #71717a;
-    --line: #27272a;
-    --line-strong: #3f3f46;
-    --paper-2: #27272a;
+    --bg: #0d1117;
+    --surface: #161b22;
+    --ink: #e6edf3;
+    --mute: #8b949e;
+    --faint: #6e7681;
+    --line: #30363d;
+    --line-strong: #484f58;
+    --paper-2: #21262d;
 
-    --urgent: #f87171;
-    --urgent-soft: rgb(248 113 113 / 0.12);
-    --urgent-border: rgb(248 113 113 / 0.3);
+    --urgent: #f85149;
+    --urgent-soft: rgb(248 81 73 / 0.15);
+    --urgent-border: rgb(248 81 73 / 0.4);
 
-    --action-bg: #27272a;
-    --action-ink: #fafafa;
-    --wait-bg: #18181b;
-    --wait-ink: #a1a1aa;
+    --action-bg: rgb(56 139 253 / 0.15);
+    --action-ink: #79c0ff;
+    --wait-bg: #161b22;
+    --wait-ink: #8b949e;
 
-    --pipe: #d4d4d8;
-    --pipe-soft: #27272a;
-    --orders-border: #3f3f46;
+    --pipe: #58a6ff;
+    --pipe-soft: rgb(56 139 253 / 0.12);
+    --orders-border: #388bfd;
 
-    --follow: #a1a1aa;
-    --follow-soft: #27272a;
-    --follow-border: #3f3f46;
+    --follow: #8b949e;
+    --follow-soft: #21262d;
+    --follow-border: #30363d;
 
-    --signal: #fafafa;
-    --signal-soft: #27272a;
-    --mark-bg: #fafafa;
-    --mark-fg: #18181b;
-    --mark-dot: #f87171;
+    --signal: #e6edf3;
+    --signal-soft: #21262d;
+    --mark-bg: #e6edf3;
+    --mark-fg: #0d1117;
+    --mark-dot: #f85149;
 
     --paper: var(--bg);
     --card: var(--surface);
@@ -168,18 +163,18 @@ body {
     --orders: var(--pipe);
     --orders-soft: var(--pipe-soft);
     --fg: var(--ink);
-    --accent: var(--ink);
-    --accent-soft: var(--paper-2);
-    --accent-ink: #09090b;
-    --focus: var(--ink);
+    --accent: var(--pipe);
+    --accent-soft: var(--pipe-soft);
+    --accent-ink: #0d1117;
+    --focus: var(--pipe);
     --done: var(--pipe);
     --done-soft: var(--pipe-soft);
     --done-border: var(--orders-border);
   }
 
   ::selection {
-    background: #fafafa;
-    color: #09090b;
+    background: var(--action-bg);
+    color: var(--action-ink);
   }
 }
 

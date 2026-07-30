@@ -38,7 +38,7 @@ function StageProgress({ current }: { current: OrderStageId }) {
           />
         ))}
       </div>
-      <span className="text-[11px] font-medium leading-none text-[var(--pipe)]">
+      <span className="text-[11px] font-medium leading-none text-[var(--mute)]">
         {def.short}
       </span>
       <span className="font-mono text-[11px] leading-none text-[var(--faint)]">
@@ -87,7 +87,7 @@ export default function OrderCard({
         {stage && <StageProgress current={stage} />}
 
         {item.action && (
-          <p className="rounded-[var(--radius-sm)] border-l-2 border-l-[var(--line-strong)] bg-[var(--pipe-soft)] px-2.5 py-1.5 text-[13px] leading-snug text-[var(--ink)]">
+          <p className="rounded-[var(--radius-sm)] bg-[var(--pipe-soft)] px-2.5 py-1.5 text-[13px] leading-snug text-[var(--action-ink)]">
             <span className="font-semibold">卡点 · </span>
             {item.action}
           </p>
